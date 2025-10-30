@@ -11,13 +11,20 @@ steer_ls_l = LightSensor(INPUT_1)
 steer_ls_r = LightSensor(INPUT_2)
 
 
-
-
-
 def follow_line():
-    drive_motor.SpeedPercent(100)
     while True:
-        if 
+        drive_motor.on_for_seconds(10,1)
+        ref1 = steer_ls_l.reflected_light_intensity()
+        ref2 = steer_ls_r.reflected_light_intensity()
+        if ref1 > ref2:
+            print("DEINE MUDDA IST FETTT")
+            print("is_1: ", ls_1.reflected_light_intensity)
+            print("is_1: ", ls_1.ambient_light_intensity)
+            print("is_2: ", ls_2.reflected_light_intensity)
+            print("is_2: ", ls_2.ambient_light_intensity)
+        elif ref1 < ref2:
+            print("DEINE MUTTER IST RECHT SPORTLICH")
+    sleep(1)
     
 
 follow_line()
