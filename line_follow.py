@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from time import sleep
+from time import sleep, time
 from math import tanh
 from ev3dev2.sensor import INPUT_1, INPUT_4
 from ev3dev2.sensor.lego import LightSensor
@@ -23,13 +23,12 @@ def follow_line():
         ref2 = steer_ls_r.reflected_light_intensity
         error = ref1 - ref2
         if ref1 > ref2:
-            control_motor.on_for_degrees(45 * tanh(tm1 * error + tm2 * error_rate ), tt)  # oder arctan
-            control_motor.on_for_degrees(-45 * tanh(tm * error), tt)
-
+            control_motor.on_for_degrees(45 * tanh(tm1 * error + tm2 * error_rate), tt)
+            control_motor.on_for_degrees(-45 * tanh(tm1 * error + tm2 * error_rate), tt)
             print("DEINE MUDDA IST FETTT")
         elif ref1 < ref2:
-            control_motor.on_for_degrees(-45 * tanh(tm * error), tt)
-            control_motor.on_for_degrees(45 * tanh(tm * error), tt)
+            control_motor.on_for_degrees(-45 * tanh(tm1 * error + tm2 * error_rate), tt)
+            control_motor.on_for_degrees(45 * tanh(tm1 * error + tm2 * error_rate), tt)
             print("DEINE MUTTER IST RECHT SPORTLICH")
         sleep(0.1)
 
@@ -44,5 +43,14 @@ wall-e.on_for_rotations(SpeedPercent(100),5)
 print(ls.reflected_light_intensity)
 print(ls.ambient_light_intensity)
 sleep(3)
+start = time.time()
 
+# Ausführen des Codeblocks, den wir messen wollen
+print('Hallo Welt!')
+
+# Endzeit bestimmen
+end = time.time()
+
+# Berechnung der verstrichenen Zeit
+verstrichene_zeit = end - start
 '''
