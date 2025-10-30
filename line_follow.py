@@ -22,13 +22,14 @@ def follow_line():
         ref1 = steer_ls_l.reflected_light_intensity
         ref2 = steer_ls_r.reflected_light_intensity
         error = ref1 - ref2
+        turn_rad = 45 * tanh(tm1 * error + tm2 * error_rate)
         if ref1 > ref2:
-            control_motor.on_for_degrees(45 * tanh(tm1 * error + tm2 * error_rate), tt)
-            control_motor.on_for_degrees(-45 * tanh(tm1 * error + tm2 * error_rate), tt)
+            control_motor.on_for_degrees(turn_rad, tt)
+            control_motor.on_for_degrees(-turn_rad, tt)
             print("DEINE MUDDA IST FETTT")
         elif ref1 < ref2:
-            control_motor.on_for_degrees(-45 * tanh(tm1 * error + tm2 * error_rate), tt)
-            control_motor.on_for_degrees(45 * tanh(tm1 * error + tm2 * error_rate), tt)
+            control_motor.on_for_degrees(-turn_rad, tt)
+            control_motor.on_for_degrees(turn_rad, tt)
             print("DEINE MUTTER IST RECHT SPORTLICH")
         sleep(0.1)
 
