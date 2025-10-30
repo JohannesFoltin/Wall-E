@@ -43,14 +43,8 @@ wall-e.on_for_rotations(SpeedPercent(100),5)
 print(ls.reflected_light_intensity)
 print(ls.ambient_light_intensity)
 sleep(3)
+
 start = time.time()
-
-# Ausführen des Codeblocks, den wir messen wollen
-print('Hallo Welt!')
-
-# Endzeit bestimmen
 end = time.time()
-
-# Berechnung der verstrichenen Zeit
 verstrichene_zeit = end - start
 '''
