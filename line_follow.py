@@ -37,9 +37,9 @@ follow_line()
 '''
 wall-e.on_for_rotations(SpeedPercent(100),5)
 
-    SpeedDPS(degrees_per_second, desc=None)
-    SpeedPercent(percent, desc=None)
-    ls = LightSensor(INPUT_1) # oder 'ColorSensor(INPUT_1)'
+SpeedDPS(degrees_per_second, desc=None)
+SpeedPercent(percent, desc=None)
+ls = LightSensor(INPUT_1) # oder 'ColorSensor(INPUT_1)'
 print(ls.reflected_light_intensity)
 print(ls.ambient_light_intensity)
 sleep(3)
