@@ -1,4 +1,4 @@
-Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP \
+Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 
 # Aufgaben für Zwischenprüfung:
 
