@@ -14,7 +14,7 @@ class StateMachine(object):
         self.THERSHOLD = 30
         self.STATE_SAFE_ON_TABLE = 1
         self.STATE_EDGE_DETECTED = 2
-        
+
         self.ls = LightSensor(INPUT_1) # oder 'ColorSensor(INPUT_1)'
         self.mt = MoveTank(OUTPUT_A, OUTPUT_B)
         self.state = self.STATE_SAFE_ON_TABLE
