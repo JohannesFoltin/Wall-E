@@ -6,6 +6,5 @@ from ev3dev2.motor import LargeMotor, SpeedPercent
 drive_motor = LargeMotor(OUTPUT_B)
 control_motor = LargeMotor(OUTPUT_A)
 
-
-control_motor.on_for_rotations(SpeedPercent(100), 60)
-drive_motor.on(SpeedPercent(100))
+control_motor.on_for_degrees(SpeedPercent(100), 60)
+drive_motor.on(SpeedPercent(-100))
