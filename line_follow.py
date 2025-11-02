@@ -16,14 +16,16 @@ def follow_line():
     tm1 = 2  # turning multiplikator 1
     drive_motor.on(SpeedPercent(-20))
     while True:
-        ref1 = steer_ls_r.reflected_light_intensity * 100 / 47.900000000000006
-        ref2 = steer_ls_l.reflected_light_intensity * 100 / 17
+        ref1 = steer_ls_r.reflected_light_intensity
+        ref2 = steer_ls_l.reflected_light_intensity
         error = ref1 - ref2
         error_threshold = 5  # ka
         turn_rad = 60 * tanh(tm1 * error)
         if error > error_threshold:
             if ref1 > ref2:
                 control_motor.on_for_degrees(SpeedPercent(100), turn_rad)
+                while ref1 != ref2:
+                    pass
                 control_motor.on_for_degrees(SpeedPercent(100), -turn_rad)
                 print("DEINE MUDDA IST FETTT")
             elif ref1 < ref2:

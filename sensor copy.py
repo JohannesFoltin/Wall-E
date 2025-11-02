@@ -8,6 +8,6 @@ ls_2 = ColorSensor(INPUT_4)
 
 
 while True:
-    print("is_1: ", ls_1.reflected_light_intensity * 100 / 47.900000000000006)
-    print("is_2: ", ls_2.reflected_light_intensity * 100 / 17)
+    print("is_1: ", ls_1.reflected_light_intensity)
+    print("is_2: ", ls_2.reflected_light_intensity)
     sleep(3)
