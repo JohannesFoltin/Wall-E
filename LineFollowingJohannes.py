@@ -27,3 +27,6 @@ def follow_line():
         if ref2 < 3 and currentAngle == 30:
             control_motor.on_for_degrees(SpeedPercent(100), -30)
             currentAngle = 0
+
+
+follow_line()
