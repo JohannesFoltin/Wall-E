@@ -26,12 +26,13 @@ def follow_line():
         print(ref2)
         if ref2 < 3 and currentAngle != 30:
             print("SCHWARZ")
-            control_motor.on_for_degrees(SpeedPercent(100), 30)
+            control_motor.on_for_degrees(SpeedPercent(100), -60)
             currentAngle = 30
-        if ref2 > 12 and currentAngle == 30:
-            control_motor.on_for_degrees(SpeedPercent(100), -30)
+        if ref2 > 6 and currentAngle == 30:
+            print("zurck")
+            control_motor.on_for_degrees(SpeedPercent(100), 60)
             currentAngle = 0
-        time.sleep(1)
+        time.sleep(0.2)
 
 
 follow_line()
