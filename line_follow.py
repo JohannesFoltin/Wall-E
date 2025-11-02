@@ -1,36 +1,35 @@
 #!/usr/bin/env python3
-from time import sleep, time
+import time
 from math import tanh
 from ev3dev2.sensor import INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor
+from ev3dev2.sensor.lego import LightSensor, ColorSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
 from ev3dev2.motor import LargeMotor, SpeedPercent
 
-drive_motor = LargeMotor(OUTPUT_A)
-control_motor = LargeMotor(OUTPUT_B)
-steer_ls_l = LightSensor(INPUT_3)
-steer_ls_r = LightSensor(INPUT_4)
+drive_motor = LargeMotor(OUTPUT_B)
+control_motor = LargeMotor(OUTPUT_A)
+steer_ls_r = LightSensor(INPUT_3)
+steer_ls_l = ColorSensor(INPUT_4)
 
 
 def follow_line():
     tm1 = 2  # turning multiplikator 1
-    tm2 = 2  # turning multiplikator 2
-    error_rate = 0
-    drive_motor.on(SpeedPercent(20))
+    drive_motor.on(SpeedPercent(-20))
     while True:
-        ref1 = steer_ls_l.reflected_light_intensity
-        ref2 = steer_ls_r.reflected_light_intensity
+        ref1 = steer_ls_r.reflected_light_intensity * 100 / 47.900000000000006
+        ref2 = steer_ls_l.reflected_light_intensity * 100 / 17
         error = ref1 - ref2
-        turn_rad = 45  # * tanh(tm1 * error + tm2 * error_rate)
-        if ref1 > ref2:
-            control_motor.on_for_degrees(SpeedPercent(100), turn_rad)
-            control_motor.on_for_degrees(SpeedPercent(100), -turn_rad)
-            print("DEINE MUDDA IST FETTT")
-        elif ref1 < ref2:
-            control_motor.on_for_degrees(SpeedPercent(100), -turn_rad)
-            control_motor.on_for_degrees(SpeedPercent(100), turn_rad)
-            print("DEINE MUTTER IST RECHT SPORTLICH")
-        sleep(0.1)
+        error_threshold = 5  # ka
+        turn_rad = 60 * tanh(tm1 * error)
+        if error > error_threshold:
+            if ref1 > ref2:
+                control_motor.on_for_degrees(SpeedPercent(100), turn_rad)
+                control_motor.on_for_degrees(SpeedPercent(100), -turn_rad)
+                print("DEINE MUDDA IST FETTT")
+            elif ref1 < ref2:
+                control_motor.on_for_degrees(SpeedPercent(100), -turn_rad)
+                control_motor.on_for_degrees(SpeedPercent(100), turn_rad)
+                print("DEINE MUTTER IST RECHT SPORTLICH")
 
 
 follow_line()

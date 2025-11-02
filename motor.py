@@ -4,4 +4,4 @@ from ev3dev2.motor import OUTPUT_A
 from ev3dev2.motor import LargeMotor, SpeedPercent
 
 lm = LargeMotor(OUTPUT_A)
-lm.on_for_rotations(SpeedPercent(100),5)
+lm.on_for_rotations(SpeedPercent(100),45)
