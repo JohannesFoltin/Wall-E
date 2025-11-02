@@ -13,9 +13,15 @@ steer_ls_r = LightSensor(INPUT_4)
 
 
 def turn():
+    # if linie weg | abstand 20cm 
     drive_motor.off()
     control_motor.on_for_degrees(SpeedPercent(100), 45)
     drive_motor.on_for_seconds(SpeedPercent(100), 2)
     drive_motor.off
     control_motor.on_for_degrees(SpeedPercent(100), -45)
     drive_motor.on_for_seconds(SpeedPercent(100), 2)
+    drive_motor.off
+    control_motor.on_for_degrees(SpeedPercent(100), 45)
+    drive_motor.on_for_seconds(SpeedPercent(100), 2)
+
+# Sensoren vorne bzw hinten können die dauer (2) ersetzen
