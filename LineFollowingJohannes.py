@@ -20,15 +20,17 @@ def follow_line():
     while True:
         ref1 = steer_ls_r.reflected_light_intensity
         ref2 = steer_ls_l.reflected_light_intensity  # neuer Sensor
-        print(ref2)
+        print("Ref: ", ref2)
+        print("currentAngle: ",currentAngle)
         if ref2 < 3 and currentAngle != 30:
             print("SCHWARZ")
-            control_motor.on_for_degrees(SpeedPercent(100), 30)
+            control_motor.on_for_degrees(SpeedPercent(100), -60)
             currentAngle = 30
-        if ref2 > 12 and currentAngle == 30:
-            control_motor.on_for_degrees(SpeedPercent(100), -30)
+        if ref2 > 6 and currentAngle == 30:
+            print("zurck")
+            control_motor.on_for_degrees(SpeedPercent(100), 60)
             currentAngle = 0
-        time.sleep(1)
+        time.sleep(0.2)
 
 
 follow_line()
