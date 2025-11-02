@@ -13,7 +13,7 @@ steer_ls_l = ColorSensor(INPUT_4)
 
 
 def follow_line():
-    tm1 = 2  # turning multiplikator 1
+    tm1 = 2  # turning multiplikator
     drive_motor.on(SpeedPercent(-20))
     while True:
         ref1 = steer_ls_r.reflected_light_intensity
