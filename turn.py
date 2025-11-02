@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import time 
-from math import tanh
+import time
 from ev3dev2.sensor import INPUT_1, INPUT_4, INPUT_2
 from ev3dev2.sensor.lego import LightSensor, UltrasonicSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
