@@ -28,7 +28,11 @@ class WallE(object):
         if self.ls.reflected_light_intensity <= self.THERSHOLD:
             self.state = self.STATE_EDGE_DETECTED
         else:
+<<<<<<< HEAD
             self.state = self.STATE_SAFE_ON_TABLE
+=======
+            self.state = self.STATE_SAFE_ON_TABLE
+>>>>>>> 37c2c61e41efeb1dcf991b55984eea1738ffd0fa
 
     def turn_around(self):
         pass
