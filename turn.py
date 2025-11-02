@@ -16,10 +16,9 @@ def turn():
     # if linie weg | abstand 20cm
     drive_speed = 100
     turn_time = 2
-    turn_angle = -60
+    turn_angle = 60
     min_distance = 5
     while True:
-        drive_motor.off()
         turn_angle *= -1
         drive_speed *= -1
         control_motor.on_for_degrees(SpeedPercent(100), turn_angle)
@@ -29,6 +28,8 @@ def turn():
             time.sleep(0.01)
             #elif u_distance.distance_inches_ping < min_distance:
                 #break
+        control_motor.on_for_degrees(SpeedPercent(100), -turn_angle)
+        drive_motor.off()
 
 
 turn()
