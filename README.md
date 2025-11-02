@@ -13,3 +13,4 @@ Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 # Ideen
 
 - [ ] Kalibrierung am Start
+julian stinkt total hab ich gehört
