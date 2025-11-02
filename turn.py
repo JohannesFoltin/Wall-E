@@ -18,7 +18,9 @@ def turn():
     turn_time = 2
     turn_angle = 60
     min_distance = 5
+    turn_count = 0
     while True:
+        turn_count += 1
         turn_angle *= -1
         drive_speed *= -1
         control_motor.on_for_degrees(SpeedPercent(100), turn_angle)
