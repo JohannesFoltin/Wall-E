@@ -13,7 +13,7 @@ u_distance = UltrasonicSensor(INPUT_2)
 
 
 def turn():
-    # if linie weg | abstand 20cm
+    # if linie weg oder abstand 20cm
     drive_speed = 100
     turn_time = 2
     turn_angle = 60
@@ -28,11 +28,12 @@ def turn():
         start = time.time()
         while time.time() - start < turn_time:
             time.sleep(0.01)
-            #elif u_distance.distance_inches_ping < min_distance:
-                #break
+            if u_distance.distance_centimeters_ping < min_distance:
+                break
         control_motor.on_for_degrees(SpeedPercent(100), -turn_angle)
         drive_motor.off()
-        
+        if turn_count == 4:
+            break
 
 
 turn()
