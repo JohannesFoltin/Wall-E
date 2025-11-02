@@ -1,5 +1,11 @@
 Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 
+# Aufgaben für Donnerstag:
+
+- [] Engerer Radius
+- [] Dritter Sensor
+- [] Reihnfolge schwarz Erkennung implementieren 
+
 # Aufgaben für Zwischenprüfung:
 
 - [ ] Linie folgen
