@@ -13,4 +13,6 @@ Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 # Ideen
 
 - [ ] Kalibrierung am Start
+
+Postiv ist nach rechts
 julian stinkt total hab ich gehört
