@@ -2,37 +2,125 @@
 import time
 from math import tanh
 from ev3dev2.sensor import INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor, ColorSensor
+from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
 from ev3dev2.motor import LargeMotor, SpeedPercent
 
 drive_motor = LargeMotor(OUTPUT_B)
 control_motor = LargeMotor(OUTPUT_A)
+steer_ls_r = LightSensor(INPUT_3)
+steer_ls_l = ColorSensor(INPUT_4)
+u_distance = UltrasonicSensor(INPUT_2)
 
 ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
 ls_c = LightSensor(INPUT_3)  # center Sensor auf Input 3
 ls_l = ColorSensor(INPUT_4)  # links Sensor auf Input 4
 currentAngle = 0
+max_turn_angle = 400
 
 
 def follow_line():
-    global currentAngle
-    tm1 = 2  # turning Multiplikator
+    global currentAngle, max_turn_angle
+    start_time = time.time()
+    backwards_turn_angle = max_turn_angle
+    backwards_turn_time = 1
+    color_l = 0  # 0-Schwarz, 1-Grau, 2-Weiß
+    color_c = 0
+    color_r = 0
     drive_motor.on(SpeedPercent(-20))
     while True:
-        ref1 = ls_r.reflected_light_intensity
-        ref2 = ls_l.reflected_light_intensity  # neuer Sensor
-        ref3 = ls_c.reflected_light_intensity
-        print(ref2)
-        if ref2 < 3 and currentAngle != 30:
+        light_ping_l = ls_l.reflected_light_intensity  # neuer Sensor
+        light_ping_c = ls_c.reflected_light_intensity
+        light_ping_r = ls_r.reflected_light_intensity
+        turn_angle = max_turn_angle
+        print(light_ping_l)
+
+        # sensor left
+        if light_ping_l < 3:  # black
+            color_l = 0
+        elif light_ping_l > 6:
+            color_l = 2  # white
+        else:
+            color_l = 1  # gray
+
+        # sensor center
+        if light_ping_c < 3:  # black
+            color_c = 0
+        elif light_ping_c > 6:
+            color_c = 2  # white
+        else:
+            color_c = 1  # gray
+
+        # sensor right
+        if light_ping_r < 3:  # black
+            color_r = 0
+        elif light_ping_r > 6:
+            color_r = 2  # white
+        else:
+            color_r = 1  # gray
+
+        match color_l, color_c, color_r:
+            case 0, 2, 0:  # white, black, white
+                if currentAngle != 0:  # if tires are turned: turn back to unturned
+                    control_motor.on_for_degrees(SpeedPercent(100), -currentAngle)
+                    currentAngle = 0
+            case 2, 2, 0:  # black, black, white
+                # turn left
+                control_motor.on_for_degrees(SpeedPercent(100), -turn_angle)
+                currentAngle = -turn_angle
+            case 0, 2, 2, :  # white, black, black
+                # turn right
+                control_motor.on_for_degrees(SpeedPercent(100), turn_angle)
+                currentAngle = turn_angle
+            case 2, 0, 0:  # black, white, white
+                # backwards left
+                drive_motor.off()
+                control_motor.on_for_degrees(SpeedPercent(100), -backwards_turn_angle)
+                drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
+            case 0, 0, 2:  # white, white, black
+                # backwards right
+                drive_motor.off()
+                control_motor.on_for_degrees(SpeedPercent(100), -backwards_turn_angle)
+                drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
+            case 0, 0, 0:  # white, white, white
+                # check white time to distingish stage mark | hole | line lost
+                black_lost_start_time = time.time()
+                black_lost_progess_time = time.time() - black_lost_start_time
+                if black_lost_progess_time >= 3:
+                    # line lost
+                    pass
+                if 2 < black_lost_progess_time < 3:
+                    # hole
+                    continue
+                if black_lost_progess_time <= 2:
+                    # mark
+                    pass
+
+        '''if light_ping_l < 3 and currentAngle == 0:
+            # if l_sensor right < 3 -> schwarz, and tire isnt turned turn right
             print("SCHWARZ")
-            control_motor.on_for_degrees(SpeedPercent(100), -60)
-            currentAngle = 30
-        if ref2 > 6 and currentAngle == 30:
+            control_motor.on_for_degrees(SpeedPercent(100), -max_turn_angle)
+            currentAngle = max_turn_angle
+        if light_ping_l > 6 and currentAngle != max_turn_angle:
+            # if l_sensor > 6 -> white and tire is turned turn back
             print("zurck")
-            control_motor.on_for_degrees(SpeedPercent(100), 60)
+            control_motor.on_for_degrees(SpeedPercent(100), max_turn_angle)
             currentAngle = 0
+
+        if light_ping_r < 3 and currentAngle == 0:
+            # if l_sensor left < 3 and tire isnt turned -> schwarz, turn left
+            print("SCHWARZ")
+            control_motor.on_for_degrees(SpeedPercent(100), max_turn_angle)
+            currentAngle = max_turn_angle
+        if light_ping_r > 6 and currentAngle != max_turn_angle:
+            # if l_sensor > 6 -> white and tire is turned turn back
+            print("zurck")
+            control_motor.on_for_degrees(SpeedPercent(100), -max_turn_angle)
+            currentAngle = 0'''
+
         time.sleep(0.2)
+        end_time = time.time()
+        print(end_time - start_time)
 
 
 follow_line()
