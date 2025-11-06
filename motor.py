@@ -12,5 +12,5 @@ steer_ls_l = ColorSensor(INPUT_4)
 u_distance = UltrasonicSensor(INPUT_2)
 
 control_motor.on_for_degrees(SpeedPercent(100), 400)
-# while True:
-    # drive_motor.on(SpeedPercent(-100))
+while True:
+    drive_motor.on(SpeedPercent(-100))

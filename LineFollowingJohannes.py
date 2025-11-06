@@ -82,6 +82,7 @@ def follow_line():
                 drive_motor.off()
                 control_motor.on_for_degrees(SpeedPercent(100), -backwards_turn_angle)
                 drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
+                drive_motor.on(SpeedPercent(50))
             case 0, 0, 0:  # white, white, white
                 # check white time to distingish stage mark | hole | line lost
                 black_lost_start_time = time.time()
@@ -89,10 +90,10 @@ def follow_line():
                 if black_lost_progess_time >= 3:
                     # line lost
                     pass
-                if 2 < black_lost_progess_time < 3:
+                elif 2 < black_lost_progess_time < 3:
                     # hole
                     continue
-                if black_lost_progess_time <= 2:
+                elif black_lost_progess_time <= 2:
                     # mark
                     pass
 
