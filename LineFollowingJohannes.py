@@ -7,7 +7,7 @@ from ev3dev2.motor import LargeMotor, SpeedPercent
 
 drive_motor = LargeMotor(OUTPUT_B)
 control_motor = LargeMotor(OUTPUT_A)
-#u_distance = UltrasonicSensor(INPUT_2)
+#u_distance = UltrasonicSensor(INPUT_1)
 
 ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
 ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3
