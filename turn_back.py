@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from time import sleep
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
@@ -13,7 +12,4 @@ ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
 ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 
-control_motor.on_for_degrees(SpeedPercent(100), -400)
-while True:
-    drive_motor.on(SpeedPercent(-20))
-    print(drive_motor.degrees)
+control_motor.on_for_degrees(SpeedPercent(100), 400)
