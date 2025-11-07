@@ -12,4 +12,4 @@ while True:
     print("is_l: ", ls_l.reflected_light_intensity)
     print("is_c: ", ls_c.reflected_light_intensity)
     print("is_r: ", ls_r.reflected_light_intensity)
-    sleep(3)
+    sleep(1)
