@@ -30,8 +30,8 @@ def follow_line():
     NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
     LEFT_LS = (True, True, False)
     RIGHT_LS = (False, True, True)
-    # korrekturr = (True, False, False)
-    # korrekturl = (False, False, True)
+    CORRECTION_LS = (True, False, False)
+    CORRECTIONR_LS = (False, False, True)
 
     RIGHT_WS = -400  # WHEEL TURN STATE
     LEFT_WS = 400
