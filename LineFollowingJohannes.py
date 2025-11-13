@@ -14,10 +14,11 @@ ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 currentAngle = 0
 max_turn_angle = 400
-newSensorBlacks = 0 # s für smaller wie jannes dick
+newSensorBlacks = 0  # s für smaller wie jannes dick
 newSensorWhite = 10
 oldSensorBlacks = 0
 oldSensorWhite = 40
+
 
 def follow_line():
     global currentAngle, max_turn_angle
@@ -37,25 +38,7 @@ def follow_line():
         print(light_ping_r)
         turn_angle = max_turn_angle
 
-        if light_ping_l < 3 and currentAngle == 0:
-            # if l_sensor right < 3 -> schwarz, and tire isnt turned turn right
-            #control_motor.on_for_degrees(SpeedPercent(100), -max_turn_angle)
-            currentAngle = max_turn_angle
-        if light_ping_l > 6 and currentAngle != max_turn_angle:
-            # if l_sensor > 6 -> white and tire is turned turn back
-            #control_motor.on_for_degrees(SpeedPercent(100), max_turn_angle)
-            currentAngle = 0
-
-        if light_ping_r < 3 and currentAngle == 0:
-            # if l_sensor left < 3 and tire isnt turned -> schwarz, turn left
-            #control_motor.on_for_degrees(SpeedPercent(100), max_turn_angle)
-            currentAngle = max_turn_angle
-        if light_ping_r > 6 and currentAngle != max_turn_angle:
-            # if l_sensor > 6 -> white and tire is turned turn back
-            #control_motor.on_for_degrees(SpeedPercent(100), -max_turn_angle)
-            currentAngle = 0
-
-        '''# sensor left
+        # sensor left
         if light_ping_l < 3:  # black
             color_l = 0
         elif light_ping_l > 6:
@@ -78,7 +61,7 @@ def follow_line():
             color_r = 2  # white
         else:
             color_r = 1  # gray
-'''
+
         if (color_l, color_c, color_r) == (0, 2, 0):  # white, black, white
             if currentAngle != 0:  # if tires are turned: turn back to unturned
                 control_motor.on_for_degrees(SpeedPercent(100), -currentAngle)
