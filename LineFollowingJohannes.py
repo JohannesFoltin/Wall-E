@@ -14,10 +14,8 @@ ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 currentAngle = 0
 max_turn_angle = 400
-newSensorBlacks = 0 # s für smaller wie jannes dick
-newSensorWhite = 10
-oldSensorBlacks = 0
-oldSensorWhite = 40
+newSensorBlacks = 15 # s (alles drunter ist schwarz) für smaller wie jannes dick
+oldSensorBlacks = 35
 
 def follow_line():
     global currentAngle, max_turn_angle
