@@ -53,29 +53,35 @@ def follow_line():
         elif light_ping_r > oldSensorBlacks:
             black_r = False  # white
         
-        if (black_l, black_c, black_r) == (True, False, True):  # white, black, white
+        if ((black_l, black_c, black_r) == (True, False, True)) and (currentAngle != 0):  # white, black, white
             if currentAngle is True:  # if tires are turned: turn back to unturned
-                control_motor.on_for_degrees(SpeedPercent(100), -currentAngle)
-                currentAngle = True
-        elif (black_l, black_c, black_r) == (False, False, True):  # black, black, white
+                #control_motor.on_for_degrees(SpeedPercent(100), -currentAngle)
+                currentAngle = turn_angle
+                print("turn back")
+        elif ((black_l, black_c, black_r) == (False, False, True)) and (currentAngle == 0):  # black, black, white
             # turn left
-            control_motor.on_for_degrees(SpeedPercent(100), turn_angle)
+            #control_motor.on_for_degrees(SpeedPercent(100), turn_angle)
             currentAngle = -turn_angle
+            print("turn left")
         elif (black_l, black_c, black_r) == (True, False, False):  # white, black, black
             # turn right
-            control_motor.on_for_degrees(SpeedPercent(100), -turn_angle)
+            #control_motor.on_for_degrees(SpeedPercent(100), -turn_angle)
             currentAngle = turn_angle
+            print("turn right")
         elif (black_l, black_c, black_r) == (False, True, True):  # black, white, white
             # backwards left
             drive_motor.off()
-            control_motor.on_for_degrees(SpeedPercent(100), -backwards_turn_angle)
-            drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
+            #control_motor.on_for_degrees(SpeedPercent(100), -backwards_turn_angle)
+            #drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
+            #drive_motor.on(SpeedPercent(50))
+            print("backwards left")
         elif (black_l, black_c, black_r) == (True, True, False):  # white, white, black
             # backwards right
             drive_motor.off()
-            control_motor.on_for_degrees(SpeedPercent(100), backwards_turn_angle)
-            drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
-            drive_motor.on(SpeedPercent(50))
+            #control_motor.on_for_degrees(SpeedPercent(100), backwards_turn_angle)
+            #drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
+            #drive_motor.on(SpeedPercent(50))
+            print("backwards right")
         elif (black_l, black_c, black_r) == (True, True, True):  # white, white, white
             # check white time to distinguish stage mark | hole | line lost
             pass
