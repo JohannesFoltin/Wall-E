@@ -26,14 +26,14 @@ def follow_line():
     black_c = True
     black_r = False
     # Schwarz = True
-    
+
     NORMAL_LS = (True, False, True) # LS = LIGHT STATE
     LEFT_LS = (True, True, False)
     RIGHT_LS = (False, True, True)
     # korrekturr = (True, False, False)
     # korrekturl = (False, False, True)
 
-    RIGHT_WS = 200 # WHEEL TURN STATE
+    RIGHT_WS = 200  # WHEEL TURN STATE
     LEFT_WS = -200
     STRAIGHT_WS = 0
 
@@ -79,13 +79,13 @@ def follow_line():
                 currentAngle = STRAIGHT_WS
             elif currentStateColor == LEFT_LS:
                 print("Reifen auf +200 drehen")
-                #TODO
+                # TODO
                 currentAngle = LEFT_WS
         elif currentAngle == LEFT_WS:
             print("LeftWs")
             if currentStateColor == RIGHT_LS:
                 print("Reifen auf -200 drehen")
-                #TODO
+                # TODO
                 currentAngle = RIGHT_WS
             elif currentStateColor == NORMAL_LS:
                 print("Reifen wieder auf 0 drehen")
@@ -97,17 +97,18 @@ def follow_line():
             print("StraightWs")
             if currentStateColor == RIGHT_LS:
                 print("Reifen auf -200 drehen")
-                #TODO
+                # TODO
                 currentAngle = RIGHT_WS
             elif currentStateColor == NORMAL_LS:
                 print("Do nothging")
                 break
             elif currentStateColor == LEFT_LS:
                 print("Reifen auf +200 links drehen")
-                #TODO
+                # TODO
                 currentAngle = LEFT_WS
 
         time.sleep(0.2)
+
 
 follow_line()
 
