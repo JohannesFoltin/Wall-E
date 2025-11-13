@@ -14,7 +14,7 @@ ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 currentAngle = 0
 max_turn_angle = 400
-newSensorBlacks = 15 # s (alles drunter ist schwarz) für smaller wie jannes dick
+newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
 oldSensorBlacks = 35
 
 def follow_line():
@@ -22,9 +22,9 @@ def follow_line():
     start_time = time.time()
     backwards_turn_angle = max_turn_angle
     backwards_turn_time = 1
-    color_l = 0  # 0-Schwarz, 1-Grau, 2-Weiß
-    color_c = 0
-    color_r = 0
+    black_l = False  # 0-Schwarz, 1-Grau, 2-Weiß
+    black_c = True
+    black_r = False
     #drive_motor.on(SpeedPercent(-20))
     while True:
         light_ping_l = ls_l.reflected_light_intensity
@@ -37,56 +37,57 @@ def follow_line():
 
         # sensor left
         if light_ping_l <= oldSensorBlacks:  # black
-            color_l = 0
+            black_l = True
         elif light_ping_l > oldSensorBlacks:
-            color_l = 2  # white
-        else:
-            color_l = 1  # gray
+            black_l = False  # white
 
         # sensor center
         if light_ping_c <= newSensorBlacks:  # black
-            color_c = 0
+            black_c = True
         elif light_ping_c > newSensorBlacks:
-            color_c = 2  # white
-        else:
-            color_c = 1  # gray
+            black_c = False  # white
 
         # sensor right
         if light_ping_r <= oldSensorBlacks:  # black
-            color_r = 0
+            black_r = True
         elif light_ping_r > oldSensorBlacks:
-            color_r = 2  # white
-        else:
-            color_r = 1  # gray
+            black_r = False  # white
         
-
-
-        if (color_l, color_c, color_r) == (0, 2, 0):  # white, black, white
-            if currentAngle != 0:  # if tires are turned: turn back to unturned
+        if (black_l, black_c, black_r) == (True, False, True):  # white, black, white
+            if currentAngle is True:  # if tires are turned: turn back to unturned
                 control_motor.on_for_degrees(SpeedPercent(100), -currentAngle)
-                currentAngle = 0
-        elif (color_l, color_c, color_r) == (2, 2, 0):  # black, black, white
+                currentAngle = True
+        elif (black_l, black_c, black_r) == (False, False, True):  # black, black, white
             # turn left
             control_motor.on_for_degrees(SpeedPercent(100), turn_angle)
             currentAngle = -turn_angle
-        elif (color_l, color_c, color_r) == (0, 2, 2):  # white, black, black
+        elif (black_l, black_c, black_r) == (True, False, False):  # white, black, black
             # turn right
             control_motor.on_for_degrees(SpeedPercent(100), -turn_angle)
             currentAngle = turn_angle
-        elif (color_l, color_c, color_r) == (2, 0, 0):  # black, white, white
+        elif (black_l, black_c, black_r) == (False, True, True):  # black, white, white
             # backwards left
             drive_motor.off()
             control_motor.on_for_degrees(SpeedPercent(100), -backwards_turn_angle)
             drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
-        elif (color_l, color_c, color_r) == (0, 0, 2):  # white, white, black
+        elif (black_l, black_c, black_r) == (True, True, False):  # white, white, black
             # backwards right
             drive_motor.off()
             control_motor.on_for_degrees(SpeedPercent(100), backwards_turn_angle)
-            drive_motor.on_for_seconds(SpeedPercent(100), -backwards_turn_time)
+            drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
             drive_motor.on(SpeedPercent(50))
-        elif (color_l, color_c, color_r) == (0, 0, 0):  # white, white, white
+        elif (black_l, black_c, black_r) == (True, True, True):  # white, white, white
             # check white time to distinguish stage mark | hole | line lost
-            if black_lost_start_time is None:
+            pass
+
+        time.sleep(0.2)
+        end_time = time.time()
+        print("Zeit" + str(end_time - start_time))
+
+
+follow_line()
+
+'''if black_lost_start_time is None:
                 black_lost_start_time = time.time()
             black_lost_progess_time = time.time() - black_lost_start_time
             if black_lost_progess_time >= 3:
@@ -99,34 +100,4 @@ def follow_line():
             elif black_lost_progess_time <= 2:
                 # mark
                 # Add logic here, e.g., special action for mark
-                pass
-
-        time.sleep(0.2)
-        end_time = time.time()
-        print("Zeit" + str(end_time - start_time))
-
-
-follow_line()
-
-'''
-        if light_ping_l < 3 and currentAngle == 0:
-            # if l_sensor right < 3 -> schwarz, and tire isnt turned turn right
-            print("SCHWARZ")
-            control_motor.on_for_degrees(SpeedPercent(100), -max_turn_angle)
-            currentAngle = max_turn_angle
-        if light_ping_l > 6 and currentAngle != max_turn_angle:
-            # if l_sensor > 6 -> white and tire is turned turn back
-            print("zurck")
-            control_motor.on_for_degrees(SpeedPercent(100), max_turn_angle)
-            currentAngle = 0
-
-        if light_ping_r < 3 and currentAngle == 0:
-            # if l_sensor left < 3 and tire isnt turned -> schwarz, turn left
-            print("SCHWARZ")
-            control_motor.on_for_degrees(SpeedPercent(100), max_turn_angle)
-            currentAngle = max_turn_angle
-        if light_ping_r > 6 and currentAngle != max_turn_angle:
-            # if l_sensor > 6 -> white and tire is turned turn back
-            print("zurck")
-            control_motor.on_for_degrees(SpeedPercent(100), -max_turn_angle)
-            currentAngle = 0'''
+                pass'''
