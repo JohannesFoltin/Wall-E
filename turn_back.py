@@ -12,4 +12,7 @@ ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
 ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 
-control_motor.on_for_degrees(SpeedPercent(100), -400)
+#Wenn nach Rechts gelenkt
+control_motor.on_for_degrees(SpeedPercent(100), 400)
+#Wenn nach Links gelenkt
+#control_motor.on_for_degrees(SpeedPercent(100), -400)
