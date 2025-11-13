@@ -73,7 +73,7 @@ def follow_line():
             print("RightWS")
             if currentStateColor == RIGHT_LS:
                 print("Do nothing")
-                break
+                continue
             elif currentStateColor == NORMAL_LS:
                 print("Reifen wieder auf 0 drehen")
                 currentAngle = STRAIGHT_WS
@@ -92,7 +92,7 @@ def follow_line():
                 currentAngle = STRAIGHT_WS
             elif currentStateColor == LEFT_LS:
                 print("Do nothing")
-                break
+                continue
         elif currentAngle == STRAIGHT_WS:
             print("StraightWs")
             if currentStateColor == RIGHT_LS:
@@ -101,7 +101,7 @@ def follow_line():
                 currentAngle = RIGHT_WS
             elif currentStateColor == NORMAL_LS:
                 print("Do nothging")
-                break
+                continue
             elif currentStateColor == LEFT_LS:
                 print("Reifen auf +200 links drehen")
                 # TODO
