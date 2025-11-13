@@ -12,10 +12,12 @@ u_distance = UltrasonicSensor(INPUT_1)
 ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
 ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
-currentAngle = 0 # Links: -200 Rechts: +200 
+
+currentAngle = 0  # Links: -200 Rechts: +200
 max_turn_angle = 400
 newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
 oldSensorBlacks = 35
+
 
 def follow_line():
     global currentAngle, max_turn_angle
@@ -26,16 +28,16 @@ def follow_line():
     black_r = False
     # Schwarz = True
     
-    normal = (True, False , True)
-    linksd = (True, True, False)
-    rechtsd = (False, True, True)
-    korrekturr = (True, False, False)
-    korrekturl = (False, False, True)
+    NORMAL_LS = (True, False, True)
+    LEFT_LS = (True, True, False)
+    RIGHT_LS = (False, True, True)
+    # korrekturr = (True, False, False)
+    # korrekturl = (False, False, True)
 
-    rightturn = 200
-    leftturn = -200
-    straight = 0
-    
+    RIGHT_WS = 200
+    LEFT_WS = -200
+    STRAIGHT_WS = 0
+
     #drive_motor.on(SpeedPercent(-20))
     while True:
         light_ping_l = ls_l.reflected_light_intensity
@@ -67,25 +69,25 @@ def follow_line():
 
         currentStateColor = (black_l, black_c, black_r)
 
-        if currentAngle == rightturn:
-            if currentStateColor == rechtsd:
+        if currentAngle == RIGHT_WS:
+            if currentStateColor == RIGHT_LS:
                 break
-            elif currentStateColor ==  normal:
+            elif currentStateColor ==  NORMAL_LS:
                 print("Reifen wieder auf 0 drehen")
-                currentAngle = normal
-            elif currentStateColor == linksd:
+                currentAngle = NORMAL_LS
+            elif currentStateColor == LEFT_LS:
                 print("Reifen auf +200 drehen")
                 #TODO
-                currentAngle = leftturn
-        elif currentAngle == leftturn:
-            if currentStateColor == rechtsd:
+                currentAngle = LEFT_WS
+        elif currentAngle == LEFT_WS:
+            if currentStateColor == RIGHT_LS:
                 print("Reifen auf -200 drehen")
                 #TODO
-                currentAngle = rightturn
-            elif currentStateColor ==  normal:
+                currentAngle = RIGHT_WS
+            elif currentStateColor ==  NORMAL_LS:
                 print("Reifen wieder auf 0 drehen")
                 currentAngle = 0
-            elif currentStateColor == linksd:
+            elif currentStateColor == LEFT_LS:
                 print("Reifen auf +200 drehen")
                 #TODO
                 currentAngle = 200
