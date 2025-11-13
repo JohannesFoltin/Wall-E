@@ -27,7 +27,7 @@ def follow_line():
     black_r = False
     # Schwarz = True
 
-    NORMAL_LS = (True, False, True) # LS = LIGHT STATE
+    NORMAL_LS = (True, False, True)  # LS = LIGHT STATE
     LEFT_LS = (True, True, False)
     RIGHT_LS = (False, True, True)
     # korrekturr = (True, False, False)
@@ -126,7 +126,7 @@ follow_line()
                 # mark
                 # Add logic here, e.g., special action for mark
                 pass
-                
+
                 if ((black_l, black_c, black_r) == (True, False, True)) and (currentAngle != 0):  # white, black, white
             if currentAngle is True:  # if tires are turned: turn back to unturned
                 #control_motor.on_for_degrees(SpeedPercent(100), -currentAngle)
