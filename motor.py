@@ -7,13 +7,15 @@ from ev3dev2.motor import LargeMotor, SpeedPercent
 
 drive_motor = LargeMotor(OUTPUT_B)
 control_motor = LargeMotor(OUTPUT_A)
-u_distance = UltrasonicSensor(INPUT_1)
 
-ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
-ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3
-ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 
+control_motor.on_for_degrees(SpeedPercent(100), +400)
 control_motor.on_for_degrees(SpeedPercent(100), -400)
+sleep(1)
+control_motor.on_for_degrees(SpeedPercent(100), +400)
+sleep(1)
+control_motor.on_for_degrees(SpeedPercent(100), +400)
+
 '''# drive_motor.on_for_degrees(SpeedPercent(10), -800)
 while True:
     drive_motor.on(SpeedPercent(-100))

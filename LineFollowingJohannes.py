@@ -33,11 +33,11 @@ def follow_line():
     # korrekturr = (True, False, False)
     # korrekturl = (False, False, True)
 
-    RIGHT_WS = 200  # WHEEL TURN STATE
-    LEFT_WS = -200
+    RIGHT_WS = -400  # WHEEL TURN STATE
+    LEFT_WS = 400
     STRAIGHT_WS = 0
 
-    #drive_motor.on(SpeedPercent(-20))
+    drive_motor.on(SpeedPercent(10))
     while True:
         light_ping_l = ls_l.reflected_light_intensity
         light_ping_c = ls_c.reflected_light_intensity
@@ -76,20 +76,21 @@ def follow_line():
                 print("Do nothing")
                 continue
             elif currentStateColor == NORMAL_LS:
-                print("Reifen wieder auf 0 drehen")
+                control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
                 currentAngle = STRAIGHT_WS
             elif currentStateColor == LEFT_LS:
-                print("Reifen auf +200 drehen")
-                # TODO
+                control_motor.on_for_degrees(SpeedPercent(100), 2*LEFT_WS)
                 currentAngle = LEFT_WS
         elif currentAngle == LEFT_WS:
             print("LeftWs")
             if currentStateColor == RIGHT_LS:
                 print("Reifen auf -200 drehen")
+                control_motor.on_for_degrees(SpeedPercent(100), 2*RIGHT_WS)
                 # TODO
                 currentAngle = RIGHT_WS
             elif currentStateColor == NORMAL_LS:
                 print("Reifen wieder auf 0 drehen")
+                control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
                 currentAngle = STRAIGHT_WS
             elif currentStateColor == LEFT_LS:
                 print("Do nothing")
@@ -97,14 +98,14 @@ def follow_line():
         elif currentAngle == STRAIGHT_WS:
             print("StraightWs")
             if currentStateColor == RIGHT_LS:
-                print("Reifen auf -200 drehen")
+                control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
                 # TODO
                 currentAngle = RIGHT_WS
             elif currentStateColor == NORMAL_LS:
                 print("Do nothging")
                 continue
             elif currentStateColor == LEFT_LS:
-                print("Reifen auf +200 links drehen")
+                control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
                 # TODO
                 currentAngle = LEFT_WS
 
