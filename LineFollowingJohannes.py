@@ -36,28 +36,30 @@ def follow_line():
         turn_angle = max_turn_angle
 
         # sensor left
-        if light_ping_l < 3:  # black
+        if light_ping_l <= oldSensorBlacks:  # black
             color_l = 0
-        elif light_ping_l > 6:
+        elif light_ping_l > oldSensorBlacks:
             color_l = 2  # white
         else:
             color_l = 1  # gray
 
         # sensor center
-        if light_ping_c < 3:  # black
+        if light_ping_c <= newSensorBlacks:  # black
             color_c = 0
-        elif light_ping_c > 6:
+        elif light_ping_c > newSensorBlacks:
             color_c = 2  # white
         else:
             color_c = 1  # gray
 
         # sensor right
-        if light_ping_r < 3:  # black
+        if light_ping_r <= oldSensorBlacks:  # black
             color_r = 0
-        elif light_ping_r > 6:
+        elif light_ping_r > oldSensorBlacks:
             color_r = 2  # white
         else:
             color_r = 1  # gray
+        
+
 
         if (color_l, color_c, color_r) == (0, 2, 0):  # white, black, white
             if currentAngle != 0:  # if tires are turned: turn back to unturned
