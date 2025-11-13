@@ -12,7 +12,7 @@ u_distance = UltrasonicSensor(INPUT_1)
 ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
 ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
-currentAngle = 0
+currentAngle = 0 # Links: -200 Rechts: +200 
 max_turn_angle = 400
 newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
 oldSensorBlacks = 35
@@ -20,16 +20,28 @@ oldSensorBlacks = 35
 def follow_line():
     global currentAngle, max_turn_angle
     start_time = time.time()
-    backwards_turn_angle = max_turn_angle
-    backwards_turn_time = 1
+
     black_l = False  # 0-Schwarz, 1-Grau, 2-Weiß
     black_c = True
     black_r = False
+    # Schwarz = True
+    
+    normal = (True, False , True)
+    linksd = (True, True, False)
+    rechtsd = (False, True, True)
+    korrekturr = (True, False, False)
+    korrekturl = (False, False, True)
+
+    rightturn = 200
+    leftturn = -200
+    straight = 0
+    
     #drive_motor.on(SpeedPercent(-20))
     while True:
         light_ping_l = ls_l.reflected_light_intensity
         light_ping_c = ls_c.reflected_light_intensity
         light_ping_r = ls_r.reflected_light_intensity
+
         print(light_ping_l)
         print(light_ping_c)
         print(light_ping_r)
@@ -52,8 +64,56 @@ def follow_line():
             black_r = True
         elif light_ping_r > oldSensorBlacks:
             black_r = False  # white
+
+        currentStateColor = (black_l, black_c, black_r)
+
+        if currentAngle == rightturn:
+            if currentStateColor == rechtsd:
+                break
+            elif currentStateColor ==  normal:
+                print("Reifen wieder auf 0 drehen")
+                currentAngle = normal
+            elif currentStateColor == linksd:
+                print("Reifen auf +200 drehen")
+                #TODO
+                currentAngle = leftturn
+        elif currentAngle == leftturn:
+            if currentStateColor == rechtsd:
+                print("Reifen auf -200 drehen")
+                #TODO
+                currentAngle = rightturn
+            elif currentStateColor ==  normal:
+                print("Reifen wieder auf 0 drehen")
+                currentAngle = 0
+            elif currentStateColor == linksd:
+                print("Reifen auf +200 drehen")
+                #TODO
+                currentAngle = 200
         
-        if ((black_l, black_c, black_r) == (True, False, True)) and (currentAngle != 0):  # white, black, white
+
+        time.sleep(0.2)
+        end_time = time.time()
+        print("Zeit" + str(end_time - start_time))
+
+
+follow_line()
+
+'''if black_lost_start_time is None:
+                black_lost_start_time = time.time()
+            black_lost_progess_time = time.time() - black_lost_start_time
+            if black_lost_progess_time >= 3:
+                # line lost
+                # Add logic here, e.g., stop motors or search for line
+                pass
+            elif 2 < black_lost_progess_time < 3:
+                # hole
+                continue  # Skip to next loop iteration
+            elif black_lost_progess_time <= 2:
+                # mark
+                # Add logic here, e.g., special action for mark
+                pass
+                
+                if ((black_l, black_c, black_r) == (True, False, True)) and (currentAngle != 0):  # white, black, white
             if currentAngle is True:  # if tires are turned: turn back to unturned
                 #control_motor.on_for_degrees(SpeedPercent(100), -currentAngle)
                 currentAngle = turn_angle
@@ -84,26 +144,4 @@ def follow_line():
             print("backwards right")
         elif (black_l, black_c, black_r) == (True, True, True):  # white, white, white
             # check white time to distinguish stage mark | hole | line lost
-            pass
-
-        time.sleep(0.2)
-        end_time = time.time()
-        print("Zeit" + str(end_time - start_time))
-
-
-follow_line()
-
-'''if black_lost_start_time is None:
-                black_lost_start_time = time.time()
-            black_lost_progess_time = time.time() - black_lost_start_time
-            if black_lost_progess_time >= 3:
-                # line lost
-                # Add logic here, e.g., stop motors or search for line
-                pass
-            elif 2 < black_lost_progess_time < 3:
-                # hole
-                continue  # Skip to next loop iteration
-            elif black_lost_progess_time <= 2:
-                # mark
-                # Add logic here, e.g., special action for mark
-                pass'''
+            pass'''
