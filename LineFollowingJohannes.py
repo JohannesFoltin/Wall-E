@@ -68,7 +68,8 @@ def follow_line():
             black_r = False  # white
 
         currentStateColor = (black_l, black_c, black_r)
-
+        print("Cuurrren")
+        print(currentStateColor)
         if currentAngle == RIGHT_WS:
             print("RightWS")
             if currentStateColor == RIGHT_LS:
