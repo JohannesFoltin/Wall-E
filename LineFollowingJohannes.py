@@ -27,7 +27,7 @@ def follow_line():
     black_r = False
     # Schwarz = True
 
-    NORMAL_LS = (True, False, True)  # LS = LIGHT STATE
+    NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
     LEFT_LS = (True, True, False)
     RIGHT_LS = (False, True, True)
     # korrekturr = (True, False, False)
