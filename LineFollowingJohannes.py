@@ -30,8 +30,9 @@ def follow_line():
     NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
     LEFT_LS = (True, True, False)
     RIGHT_LS = (False, True, True)
-    CORRECTION_LS = (True, False, False)
-    CORRECTIONR_LS = (False, False, True)
+    EDGE_L_LS = (True, False, False)
+    EDGE_R_LS = (False, False, True)
+    NO_LINE_LS = (False, False, False)
 
     RIGHT_WS = -400  # WHEEL TURN STATE
     LEFT_WS = 400
@@ -79,13 +80,30 @@ def follow_line():
                 control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
                 currentAngle = STRAIGHT_WS
             elif currentStateColor == LEFT_LS:
-                control_motor.on_for_degrees(SpeedPercent(100), 2*LEFT_WS)
+                control_motor.on_for_degrees(SpeedPercent(100), 2 * LEFT_WS)
                 currentAngle = LEFT_WS
+            # new code, das gleiche für edge_L_LS
+            elif currentStateColor == EDGE_R_LS:
+                print('Edge_Rechts')
+                # TODO weiter nach links, schleife: wenn dann NO_LINE_LS: correction
+                while True:
+                    # currentStateColor = fetch_sensor() # funktion zur sensor auslese und verarbeitung
+                    if currentStateColor == NO_LINE_LS:
+                        # TODO correction nach hinten links
+                        print('Korregiere links zurück')
+                        pass
+                    elif ((currentStateColor == NORMAL_LS)
+                          or (currentStateColor == RIGHT_LS)
+                          or (currentStateColor == LEFT_LS)
+                          or (currentStateColor == EDGE_L_LS)):
+                        # linie wieder gefunden
+                        print("linie wieder gefunden")
+                        break
         elif currentAngle == LEFT_WS:
             print("LeftWs")
             if currentStateColor == RIGHT_LS:
                 print("Reifen auf -200 drehen")
-                control_motor.on_for_degrees(SpeedPercent(100), 2*RIGHT_WS)
+                control_motor.on_for_degrees(SpeedPercent(100), 2 * RIGHT_WS)
                 # TODO
                 currentAngle = RIGHT_WS
             elif currentStateColor == NORMAL_LS:
