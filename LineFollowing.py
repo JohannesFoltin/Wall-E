@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import time
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor, Sensor
+from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
 from ev3dev2.motor import LargeMotor, SpeedPercent
 
@@ -18,52 +18,48 @@ max_turn_angle = 400
 newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
 oldSensorBlacks = 35
 
+
 def fetch_sensor():
-        light_ping_l = ls_l.reflected_light_intensity
-        light_ping_c = ls_c.reflected_light_intensity 
-        light_ping_r = ls_r.reflected_light_intensity
+    light_ping_l = ls_l.reflected_light_intensity
+    light_ping_c = ls_c.reflected_light_intensity
+    light_ping_r = ls_r.reflected_light_intensity
 
-        print("Lights: ")
-        print(light_ping_l)
-        print(light_ping_c)
-        print(light_ping_r)
-        print("\n")
+    print("Lights: ")
+    print(light_ping_l)
+    print(light_ping_c)
+    print(light_ping_r)
+    print("\n")
 
-        averageValue = (light_ping_l + light_ping_r)/2
+    averageValue = (light_ping_l + light_ping_r) / 2
 
-        difference_light_l = (light_ping_l - averageValue)/averageValue
-        difference_light_r = (light_ping_r - averageValue)/averageValue
-        print(difference_light_l)
-        print(difference_light_r)
+    difference_light_l = (light_ping_l - averageValue) / averageValue
+    difference_light_r = (light_ping_r - averageValue) / averageValue
+    print(difference_light_l)
+    print(difference_light_r)
 
-        # sensor left
-        if light_ping_l <= oldSensorBlacks:  # black
-            black_l = True
-        elif light_ping_l > oldSensorBlacks:
-            black_l = False  # white
-   
-        # sensor center
-        if light_ping_c <= newSensorBlacks:  # black
-            black_c = True
-        elif light_ping_c > newSensorBlacks:
-            black_c = False  # white
+    # sensor left
+    if light_ping_l <= oldSensorBlacks:  # black
+        black_l = True
+    elif light_ping_l > oldSensorBlacks:
+        black_l = False  # white
 
-        # sensor right
-        if light_ping_r <= oldSensorBlacks:  # black
-            black_r = True
-        elif light_ping_r > oldSensorBlacks:
-            black_r = False  # white
-        
-        return (black_l, black_c, black_r)
+    # sensor center
+    if light_ping_c <= newSensorBlacks:  # black
+        black_c = True
+    elif light_ping_c > newSensorBlacks:
+        black_c = False  # white
+
+    # sensor right
+    if light_ping_r <= oldSensorBlacks:  # black
+        black_r = True
+    elif light_ping_r > oldSensorBlacks:
+        black_r = False  # white
+
+    return (black_l, black_c, black_r)
 
 
 def follow_line():
     global currentAngle, max_turn_angle
-
-    black_l = False  # 0-Schwarz, 1-Grau, 2-Weiß
-    black_c = True
-    black_r = False
-    # Schwarz = True
 
     NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
     LEFT_LS = (True, True, False)
@@ -76,7 +72,7 @@ def follow_line():
     LEFT_WS = 400
     STRAIGHT_WS = 0
 
-    correction_time = 1.5
+    correction_time = 2
     drive_speed = -10
 
     drive_motor.on(SpeedPercent(drive_speed))
@@ -100,7 +96,7 @@ def follow_line():
                 print('Edge_Rechts')
                 # TODO weiter nach links, schleife: wenn dann NO_LINE_LS: correction
                 while True:
-                    currentStateColor = fetch_sensor() # funktion zur sensor auslese und verarbeitung
+                    currentStateColor = fetch_sensor()  # funktion zur sensor auslese und verarbeitung
                     if currentStateColor == NO_LINE_LS:
                         # TODO correction nach hinten links
                         print('Korregiere links zurueck')
