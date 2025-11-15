@@ -18,33 +18,7 @@ max_turn_angle = 400
 newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
 oldSensorBlacks = 35
 
-
-def follow_line():
-    global currentAngle, max_turn_angle
-
-    black_l = False  # 0-Schwarz, 1-Grau, 2-Weiß
-    black_c = True
-    black_r = False
-    # Schwarz = True
-
-    NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
-    LEFT_LS = (True, True, False)
-    RIGHT_LS = (False, True, True)
-    EDGE_L_LS = (True, False, False)
-    EDGE_R_LS = (False, False, True)
-    NO_LINE_LS = (False, False, False)
-
-    RIGHT_WS = -400  # WHEEL TURN STATE
-    LEFT_WS = 400
-    STRAIGHT_WS = 0
-
-
-
-    correction_time = 1.5
-    drive_speed = -10
-
-    drive_motor.on(SpeedPercent(drive_speed))
-    while True:
+def fetch_sensor():
         light_ping_l = ls_l.reflected_light_intensity
         light_ping_c = ls_c.reflected_light_intensity 
         light_ping_r = ls_r.reflected_light_intensity
@@ -79,8 +53,36 @@ def follow_line():
             black_r = True
         elif light_ping_r > oldSensorBlacks:
             black_r = False  # white
+        
+        return (black_l, black_c, black_r)
 
-        currentStateColor = (black_l, black_c, black_r)
+
+def follow_line():
+    global currentAngle, max_turn_angle
+
+    black_l = False  # 0-Schwarz, 1-Grau, 2-Weiß
+    black_c = True
+    black_r = False
+    # Schwarz = True
+
+    NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
+    LEFT_LS = (True, True, False)
+    RIGHT_LS = (False, True, True)
+    EDGE_L_LS = (True, False, False)
+    EDGE_R_LS = (False, False, True)
+    NO_LINE_LS = (False, False, False)
+
+    RIGHT_WS = -400  # WHEEL TURN STATE
+    LEFT_WS = 400
+    STRAIGHT_WS = 0
+
+    correction_time = 1.5
+    drive_speed = -10
+
+    drive_motor.on(SpeedPercent(drive_speed))
+    while True:
+
+        currentStateColor = fetch_sensor()
         print(currentStateColor)
         if currentAngle == RIGHT_WS:
             print("RightWS")
@@ -98,10 +100,10 @@ def follow_line():
                 print('Edge_Rechts')
                 # TODO weiter nach links, schleife: wenn dann NO_LINE_LS: correction
                 while True:
-                    # currentStateColor = fetch_sensor() # funktion zur sensor auslese und verarbeitung
+                    currentStateColor = fetch_sensor() # funktion zur sensor auslese und verarbeitung
                     if currentStateColor == NO_LINE_LS:
                         # TODO correction nach hinten links
-                        print('Korregiere links zurück')
+                        print('Korregiere links zurueck')
                         drive_motor.off
                         control_motor.on_for_degrees(SpeedPercent(100), 2 * LEFT_WS)
                         drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
