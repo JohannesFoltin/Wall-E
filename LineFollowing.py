@@ -87,10 +87,12 @@ def follow_line():
                     # TODO correction nach hinten links
                     print('Korregiere links zurueck')
                     drive_motor.off
+                    time.sleep(0.3)
                     control_motor.on_for_degrees(SpeedPercent(100), 1.5 * LEFT_WS)
 
                     drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
                     drive_motor.off
+                    time.sleep(0.3)
                     control_motor.on_for_degrees(SpeedPercent(100), 0.5 * RIGHT_WS)
                     currentAngle = STRAIGHT_WS
                     drive_motor.on(SpeedPercent(drive_speed))
@@ -114,10 +116,12 @@ def follow_line():
                     # TODO correction nach hinten links
                     print('Korregiere rechts zurueck')
                     drive_motor.off
+                    time.sleep(0.3)
                     control_motor.on_for_degrees(SpeedPercent(100), 1.5 * RIGHT_WS)
 
                     drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
                     drive_motor.off
+                    time.sleep(0.3)
                     control_motor.on_for_degrees(SpeedPercent(100), 0.5 * LEFT_WS)
                     currentAngle = STRAIGHT_WS
                     drive_motor.on(SpeedPercent(drive_speed))
