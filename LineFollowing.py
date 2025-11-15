@@ -64,9 +64,9 @@ def follow_line():
 
     drive_motor.on(SpeedPercent(drive_speed))
     while True:
-
         currentStateColor = fetch_sensor()
         print(currentStateColor)
+
         if currentAngle == RIGHT_WS:
             print("RightWS")
             if currentStateColor == RIGHT_LS:
@@ -82,16 +82,16 @@ def follow_line():
                 print('Edge_Rechts')
                 # TODO weiter nach links, schleife: wenn dann NO_LINE_LS: correction
                 while currentStateColor == EDGE_R_LS:
-                    currentStateColor = fetch_sensor() 
+                    currentStateColor = fetch_sensor()
                 if currentStateColor == NO_LINE_LS:
                     # TODO correction nach hinten links
                     print('Korregiere links zurueck')
                     drive_motor.off
                     control_motor.on_for_degrees(SpeedPercent(100), 1.5 * LEFT_WS)
-                    
+
                     drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
                     drive_motor.off
-                    control_motor.on_for_degrees(SpeedPercent(100), 0.5*RIGHT_WS)
+                    control_motor.on_for_degrees(SpeedPercent(100), 0.5 * RIGHT_WS)
                     currentAngle = STRAIGHT_WS
                     drive_motor.on(SpeedPercent(drive_speed))
 
@@ -116,22 +116,22 @@ def follow_line():
                     print('Korregiere rechts zurueck')
                     drive_motor.off
                     control_motor.on_for_degrees(SpeedPercent(100), 1.5 * RIGHT_WS)
-                    
+
                     drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
                     drive_motor.off
-                    control_motor.on_for_degrees(SpeedPercent(100), 0.5*LEFT_WS)
+                    control_motor.on_for_degrees(SpeedPercent(100), 0.5 * LEFT_WS)
                     currentAngle = STRAIGHT_WS
                     drive_motor.on(SpeedPercent(drive_speed))
         elif currentAngle == STRAIGHT_WS:
             print("StraightWs")
-            if ((currentStateColor == RIGHT_WS) 
+            if ((currentStateColor == RIGHT_WS)
                 or (currentStateColor == EDGE_R_LS)):
                 control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
                 # TODO
                 currentAngle = RIGHT_WS
             elif currentStateColor == NORMAL_LS:
                 continue
-            elif ((currentStateColor == LEFT_LS) 
+            elif ((currentStateColor == LEFT_LS)
                 or (currentStateColor == EDGE_L_LS)):
                 control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
                 # TODO
