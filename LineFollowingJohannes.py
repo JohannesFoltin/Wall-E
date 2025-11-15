@@ -18,7 +18,6 @@ max_turn_angle = 400
 newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
 oldSensorBlacks = 35
 
-
 def follow_line():
     global currentAngle, max_turn_angle
 
@@ -41,7 +40,7 @@ def follow_line():
     drive_motor.on(SpeedPercent(10))
     while True:
         light_ping_l = ls_l.reflected_light_intensity
-        light_ping_c = ls_c.reflected_light_intensity
+        light_ping_c = ls_c.reflected_light_intensity + 23
         light_ping_r = ls_r.reflected_light_intensity
 
         print("Lights: ")
@@ -49,6 +48,13 @@ def follow_line():
         print(light_ping_c)
         print(light_ping_r)
         print("\n")
+
+        averageValue = (light_ping_c + light_ping_l + light_ping_r)/3
+
+        difference_light_l = (light_ping_l - averageValue)/averageValue
+        difference_light_c = (light_ping_c - averageValue)/averageValue
+        difference_light_r = (light_ping_r - averageValue)/averageValue
+
 
         # sensor left
         if light_ping_l <= oldSensorBlacks:  # black
