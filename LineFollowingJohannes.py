@@ -54,10 +54,9 @@ def follow_line():
 
         averageValue = (light_ping_c + light_ping_l + light_ping_r)/3
 
-        difference_light_l = (light_ping_l - averageValue)/averageValue
-        difference_light_c = (light_ping_c - averageValue)/averageValue
-        difference_light_r = (light_ping_r - averageValue)/averageValue
-
+        difference_light_l = (light_ping_l - averageValue) / averageValue
+        difference_light_c = (light_ping_c - averageValue) / averageValue
+        difference_light_r = (light_ping_r - averageValue) / averageValue
 
         # sensor left
         if light_ping_l <= oldSensorBlacks:  # black
