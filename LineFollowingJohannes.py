@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import time
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor
+from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor, Sensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
 from ev3dev2.motor import LargeMotor, SpeedPercent
 
@@ -38,7 +38,10 @@ def follow_line():
     LEFT_WS = 400
     STRAIGHT_WS = 0
 
-    drive_motor.on(SpeedPercent(10))
+    correction_time = 1.5
+    drive_speed = 10
+
+    drive_motor.on(SpeedPercent(drive_speed))
     while True:
         light_ping_l = ls_l.reflected_light_intensity
         light_ping_c = ls_c.reflected_light_intensity
@@ -91,7 +94,13 @@ def follow_line():
                     if currentStateColor == NO_LINE_LS:
                         # TODO correction nach hinten links
                         print('Korregiere links zurück')
-                        pass
+                        drive_motor.off
+                        control_motor.on_for_degrees(SpeedPercent(100), 2 * LEFT_WS)
+                        drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
+                        drive_motor.off
+                        control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
+                        drive_motor.on(SpeedPercent(drive_speed))
+                        break
                     elif ((currentStateColor == NORMAL_LS)
                           or (currentStateColor == RIGHT_LS)
                           or (currentStateColor == LEFT_LS)
