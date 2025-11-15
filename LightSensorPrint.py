@@ -10,9 +10,6 @@ ls_l = Sensor(INPUT_4)  # links Sensor auf Input 4
 
 
 while True:
-    ls_r = Sensor(INPUT_2)  # rechter Sensor auf Input 2
-    ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
-    ls_l = Sensor(INPUT_4)
     print("is_l: ", ls_l.value())
     print("is_c: ", ls_c.value())
     print("is_r: ", ls_r.value())
