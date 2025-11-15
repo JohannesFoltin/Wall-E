@@ -124,7 +124,7 @@ def follow_line():
                     drive_motor.on(SpeedPercent(drive_speed))
         elif currentAngle == STRAIGHT_WS:
             print("StraightWs")
-            if ((currentStateColor == RIGHT_WS)
+            if ((currentStateColor == RIGHT_LS)
                 or (currentStateColor == EDGE_R_LS)):
                 control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
                 # TODO
