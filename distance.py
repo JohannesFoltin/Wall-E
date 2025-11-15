@@ -6,11 +6,11 @@ from math import cos
 
 uss_distance = UltrasonicSensor(INPUT_1)
 distance_cm = uss_distance.distance_centimeters
-i = 1
 
-while i == 1:
+
+"""while i == 1:
     print(distance_cm)
-    time.sleep(2)
+    time.sleep(2)"""
 
 #def distance(distance_cm: int) -> int:
     
@@ -20,11 +20,11 @@ while i == 1:
 """def distance(distance_cm):
     distance = cos(0.3054326) * distance_cm
     print("hypotenuse=", distance_cm)
-    return distance
+    return distance"""
 
 i = 1
 while i == 1:
-    print(distance(real_distance))
+    print(distance_cm)
     uss_distance = UltrasonicSensor(INPUT_1)
-    real_distance = uss_distance.distance_centimeters
-    time.sleep(1)"""
+    distance_cm = uss_distance.distance_centimeters
+    time.sleep(1)
