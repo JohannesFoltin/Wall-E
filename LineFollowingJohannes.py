@@ -18,6 +18,7 @@ max_turn_angle = 400
 newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
 oldSensorBlacks = 35
 
+
 def follow_line():
     global currentAngle, max_turn_angle
 
@@ -63,7 +64,7 @@ def follow_line():
             black_l = True
         elif light_ping_l > oldSensorBlacks:
             black_l = False  # white
-
+   
         # sensor center
         if light_ping_c <= newSensorBlacks:  # black
             black_c = True
