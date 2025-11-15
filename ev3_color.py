@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-from ev3dev2.sensor import INPUT_4
+from ev3dev2.sensor import INPUT_3
 from ev3dev2.sensor.lego import ColorSensor
 import time
 
 # Sensor-Objekt an Port 4
-cs = ColorSensor(INPUT_4)
+cs = ColorSensor(INPUT_3)
 
 # Zu prüfende Modi
 MODES = {
@@ -29,6 +29,10 @@ while True:
     ambient   = read_sensor('AMBIENT')
     color_id  = read_sensor('COLOR_ID')
     rgb       = read_sensor('RGB_RAW')
-    print(f"Reflected={reflected:4d}  Ambient={ambient:4d}  "
-          f"ColorID={color_id:2d}  RGB={rgb}")
+    #print(f"Reflected={reflected:4d}  Ambient={ambient:4d}  "
+    #      f"ColorID={color_id:2d}  RGB={rgb}")
+    print(reflected)
+    print(ambient)
+    print(color_id)
+    print(rgb)
     time.sleep(.5)
