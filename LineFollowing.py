@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import time
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor
+from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor, Sensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
 from ev3dev2.motor import LargeMotor, SpeedPercent
 
@@ -38,10 +38,15 @@ def follow_line():
     LEFT_WS = 400
     STRAIGHT_WS = 0
 
-    drive_motor.on(SpeedPercent(10))
+
+
+    correction_time = 1.5
+    drive_speed = -10
+
+    drive_motor.on(SpeedPercent(drive_speed))
     while True:
         light_ping_l = ls_l.reflected_light_intensity
-        light_ping_c = ls_c.reflected_light_intensity
+        light_ping_c = ls_c.reflected_light_intensity 
         light_ping_r = ls_r.reflected_light_intensity
 
         print("Lights: ")
@@ -50,12 +55,19 @@ def follow_line():
         print(light_ping_r)
         print("\n")
 
+        averageValue = (light_ping_l + light_ping_r)/2
+
+        difference_light_l = (light_ping_l - averageValue)/averageValue
+        difference_light_r = (light_ping_r - averageValue)/averageValue
+        print(difference_light_l)
+        print(difference_light_r)
+
         # sensor left
         if light_ping_l <= oldSensorBlacks:  # black
             black_l = True
         elif light_ping_l > oldSensorBlacks:
             black_l = False  # white
-
+   
         # sensor center
         if light_ping_c <= newSensorBlacks:  # black
             black_c = True
@@ -69,7 +81,6 @@ def follow_line():
             black_r = False  # white
 
         currentStateColor = (black_l, black_c, black_r)
-        print("Cuurrren")
         print(currentStateColor)
         if currentAngle == RIGHT_WS:
             print("RightWS")
@@ -91,7 +102,13 @@ def follow_line():
                     if currentStateColor == NO_LINE_LS:
                         # TODO correction nach hinten links
                         print('Korregiere links zurück')
-                        pass
+                        drive_motor.off
+                        control_motor.on_for_degrees(SpeedPercent(100), 2 * LEFT_WS)
+                        drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
+                        drive_motor.off
+                        control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
+                        drive_motor.on(SpeedPercent(drive_speed))
+                        break
                     elif ((currentStateColor == NORMAL_LS)
                           or (currentStateColor == RIGHT_LS)
                           or (currentStateColor == LEFT_LS)
@@ -127,55 +144,7 @@ def follow_line():
                 # TODO
                 currentAngle = LEFT_WS
 
-        time.sleep(0.2)
+        time.sleep(0.01)
 
 
 follow_line()
-
-'''if black_lost_start_time is None:
-                black_lost_start_time = time.time()
-            black_lost_progess_time = time.time() - black_lost_start_time
-            if black_lost_progess_time >= 3:
-                # line lost
-                # Add logic here, e.g., stop motors or search for line
-                pass
-            elif 2 < black_lost_progess_time < 3:
-                # hole
-                continue  # Skip to next loop iteration
-            elif black_lost_progess_time <= 2:
-                # mark
-                # Add logic here, e.g., special action for mark
-                pass
-
-                if ((black_l, black_c, black_r) == (True, False, True)) and (currentAngle != 0):  # white, black, white
-            if currentAngle is True:  # if tires are turned: turn back to unturned
-                #control_motor.on_for_degrees(SpeedPercent(100), -currentAngle)
-                currentAngle = turn_angle
-                print("turn back")
-        elif ((black_l, black_c, black_r) == (False, False, True)) and (currentAngle == 0):  # black, black, white
-            # turn left
-            #control_motor.on_for_degrees(SpeedPercent(100), turn_angle)
-            currentAngle = -turn_angle
-            print("turn left")
-        elif (black_l, black_c, black_r) == (True, False, False):  # white, black, black
-            # turn right
-            #control_motor.on_for_degrees(SpeedPercent(100), -turn_angle)
-            currentAngle = turn_angle
-            print("turn right")
-        elif (black_l, black_c, black_r) == (False, True, True):  # black, white, white
-            # backwards left
-            drive_motor.off()
-            #control_motor.on_for_degrees(SpeedPercent(100), -backwards_turn_angle)
-            #drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
-            #drive_motor.on(SpeedPercent(50))
-            print("backwards left")
-        elif (black_l, black_c, black_r) == (True, True, False):  # white, white, black
-            # backwards right
-            drive_motor.off()
-            #control_motor.on_for_degrees(SpeedPercent(100), backwards_turn_angle)
-            #drive_motor.on_for_seconds(SpeedPercent(100), backwards_turn_time)
-            #drive_motor.on(SpeedPercent(50))
-            print("backwards right")
-        elif (black_l, black_c, black_r) == (True, True, True):  # white, white, white
-            # check white time to distinguish stage mark | hole | line lost
-            pass'''
