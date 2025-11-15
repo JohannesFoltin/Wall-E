@@ -110,7 +110,7 @@ def follow_line():
                 print('Edge_Links')
                 # TODO weiter nach links, schleife: wenn dann NO_LINE_LS: correction
                 while currentStateColor == EDGE_L_LS:
-                    currentStateColor = fetch_sensor() 
+                    currentStateColor = fetch_sensor()
                 if currentStateColor == NO_LINE_LS:
                     # TODO correction nach hinten links
                     print('Korregiere rechts zurueck')
@@ -139,5 +139,5 @@ def follow_line():
 
         time.sleep(0.01)
 
-
+ 
 follow_line()
