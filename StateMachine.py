@@ -10,13 +10,13 @@ control_motor = LargeMotor(OUTPUT_A)
 drive_motor = LargeMotor(OUTPUT_B)
 STATE_FOLLOW_LINE = 0
 current_state = STATE_FOLLOW_LINE
+currentAngle = 0
 
 
 def State_machine():
-    global current_state, STATE_FOLLOW_LINE
+    global current_state, STATE_FOLLOW_LINE, currentAngle
     drive_motor.on(SpeedPercent(10))
     while current_state == STATE_FOLLOW_LINE:
-
         currentAngle = adjust_wheels(fetch_sensor, currentAngle)
         time.sleep(0.3)
 
