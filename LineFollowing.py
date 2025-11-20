@@ -2,11 +2,11 @@
 import time
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
 from ev3dev2.motor import LargeMotor, SpeedPercent
+from FetchSensor import fetch_sensor
 
 control_motor = LargeMotor(OUTPUT_A)
 drive_motor = LargeMotor(OUTPUT_B)
 
-currentAngle = 0  # Links: -200 Rechts: +200
 max_turn_angle = 400
 
 turn_arround_sleep = 0.5
@@ -35,10 +35,10 @@ def adjust_wheels(currentStateColor, currentAngle):
             return currentAngle
         elif currentStateColor == NORMAL_LS:
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
-            currentAngle = STRAIGHT_WS
+            return STRAIGHT_WS
         elif currentStateColor == LEFT_LS:
             control_motor.on_for_degrees(SpeedPercent(100), 2 * LEFT_WS)
-            currentAngle = LEFT_WS
+            return LEFT_WS
         elif currentStateColor == EDGE_R_LS:
             print('Edge_Rechts')
             while currentStateColor == EDGE_R_LS:
@@ -53,17 +53,17 @@ def adjust_wheels(currentStateColor, currentAngle):
                 drive_motor.off
                 time.sleep(turn_arround_sleep)
                 control_motor.on_for_degrees(SpeedPercent(100), 0.5 * RIGHT_WS)
-                currentAngle = STRAIGHT_WS
                 drive_motor.on(SpeedPercent(drive_speed))
+                return STRAIGHT_WS
     elif currentAngle == LEFT_WS:
         print("LeftWs")
         if currentStateColor == RIGHT_LS:
             control_motor.on_for_degrees(SpeedPercent(100), 2 * RIGHT_WS)
             # TODO
-            currentAngle = RIGHT_WS
+            return RIGHT_WS
         elif currentStateColor == NORMAL_LS:
             control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
-            currentAngle = STRAIGHT_WS
+            return STRAIGHT_WS
         elif currentStateColor == LEFT_LS:
             return currentAngle
         elif currentStateColor == EDGE_L_LS:
@@ -80,20 +80,19 @@ def adjust_wheels(currentStateColor, currentAngle):
                 drive_motor.off
                 time.sleep(turn_arround_sleep)
                 control_motor.on_for_degrees(SpeedPercent(100), 0.5 * LEFT_WS)
-                currentAngle = STRAIGHT_WS
                 drive_motor.on(SpeedPercent(drive_speed))
+                return STRAIGHT_WS
     elif currentAngle == STRAIGHT_WS:
         print("StraightWs")
         if ((currentStateColor == RIGHT_LS)
                 or (currentStateColor == EDGE_R_LS)):
             control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
             # TODO
-            currentAngle = RIGHT_WS
+            return RIGHT_WS
         elif currentStateColor == NORMAL_LS:
             return currentAngle
         elif ((currentStateColor == LEFT_LS)
                 or (currentStateColor == EDGE_L_LS)):
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
-            # TODO
-            currentAngle = LEFT_WS
-    return currentAngle
+            # TODOurrentAngle =
+            return LEFT_WS
