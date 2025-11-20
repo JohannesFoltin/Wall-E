@@ -17,9 +17,11 @@ currentAngle = 0  # Links: -200 Rechts: +200
 max_turn_angle = 400
 newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
 oldSensorBlacks = 35
+turn_arround_sleep = 0.5
 
 
 def fetch_sensor():
+    # ((ls_l, lsr mittelwert für weiß) ls_c für schwarz) mittelwert für threshhold
     light_ping_l = ls_l.reflected_light_intensity
     light_ping_c = ls_c.reflected_light_intensity
     light_ping_r = ls_r.reflected_light_intensity
@@ -87,12 +89,12 @@ def follow_line():
                     # TODO correction nach hinten links
                     print('Korregiere links zurueck')
                     drive_motor.off
-                    time.sleep(0.3)
+                    time.sleep(turn_arround_sleep)
                     control_motor.on_for_degrees(SpeedPercent(100), 1.5 * LEFT_WS)
 
                     drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
                     drive_motor.off
-                    time.sleep(0.3)
+                    time.sleep(turn_arround_sleep)
                     control_motor.on_for_degrees(SpeedPercent(100), 0.5 * RIGHT_WS)
                     currentAngle = STRAIGHT_WS
                     drive_motor.on(SpeedPercent(drive_speed))
@@ -116,12 +118,12 @@ def follow_line():
                     # TODO correction nach hinten links
                     print('Korregiere rechts zurueck')
                     drive_motor.off
-                    time.sleep(0.3)
+                    time.sleep(turn_arround_sleep)
                     control_motor.on_for_degrees(SpeedPercent(100), 1.5 * RIGHT_WS)
 
                     drive_motor.on_for_seconds(SpeedPercent(-drive_speed), correction_time)
                     drive_motor.off
-                    time.sleep(0.3)
+                    time.sleep(turn_arround_sleep)
                     control_motor.on_for_degrees(SpeedPercent(100), 0.5 * LEFT_WS)
                     currentAngle = STRAIGHT_WS
                     drive_motor.on(SpeedPercent(drive_speed))
