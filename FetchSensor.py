@@ -9,7 +9,7 @@ ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 
 
 def fetch_sensor():
-    newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
+    newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick n
     oldSensorBlacks = 35
 
     # ((ls_l, lsr mittelwert für weiß) ls_c für schwarz) mittelwert für threshhold
