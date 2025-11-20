@@ -26,16 +26,13 @@ correction_time = 2
 drive_speed = -10
 
 
-
-
-
 def adjust_wheels(currentStateColor, currentAngle):
     global max_turn_angle, NORMAL_LS, LEFT_LS, RIGHT_LS, EDGE_L_LS, EDGE_R_LS, NO_LINE_LS, RIGHT_WS, LEFT_WS, STRAIGHT_WS, correction_time, drive_speed
 
     if currentAngle == RIGHT_WS:
         print("RightWS")
         if currentStateColor == RIGHT_LS:
-            return
+            return currentAngle
         elif currentStateColor == NORMAL_LS:
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
             currentAngle = STRAIGHT_WS
@@ -68,7 +65,7 @@ def adjust_wheels(currentStateColor, currentAngle):
             control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
             currentAngle = STRAIGHT_WS
         elif currentStateColor == LEFT_LS:
-            return
+            return currentAngle
         elif currentStateColor == EDGE_L_LS:
             print('Edge_Links')
             while currentStateColor == EDGE_L_LS:
@@ -93,9 +90,10 @@ def adjust_wheels(currentStateColor, currentAngle):
             # TODO
             currentAngle = RIGHT_WS
         elif currentStateColor == NORMAL_LS:
-            return
+            return currentAngle
         elif ((currentStateColor == LEFT_LS)
                 or (currentStateColor == EDGE_L_LS)):
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
             # TODO
             currentAngle = LEFT_WS
+    return currentAngle
