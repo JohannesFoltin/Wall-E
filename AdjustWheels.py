@@ -28,7 +28,9 @@ drive_speed = -10
 
 def adjust_wheels(currentStateColor, currentAngle):
     global max_turn_angle, NORMAL_LS, LEFT_LS, RIGHT_LS, EDGE_L_LS, EDGE_R_LS, NO_LINE_LS, RIGHT_WS, LEFT_WS, STRAIGHT_WS, correction_time, drive_speed
-
+    print(currentStateColor)
+    print(currentAngle)
+    print(LEFT_LS)
     if currentAngle == RIGHT_WS:
         print("RightWS")
         if currentStateColor == RIGHT_LS:
