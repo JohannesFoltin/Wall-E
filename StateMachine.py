@@ -18,7 +18,7 @@ def State_machine():
     while current_state == STATE_FOLLOW_LINE:
         print('adjust_wheels')
         print(currentAngle)
-        currentAngle = adjust_wheels(fetch_sensor, currentAngle)
+        currentAngle = adjust_wheels(fetch_sensor(), currentAngle)
         time.sleep(0.3)
 
 
