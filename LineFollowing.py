@@ -1,22 +1,14 @@
 #!/usr/bin/env python3
 import time
-from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
 from ev3dev2.motor import LargeMotor, SpeedPercent
 
 control_motor = LargeMotor(OUTPUT_A)
 drive_motor = LargeMotor(OUTPUT_B)
 
-u_distance = UltrasonicSensor(INPUT_1)
-ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
-ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
-ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
-
 currentAngle = 0  # Links: -200 Rechts: +200
 max_turn_angle = 400
-newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
-oldSensorBlacks = 35
+
 turn_arround_sleep = 0.5
 
 NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
@@ -34,34 +26,10 @@ correction_time = 2
 drive_speed = -10
 
 
-def fetch_sensor():
-    # ((ls_l, lsr mittelwert für weiß) ls_c für schwarz) mittelwert für threshhold
-    light_ping_l = ls_l.reflected_light_intensity
-    light_ping_c = ls_c.reflected_light_intensity
-    light_ping_r = ls_r.reflected_light_intensity
-
-    # sensor left
-    if light_ping_l <= oldSensorBlacks:  # black
-        black_l = True
-    elif light_ping_l > oldSensorBlacks:
-        black_l = False  # white
-
-    # sensor center
-    if light_ping_c <= newSensorBlacks:  # black
-        black_c = True
-    elif light_ping_c > newSensorBlacks:
-        black_c = False  # white
-
-    # sensor right
-    if light_ping_r <= oldSensorBlacks:  # black
-        black_r = True
-    elif light_ping_r > oldSensorBlacks:
-        black_r = False  # white
-
-    return (black_l, black_c, black_r)
 
 
-def follow_line(currentStateColor, currentAngle):
+
+def adjust_wheels(currentStateColor, currentAngle):
     global max_turn_angle, NORMAL_LS, LEFT_LS, RIGHT_LS, EDGE_L_LS, EDGE_R_LS, NO_LINE_LS, RIGHT_WS, LEFT_WS, STRAIGHT_WS, correction_time, drive_speed
 
     if currentAngle == RIGHT_WS:

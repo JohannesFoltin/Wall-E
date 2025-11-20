@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 from time import sleep
 from ev3dev2.sensor import INPUT_3, INPUT_4, INPUT_2
-from ev3dev2.sensor.lego import Sensor, ColorSensor, LightSensor
+from ev3dev2.sensor.lego import ColorSensor, LightSensor
+from ev3dev2.motor import OUTPUT_C
+from ev3dev2.motor import LargeMotor, SpeedPercent, MediumMotor
 
 #u_distance = UltrasonicSensor(INPUT_1)
 ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
 ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
+
+ball_motor = MediumMotor(OUTPUT_C)
+ball_motor.on_for_degrees(SpeedPercent(5), -90)
+ball_motor.off
 
 refer = ls_c.value()
 
