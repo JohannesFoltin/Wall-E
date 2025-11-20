@@ -15,9 +15,6 @@ def fetch_sensor():
     light_ping_l = ls_l.reflected_light_intensity
     light_ping_c = ls_c.reflected_light_intensity
     light_ping_r = ls_r.reflected_light_intensity
-    print(light_ping_l)
-    print(light_ping_c)
-    print(light_ping_r)
 
     # sensor left
     if light_ping_l <= oldSensorBlacks:  # black

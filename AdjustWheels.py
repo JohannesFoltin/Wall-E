@@ -6,7 +6,6 @@ from FetchSensor import fetch_sensor
 
 control_motor = LargeMotor(OUTPUT_A)
 drive_motor = LargeMotor(OUTPUT_B)
-print('Hallo3')
 max_turn_angle = 400
 
 turn_arround_sleep = 0.5
@@ -28,9 +27,7 @@ drive_speed = -10
 
 def adjust_wheels(currentStateColor, currentAngle):
     global max_turn_angle, NORMAL_LS, LEFT_LS, RIGHT_LS, EDGE_L_LS, EDGE_R_LS, NO_LINE_LS, RIGHT_WS, LEFT_WS, STRAIGHT_WS, correction_time, drive_speed
-    print(currentStateColor)
-    print(currentAngle)
-    print(LEFT_LS)
+
     if currentAngle == RIGHT_WS:
         print("RightWS")
         if currentStateColor == RIGHT_LS:
@@ -88,7 +85,6 @@ def adjust_wheels(currentStateColor, currentAngle):
         print("StraightWs")
         if ((currentStateColor == RIGHT_LS)
                 or (currentStateColor == EDGE_R_LS)):
-            print('Hallo rechts')
             control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
             # TODO
             return RIGHT_WS
@@ -96,7 +92,6 @@ def adjust_wheels(currentStateColor, currentAngle):
             return currentAngle
         elif ((currentStateColor == LEFT_LS)
                 or (currentStateColor == EDGE_L_LS)):
-            print('Hallo')
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
             # TODOurrentAngle =
             return LEFT_WS
