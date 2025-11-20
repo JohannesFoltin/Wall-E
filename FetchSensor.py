@@ -26,7 +26,7 @@ def fetch_sensor():
         black_l = False  # white
 
     # sensor center
-    if light_ping_c <= newSensorBlacks:  # blackk
+    if light_ping_c <= newSensorBlacks:  # black
         black_c = True
     elif light_ping_c > newSensorBlacks:
         black_c = False  # white
