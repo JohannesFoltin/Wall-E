@@ -11,11 +11,13 @@ ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 def fetch_sensor():
     newSensorBlacks = 15  # s (alles drunter ist schwarz) für smaller wie jannes dick
     oldSensorBlacks = 35
-
     # ((ls_l, lsr mittelwert für weiß) ls_c für schwarz) mittelwert für threshhold
     light_ping_l = ls_l.reflected_light_intensity
     light_ping_c = ls_c.reflected_light_intensity
     light_ping_r = ls_r.reflected_light_intensity
+    print(light_ping_l)
+    print(light_ping_c)
+    print(light_ping_r)
 
     # sensor left
     if light_ping_l <= oldSensorBlacks:  # black
