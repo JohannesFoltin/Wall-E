@@ -17,6 +17,7 @@ def State_machine():
     drive_motor.on(SpeedPercent(-10))
     while current_state == STATE_FOLLOW_LINE:
         print('adjust_wheels')
+        print(currentAngle)
         currentAngle = adjust_wheels(fetch_sensor, currentAngle)
         time.sleep(0.3)
 
