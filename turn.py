@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
 import time
-from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor, ColorSensor, UltrasonicSensor
+from FetchSensor import fetch_sensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
 from ev3dev2.motor import LargeMotor, SpeedPercent
 
 control_motor = LargeMotor(OUTPUT_A)
 drive_motor = LargeMotor(OUTPUT_B)
 
-u_distance = UltrasonicSensor(INPUT_1)
-ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
-ls_c = ColorSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
-ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
-
 
 def turn():
     # if linie weg oder abstand 20cm
-    drive_speed = 100
-    turn_angle_back = 300  # max turn angle
-    turn_angle_for = 400
-    degree_turn = 500
-    control_motor.on_for_degrees(SpeedPercent(80), turn_angle_back)
-    drive_motor.on_for_degrees(SpeedPercent(drive_speed), degree_turn)
+    DRIVE_SPEED = 100
+    TURN_SPEED = SpeedPercent(80)
+    TURN_ANGLE_BACK = 300  # max turn angle
+    TURN_ANGLE_FORWARD = 400
+    DEGREE_TURN = 500
+
+    control_motor.on_for_degrees(TURN_SPEED, TURN_ANGLE_BACK)
+    drive_motor.on_for_degrees(SpeedPercent(DRIVE_SPEED), DEGREE_TURN)
     drive_motor.off()
     time.sleep(0.5)
-    control_motor.on_for_degrees(SpeedPercent(80), -(turn_angle_back + turn_angle_for))
-    drive_motor.on_for_degrees(SpeedPercent(drive_speed), -degree_turn)
+    control_motor.on_for_degrees(TURN_SPEED, -(TURN_ANGLE_BACK + TURN_ANGLE_FORWARD))
+    drive_motor.reset()
+    while drive_motor.position < DEGREE_TURN and True not in fetch_sensor():
+        drive_motor.on(SpeedPercent(-DRIVE_SPEED))
+        time.sleep(0.3)
     drive_motor.off()
+    control_motor.on_for_degrees(TURN_SPEED, TURN_ANGLE_FORWARD)
