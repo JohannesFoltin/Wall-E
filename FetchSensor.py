@@ -46,11 +46,11 @@ def fetch_sensor(values):
     light_ping_r = ls_r.reflected_light_intensity
 
     new_th = update_threshold(light_ping_l, light_ping_c, light_ping_r, values)
-    
+
     threshhold = (new_th[0] + new_th[1]) // 2
     print("threshhold")
     print(threshhold)
-    
+
     print("is_l: ", ls_l.reflected_light_intensity)
     print("is_c: ", ls_c.reflected_light_intensity)
     print("is_r: ", ls_r.reflected_light_intensity)
