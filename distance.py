@@ -25,6 +25,5 @@ distance_cm = uss_distance.distance_centimeters
 i = 1
 while i == 1:
     print(distance_cm)
-    uss_distance = UltrasonicSensor(INPUT_1)
     distance_cm = uss_distance.distance_centimeters
     time.sleep(1)
