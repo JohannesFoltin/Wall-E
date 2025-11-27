@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 import time
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B
-from ev3dev2.motor import MoveTank#, SpeedPercent
-#from FetchSensor import fetch_sensor
+from ev3dev2.motor import OUTPUT_A, OUTPUT_D
+from ev3dev2.motor import MoveTank, SpeedPercent
+from FetchSensor import fetch_sensor
 
-drive_tank = MoveTank(OUTPUT_A, OUTPUT_B)
+drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
 
 drive_tank.on(100, 100)
 time.sleep(1)
 drive_tank.on(50, 100)
 
-
-'''
 NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
 LEFT_LS = (True, True, False)
 RIGHT_LS = (False, True, True)
@@ -48,7 +46,6 @@ def turn_tank(turn_direction, values_threshold):
 
 
 def handle_no_line(values_threshold):
-    global NORMAL_INSIDE_WS, NORMAL_OUTSIDE_WS, NORMAL_OUTSIDE_WS
     while True:
         currentStateColor = fetch_sensor(values_threshold)
         start_pos_left = drive_tank.left_motor.position
@@ -83,4 +80,3 @@ def adjust_tank(currentStateColor, values_threshold):
         turn_tank('hard_right', values_threshold)
     elif currentStateColor == NO_LINE_LS:
         handle_no_line(values_threshold)
-'''
