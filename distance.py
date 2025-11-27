@@ -8,6 +8,23 @@ uss_distance = UltrasonicSensor(INPUT_1)
 distance_cm = uss_distance.distance_centimeters
 
 
+"""vor Schranke (20 cm zum Ballfänger) 14cm distance stoppen [abstand zwischen sensor und ballfänger-mittelpunkt 6cm]
+if distance > 20:
+    langsam fahren(aber line follow)
+if distance < 13:
+    langsam rückwärtsfahren
+if 15 <= distance >= 13:
+    stoppen
+    if distance > 20:
+        line follow"""
+
+def pick_up_ball():
+    if distance_cm < 20:
+        
+
+
+
+"""vor Bolck wenn abgebogen nach rechts und Abstand kleiner als 7 bis wieder größer als 20"""
 """while i == 1:
     print(distance_cm)
     time.sleep(2)"""
@@ -22,8 +39,8 @@ distance_cm = uss_distance.distance_centimeters
     print("hypotenuse=", distance_cm)
     return distance"""
 
-i = 1
+"""i = 1
 while i == 1:
     print(distance_cm)
     distance_cm = uss_distance.distance_centimeters
-    time.sleep(1)
+    time.sleep(1)"""
