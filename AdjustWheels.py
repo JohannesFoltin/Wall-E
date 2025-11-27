@@ -24,6 +24,9 @@ STRAIGHT_WS = 0
 correction_time = 2
 drive_speed = -10
 
+STATE_FOLLOW_LINE = 0
+STATE_TURN_ARROUND = 1
+
 
 def adjust_wheels(currentStateColor, currentAngle, values_threshold):
     global max_turn_angle, NORMAL_LS, LEFT_LS, RIGHT_LS, EDGE_L_LS, EDGE_R_LS, NO_LINE_LS, RIGHT_WS, LEFT_WS, STRAIGHT_WS, correction_time, drive_speed
@@ -31,13 +34,13 @@ def adjust_wheels(currentStateColor, currentAngle, values_threshold):
     if currentAngle == RIGHT_WS:
         print("RightWS")
         if currentStateColor == RIGHT_LS:
-            return currentAngle
+            return currentAngle, STATE_FOLLOW_LINE
         elif currentStateColor == NORMAL_LS:
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
-            return STRAIGHT_WS
+            return STRAIGHT_WS, STATE_FOLLOW_LINE
         elif currentStateColor == LEFT_LS:
             control_motor.on_for_degrees(SpeedPercent(100), 2 * LEFT_WS)
-            return LEFT_WS
+            return LEFT_WS, STATE_FOLLOW_LINE
         elif currentStateColor == EDGE_R_LS:
             print('Edge_Rechts')
             while currentStateColor == EDGE_R_LS:
@@ -53,18 +56,18 @@ def adjust_wheels(currentStateColor, currentAngle, values_threshold):
                 time.sleep(turn_arround_sleep)
                 control_motor.on_for_degrees(SpeedPercent(100), 0.5 * RIGHT_WS)
                 drive_motor.on(SpeedPercent(drive_speed))
-                return STRAIGHT_WS
+                return STRAIGHT_WS, STATE_FOLLOW_LINE
     elif currentAngle == LEFT_WS:
         print("LeftWs")
         if currentStateColor == RIGHT_LS:
             control_motor.on_for_degrees(SpeedPercent(100), 2 * RIGHT_WS)
             # TODO
-            return RIGHT_WS
+            return RIGHT_WS, STATE_FOLLOW_LINE
         elif currentStateColor == NORMAL_LS:
             control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
-            return STRAIGHT_WS
+            return STRAIGHT_WS, STATE_FOLLOW_LINE
         elif currentStateColor == LEFT_LS:
-            return currentAngle
+            return currentAngle, STATE_FOLLOW_LINE
         elif currentStateColor == EDGE_L_LS:
             print('Edge_Links')
             while currentStateColor == EDGE_L_LS:
@@ -80,19 +83,21 @@ def adjust_wheels(currentStateColor, currentAngle, values_threshold):
                 time.sleep(turn_arround_sleep)
                 control_motor.on_for_degrees(SpeedPercent(100), 0.5 * LEFT_WS)
                 drive_motor.on(SpeedPercent(drive_speed))
-                return STRAIGHT_WS
+                return STRAIGHT_WS, STATE_FOLLOW_LINE
     elif currentAngle == STRAIGHT_WS:
         print("StraightWs")
         if ((currentStateColor == RIGHT_LS)
                 or (currentStateColor == EDGE_R_LS)):
             control_motor.on_for_degrees(SpeedPercent(100), RIGHT_WS)
             # TODO
-            return RIGHT_WS
+            return RIGHT_WS, STATE_FOLLOW_LINE
         elif currentStateColor == NORMAL_LS:
-            return currentAngle
+            return currentAngle, STATE_FOLLOW_LINE
         elif ((currentStateColor == LEFT_LS)
                 or (currentStateColor == EDGE_L_LS)):
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
             # TODOurrentAngle =
-            return LEFT_WS
-    return currentAngle
+            return LEFT_WS, STATE_FOLLOW_LINE
+    if currentStateColor == NO_LINE_LS:
+        return currentAngle, STATE_TURN_ARROUND
+    return currentAngle, STATE_FOLLOW_LINE
