@@ -20,7 +20,16 @@ if 15 <= distance >= 13:
 
 def pick_up_ball():
     if distance_cm < 20:
-        
+        # langsam nach vorne
+    
+    if distance_cm < 13:
+        # langsam rückwärts fahrne
+
+    if 13 <= distance_cm <= 15:
+        # stoppen und warten
+    
+
+
 
 
 
