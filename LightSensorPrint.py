@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from time import sleep
 from ev3dev2.sensor import INPUT_3, INPUT_4, INPUT_2
-from ev3dev2.sensor.lego import ColorSensor, LightSensor
+from ev3dev2.sensor.lego import LightSensor
 from ev3dev2.motor import OUTPUT_C
 from ev3dev2.motor import LargeMotor, SpeedPercent, MediumMotor
 
@@ -17,7 +17,6 @@ ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 # refer = ls_c.value()
 
 while True:
-    ls_c.mode =  ls_c.MODE_RGB_RAW
 
     print("is_l: ", ls_l.reflected_light_intensity)
 
