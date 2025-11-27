@@ -9,7 +9,7 @@ from math import cos
 drive_motor = LargeMotor(OUTPUT_B)
 uss_distance = UltrasonicSensor(INPUT_1)
 distance_cm = uss_distance.distance_centimeters
-
+ball_motor = MediumMotor(OUTPUT_C)
 
 """vor Schranke (20 cm zum Ballfänger) 14cm distance stoppen [abstand zwischen sensor und ballfänger-mittelpunkt 6cm]
 if distance > 20:
@@ -51,7 +51,9 @@ def drop_the_ball():
     if distance_cm < 7:  # langsames annähren an den korb
         drive_motor.on(SpeedPercent(3))
         if distance_cm < 2: # roboter steht kurz vor dem block
-            
+            dirve_motor.off # Motor aus und die Ball wurf mechanik aktivieren
+            ball_motor.on_for_degrees(SpeedPercent(5), -90)  # - geht nach vorne
+            ball_motor.off
 
 
 """vor Bolck wenn abgebogen nach rechts und Abstand kleiner als 7 bis wieder größer als 20"""
