@@ -24,16 +24,20 @@ if 15 <= distance >= 13:
 def pick_up_ball():
     if distance_cm < 20:
         # langsam nach vorne
-    
+        drive_motor.on(SpeedPercent(3))
     if distance_cm < 13:
-        # langsam rückwärts fahrne
-
+        # langsam rückwärts fahren
+        drive_motor.on(SpeedPercent(3))
     if 13 <= distance_cm <= 15:
         # stoppen und warten
+        drive_motor.off
+        if distance_cm > 20:
+            # Ball ist im Korb wieder gradeaus
+            # Drive motor off bzw line following
     
 
 
-        drive_motor.on(SpeedPercent(3))
+        
         
 
 
