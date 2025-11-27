@@ -99,7 +99,7 @@ def adjust_wheels(currentStateColor, currentAngle, values_threshold):
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
             # TODOurrentAngle =
             return LEFT_WS, STATE_FOLLOW_LINE
-    if currentStateColor == NO_LINE_LS and not has_turned:
+    #if currentStateColor == NO_LINE_LS and not has_turned:
         has_turned = True
         return currentAngle, STATE_TURN_ARROUND
     return currentAngle, STATE_FOLLOW_LINE

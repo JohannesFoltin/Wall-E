@@ -15,15 +15,13 @@ STATE_GATE = 2
 STATE_PUSH_BLOCK = 3
 STATE_TROW_BALL = 4
 current_state = STATE_FOLLOW_LINE
-currentAngle = 0  # Links: -200 Rechts: +200
 
 
 def State_machine():
-    global current_state, STATE_FOLLOW_LINE, currentAngle
+    global current_state, STATE_FOLLOW_LINE
     values_threshold = init_threshold()
     print(values_threshold)
     while True:
-        drive_motor.on(SpeedPercent(-10))
         while current_state == STATE_FOLLOW_LINE:
             print('adjust_wheels')
             print(currentAngle)
