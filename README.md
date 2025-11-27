@@ -19,7 +19,6 @@ Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 # Ideen
 
 - [ ] Kalibrierung am Start
+- [ ] Dynamisches Lenken, abhängig von sensor unterschied 
 
 Postiv ist nach rechts
-lol
-julian stinkt total hab ich gehört
