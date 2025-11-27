@@ -50,7 +50,10 @@ def fetch_sensor(values):
     threshhold = (new_th[0] + new_th[1]) // 2
     print("threshhold")
     print(threshhold)
-    print(light_ping_c)
+    
+    print("is_l: ", ls_l.reflected_light_intensity)
+    print("is_c: ", ls_c.reflected_light_intensity)
+    print("is_r: ", ls_r.reflected_light_intensity)
 
     # sensor left
     if light_ping_l <= threshhold:  # black
