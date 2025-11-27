@@ -26,11 +26,11 @@ def State_machine():
     while current_state == STATE_FOLLOW_LINE:
         print('adjust_wheels')
         print(currentAngle)
-        currentAngle = adjust_wheels(fetch_sensor(values_threshold), currentAngle)
+        currentAngle = adjust_wheels(fetch_sensor(values_threshold), currentAngle, values_threshold)
         time.sleep(0.3)
 
     if current_state == STATE_TURN_ARROUND:
-        turn()
+        turn(values_threshold)
         current_state = STATE_FOLLOW_LINE
     elif current_state == STATE_GATE:
         pass

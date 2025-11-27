@@ -7,7 +7,8 @@ ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
 ls_c = LightSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
 
-def init_threshold() -> tuple(int,int):
+
+def init_threshold() -> tuple[int, int]:
     light_ping_l = ls_l.reflected_light_intensity
     light_ping_c = ls_c.reflected_light_intensity
     light_ping_r = ls_r.reflected_light_intensity
@@ -15,13 +16,14 @@ def init_threshold() -> tuple(int,int):
     white = (light_ping_l + light_ping_r) / 2
     black = light_ping_c
 
-    return (white,black)
+    return (white, black)
 
-def update_threshold(light_ping_l, light_ping_c, light_ping_r, old_values) -> tuple(int,int):
+
+def update_threshold(light_ping_l, light_ping_c, light_ping_r, old_values) -> tuple[int, int]:
 
     white = old_values[0]
     black = old_values[1]
-    
+
     if light_ping_l > white:
         white = light_ping_l
     elif light_ping_l < black:
@@ -34,20 +36,20 @@ def update_threshold(light_ping_l, light_ping_c, light_ping_r, old_values) -> tu
         white = light_ping_r
     elif light_ping_r < black:
         black = light_ping_r
-    
-    return (white,black)
+
+    return (white, black)
 
 
-def fetch_sensor(values: tuple(int,int)):
+def fetch_sensor(values: tuple[int, int]):
 
     threshhold = (values[0] + values[1]) // 2
-    
+
     # ((ls_l, lsr mittelwert für weiß) ls_c für schwarz) mittelwert für threshhold
     light_ping_l = ls_l.reflected_light_intensity
     light_ping_c = ls_c.reflected_light_intensity
     light_ping_r = ls_r.reflected_light_intensity
 
-    update_threshold(light_ping_l,light_ping_c,light_ping_r,values)
+    update_threshold(light_ping_l, light_ping_c, light_ping_r, values)
 
     # sensor left
     if light_ping_l <= threshhold:  # black

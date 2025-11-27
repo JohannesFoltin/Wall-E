@@ -25,7 +25,7 @@ correction_time = 2
 drive_speed = -10
 
 
-def adjust_wheels(currentStateColor, currentAngle):
+def adjust_wheels(currentStateColor, currentAngle, values_threshold):
     global max_turn_angle, NORMAL_LS, LEFT_LS, RIGHT_LS, EDGE_L_LS, EDGE_R_LS, NO_LINE_LS, RIGHT_WS, LEFT_WS, STRAIGHT_WS, correction_time, drive_speed
 
     if currentAngle == RIGHT_WS:
@@ -41,7 +41,7 @@ def adjust_wheels(currentStateColor, currentAngle):
         elif currentStateColor == EDGE_R_LS:
             print('Edge_Rechts')
             while currentStateColor == EDGE_R_LS:
-                currentStateColor = fetch_sensor()
+                currentStateColor = fetch_sensor(values_threshold)
             if currentStateColor == NO_LINE_LS:
                 print('Korregiere links zurueck')
                 drive_motor.off
@@ -68,7 +68,7 @@ def adjust_wheels(currentStateColor, currentAngle):
         elif currentStateColor == EDGE_L_LS:
             print('Edge_Links')
             while currentStateColor == EDGE_L_LS:
-                currentStateColor = fetch_sensor()
+                currentStateColor = fetch_sensor(values_threshold)
             if currentStateColor == NO_LINE_LS:
                 print('Korregiere rechts zurueck')
                 drive_motor.off
