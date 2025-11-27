@@ -27,7 +27,7 @@ def pick_up_ball():
         drive_motor.on(SpeedPercent(3))
     if distance_cm < 13:
         # langsam rückwärts fahren
-        drive_motor.on(SpeedPercent(3))
+        drive_motor.on(SpeedPercent(-3))
     if 13 <= distance_cm <= 15:
         # stoppen und warten
         drive_motor.off
@@ -38,7 +38,13 @@ def pick_up_ball():
 
 
         
-        
+def push_the_block():
+    #if rechts abgebogen.
+    if distance_cm < 7: 
+        drive_motor.on(SpeedPercent(3)) # roboter nährt sich langsam dem block an
+        if distance_cm > 20: # wenn der abstand wieder größer ist, ist der block weg
+            # Rückwärts fahren und rechts kurve zurück 
+
 
 
 
