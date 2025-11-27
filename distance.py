@@ -2,8 +2,11 @@
 import time
 from ev3dev2.sensor import INPUT_1
 from ev3dev2.sensor.lego import UltrasonicSensor
+from ev3dev2.motor import OUTPUT_B
+from ev3dev2.motor import LargeMotor, SpeedPercent
 from math import cos
 
+drive_motor = LargeMotor(OUTPUT_B)
 uss_distance = UltrasonicSensor(INPUT_1)
 distance_cm = uss_distance.distance_centimeters
 
@@ -30,6 +33,8 @@ def pick_up_ball():
     
 
 
+        drive_motor.on(SpeedPercent(3))
+        
 
 
 
