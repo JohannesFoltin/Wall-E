@@ -4,11 +4,11 @@ from AdjustWheels import adjust_wheels
 from FetchSensor import fetch_sensor, init_threshold, update_threshold
 from Turn import turn
 # from BlockPush import push_block
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B
-from ev3dev2.motor import LargeMotor, SpeedPercent
+from ev3dev2.motor import OUTPUT_A, OUTPUT_D
+from ev3dev2.motor import MoveTank, SpeedPercent
 
-control_motor = LargeMotor(OUTPUT_A)
-drive_motor = LargeMotor(OUTPUT_B)
+drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
+
 STATE_FOLLOW_LINE = 0
 STATE_TURN_ARROUND = 1
 STATE_GATE = 2
@@ -18,7 +18,7 @@ current_state = STATE_FOLLOW_LINE
 
 
 def State_machine():
-    global current_state, STATE_FOLLOW_LINE
+    global current_state
     values_threshold = init_threshold()
     print(values_threshold)
     while True:
