@@ -26,10 +26,11 @@ drive_speed = -10
 
 STATE_FOLLOW_LINE = 0
 STATE_TURN_ARROUND = 1
+has_turned = False  # ob turn schon gemacht wurde 
 
 
 def adjust_wheels(currentStateColor, currentAngle, values_threshold):
-    global max_turn_angle, NORMAL_LS, LEFT_LS, RIGHT_LS, EDGE_L_LS, EDGE_R_LS, NO_LINE_LS, RIGHT_WS, LEFT_WS, STRAIGHT_WS, correction_time, drive_speed
+    global max_turn_angle, NORMAL_LS, LEFT_LS, RIGHT_LS, EDGE_L_LS, EDGE_R_LS, NO_LINE_LS, RIGHT_WS, LEFT_WS, STRAIGHT_WS, correction_time, drive_speed, has_turned
 
     if currentAngle == RIGHT_WS:
         print("RightWS")
@@ -98,6 +99,7 @@ def adjust_wheels(currentStateColor, currentAngle, values_threshold):
             control_motor.on_for_degrees(SpeedPercent(100), LEFT_WS)
             # TODOurrentAngle =
             return LEFT_WS, STATE_FOLLOW_LINE
-    if currentStateColor == NO_LINE_LS:
+    if currentStateColor == NO_LINE_LS and not has_turned:
+        has_turned = True
         return currentAngle, STATE_TURN_ARROUND
     return currentAngle, STATE_FOLLOW_LINE

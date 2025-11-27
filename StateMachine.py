@@ -22,26 +22,27 @@ def State_machine():
     global current_state, STATE_FOLLOW_LINE, currentAngle
     values_threshold = init_threshold()
     print(values_threshold)
-    drive_motor.on(SpeedPercent(-10))
-    while current_state == STATE_FOLLOW_LINE:
-        print('adjust_wheels')
-        print(currentAngle)
-        values_threshold = update_threshold(values_threshold)
-        print(values_threshold[0], values_threshold[1])
-        currentAngle, current_state = adjust_wheels(fetch_sensor(values_threshold), currentAngle, values_threshold)
-        time.sleep(0.3)
+    while True:
+        drive_motor.on(SpeedPercent(-10))
+        while current_state == STATE_FOLLOW_LINE:
+            print('adjust_wheels')
+            print(currentAngle)
+            values_threshold = update_threshold(values_threshold)
+            print(values_threshold[0], values_threshold[1])
+            currentAngle, current_state = adjust_wheels(fetch_sensor(values_threshold), currentAngle, values_threshold)
+            time.sleep(0.3)
 
-    if current_state == STATE_TURN_ARROUND:
-        turn(values_threshold)
-        current_state = STATE_FOLLOW_LINE
-    # elif current_state == STATE_GATE:
-    #     pass
-    # elif current_state == STATE_PUSH_BLOCK:
-    #     push_block()
-    #     # TODO drive_back to line
-    #     current_state = STATE_FOLLOW_LINE
-    # elif current_state == STATE_TROW_BALL:
-    #     pass
+        if current_state == STATE_TURN_ARROUND:
+            turn()
+            current_state = STATE_FOLLOW_LINE
+        # elif current_state == STATE_GATE:
+        #     pass
+        # elif current_state == STATE_PUSH_BLOCK:
+        #     push_block()
+        #     # TODO drive_back to line
+        #     current_state = STATE_FOLLOW_LINE
+        # elif current_state == STATE_TROW_BALL:
+        #     pass
 
 
 # MAYBE TODO funktion gibt state änderung als return zurück
