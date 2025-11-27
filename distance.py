@@ -39,13 +39,19 @@ def pick_up_ball():
 
         
 def push_the_block():
-    #if rechts abgebogen.
+    #if rechts abgebogen und 
     if distance_cm < 7: 
         drive_motor.on(SpeedPercent(3)) # roboter nährt sich langsam dem block an
         if distance_cm > 20: # wenn der abstand wieder größer ist, ist der block weg
             # Rückwärts fahren und rechts kurve zurück 
 
 
+def drop_the_ball():
+    # if letzter abschnitt.
+    if distance_cm < 7:  # langsames annähren an den korb
+        drive_motor.on(SpeedPercent(3))
+        if distance_cm < 2: # roboter steht kurz vor dem block
+            
 
 
 """vor Bolck wenn abgebogen nach rechts und Abstand kleiner als 7 bis wieder größer als 20"""
