@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import time
 from AdjustWheels import adjust_wheels
-from FetchSensor import fetch_sensor, init_threshold
+from FetchSensor import fetch_sensor, init_threshold, update_threshold
 # from Turn import turn
 # from BlockPush import push_block
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B
@@ -26,6 +26,8 @@ def State_machine():
     while current_state == STATE_FOLLOW_LINE:
         print('adjust_wheels')
         print(currentAngle)
+        values_threshold = update_threshold(values_threshold)
+        print(values_threshold[0], values_threshold[1])
         currentAngle = adjust_wheels(fetch_sensor(values_threshold), currentAngle, values_threshold)
         time.sleep(0.3)
 
