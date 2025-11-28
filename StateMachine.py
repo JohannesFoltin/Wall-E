@@ -27,7 +27,7 @@ def State_machine():
             values_threshold = update_threshold(values_threshold)
             print(values_threshold[0], values_threshold[1])
             current_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
-            time.sleep(0.3)
+            time.sleep(0.1)
 
         if current_state == STATE_TURN_ARROUND:
             turn_tank()

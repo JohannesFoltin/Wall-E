@@ -35,22 +35,22 @@ def turn_tank(turn_direction, values_threshold):
     if turn_direction == 'left':
         while fetch_sensor(values_threshold) != NORMAL_LS:
             drive_tank.on(SpeedPercent(NORMAL_INSIDE_WS), SpeedPercent(NORMAL_OUTSIDE_WS))
-            time.sleep(0.3)
+            time.sleep(0.1)
 
     elif turn_direction == 'hard_left':
         while fetch_sensor(values_threshold) != NORMAL_LS:
             drive_tank.on(SpeedPercent(HARD_INSIDE_WS), SpeedPercent(HARD_OUTSIDE_WS))
-            time.sleep(0.3)
+            time.sleep(0.1)
 
     elif turn_direction == 'right':
         while fetch_sensor(values_threshold) != NORMAL_LS:
             drive_tank.on(SpeedPercent(NORMAL_OUTSIDE_WS), SpeedPercent(NORMAL_INSIDE_WS))
-            time.sleep(0.3)
+            time.sleep(0.1)
 
     elif turn_direction == 'hard_right':
         while fetch_sensor(values_threshold) != NORMAL_LS:
             drive_tank.on(SpeedPercent(HARD_OUTSIDE_WS), SpeedPercent(HARD_INSIDE_WS))
-            time.sleep(0.3)
+            time.sleep(0.1)
     return
 
 
