@@ -2,9 +2,9 @@
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 from ev3dev2.sensor.lego import LightSensor, UltrasonicSensor
 
-ls_r = LightSensor(INPUT_2)  # rechter Sensor auf Input 2
-ls_c = LightSensor(INPUT_3)  # center Sensor auf Input 3 # neuer Sensor
-ls_l = LightSensor(INPUT_4)  # links Sensor auf Input 4
+ls_r = LightSensor(INPUT_3)  # rechter Sensor auf Input 2
+ls_c = LightSensor(INPUT_2)  # center Sensor auf Input 3 # neuer Sensor
+ls_l = LightSensor(INPUT_1)  # links Sensor auf Input 4
 
 
 def init_threshold():

@@ -6,9 +6,9 @@ from FetchSensor import fetch_sensor
 
 drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
 
-drive_tank.on(100, 100)
+drive_tank.on(-10, -10)
 time.sleep(1)
-drive_tank.on(50, 100)
+drive_tank.on(-50, -100)
 
 NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
 LEFT_LS = (True, True, False)
@@ -17,21 +17,21 @@ EDGE_L_LS = (True, False, False)
 EDGE_R_LS = (False, False, True)
 NO_LINE_LS = (False, False, False)
 
-NORMAL_INSIDE_WS = 50
-NORMAL_OUTSIDE_WS = 70
+NORMAL_INSIDE_WS = -30
+NORMAL_OUTSIDE_WS = -60
 HARD_INSIDE_WS = 0
-HARD_OUTSIDE_WS = 70
+HARD_OUTSIDE_WS = -60
 
-DRIVE_WS = 100
-NO_LINE_WS = 30
+DRIVE_WS = -100
+NO_LINE_WS = -30
 
-MARK_DEGREE = 100
-MAX_DEGREE = 360
-MAX_BACKWARD = 1400
+MARK_DEGREE = -100
+MAX_DEGREE = -360
+MAX_BACKWARD = -1400
 
 
 def turn_tank(turn_direction, values_threshold):
-    # maybe add timeout     start_time = time.time()        if time.time() - start_time > timeout:            break  
+    # maybe add timeout     start_time = time.time()        if time.time() - start_time > timeout:            break
     if turn_direction == 'left':
         while fetch_sensor(values_threshold) != NORMAL_LS:
             drive_tank.on(SpeedPercent(NORMAL_INSIDE_WS), SpeedPercent(NORMAL_OUTSIDE_WS))
@@ -51,28 +51,27 @@ def turn_tank(turn_direction, values_threshold):
         while fetch_sensor(values_threshold) != NORMAL_LS:
             drive_tank.on(SpeedPercent(HARD_OUTSIDE_WS), SpeedPercent(HARD_INSIDE_WS))
             time.sleep(0.3)
+    return
 
 
 def handle_no_line(values_threshold):
-    while True:
-        no_line_speed = SpeedPercent(20)
-        drive_tank.on(no_line_speed, no_line_speed)
+    drive_tank.on(SpeedPercent(NO_LINE_WS), SpeedPercent(NO_LINE_WS))
 
+    while True:
         currentStateColor = fetch_sensor(values_threshold)
-        start_pos_left = drive_tank.left_motor.position        
+        start_pos_left = drive_tank.left_motor.position
 
         degree = abs(drive_tank.left_motor.position - start_pos_left)
-        drive_tank.on(SpeedPercent(NO_LINE_WS), SpeedPercent(NO_LINE_WS))
- 
+
         if currentStateColor != NO_LINE_LS:
             drive_tank.stop()
             if degree < MARK_DEGREE:
-                #mark start
+                # mark start
                 print('mark')
                 return
             else:
                 return
-            
+
         elif degree > MAX_DEGREE:
             drive_tank.stop()
             start_pos_left = drive_tank.left_motor.position
@@ -81,7 +80,6 @@ def handle_no_line(values_threshold):
                 drive_tank.on(SpeedPercent(-DRIVE_WS), SpeedPercent(-DRIVE_WS))
                 if abs(drive_tank.left_motor.position - start_pos_left) > MAX_BACKWARD:
                     return
-        return
 
 
 def adjust_tank(currentStateColor, values_threshold):
@@ -102,4 +100,3 @@ def adjust_tank(currentStateColor, values_threshold):
     elif currentStateColor == NO_LINE_LS:
         print('no line')
         handle_no_line(values_threshold)
-    return
