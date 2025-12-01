@@ -58,23 +58,23 @@ def handle_no_line(values_threshold):
 
 def adjust_tank(currentStateColor, values_threshold):
     if currentStateColor == NORMAL_LS:
-        drive_tank.on(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED))
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), 10)
         print('normal')
     elif currentStateColor == LEFT_LS:
         print('left')
-        drive_tank.on(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED))
+        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), 10)
     elif currentStateColor == RIGHT_LS:
         print('right')
-        drive_tank.on(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED))
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), 10)
     elif currentStateColor == EDGE_L_LS:
         print('hard left')
-        drive_tank.on(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED))
+        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), 10)
     elif currentStateColor == EDGE_R_LS:
         print('hard right')
-        drive_tank.on(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED))
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), 10)
     elif currentStateColor == NO_LINE_LS:
         print('no line')
-        drive_tank.on(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED))
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), 10)
         #handle_no_line(values_threshold)
         #return STATE_NO_LINE
 
