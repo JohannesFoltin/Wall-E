@@ -2,9 +2,9 @@
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 from ev3dev2.sensor.lego import LightSensor, UltrasonicSensor
 
-ls_r = LightSensor(INPUT_3)  # rechter Sensor auf Input 2
+ls_r = LightSensor(INPUT_1)  # rechter Sensor auf Input 2
 ls_c = LightSensor(INPUT_2)  # center Sensor auf Input 3 # neuer Sensor
-ls_l = LightSensor(INPUT_1)  # links Sensor auf Input 4
+ls_l = LightSensor(INPUT_3)  # links Sensor auf Input 4
 
 
 def init_threshold():
@@ -48,13 +48,7 @@ def fetch_sensor(values):
     light_ping_c = ls_c.reflected_light_intensity
     light_ping_r = ls_r.reflected_light_intensity
 
-    threshhold = (values[0] + values[1]) // 2
-    print("threshhold")
-    print(threshhold)
-
-    print("is_l: ", ls_l.reflected_light_intensity)
-    print("is_c: ", ls_c.reflected_light_intensity)
-    print("is_r: ", ls_r.reflected_light_intensity)
+    threshhold = (values[0] + values[1]) // 2 
 
     # sensor left
     if light_ping_l <= threshhold:  # black

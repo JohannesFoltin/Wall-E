@@ -21,7 +21,7 @@ EDGE_R_LS = (False, False, True)
 ALL_BLACK = (True, True, True)
 NO_LINE_LS = (False, False, False)
 
-DRIVE_SPEED = -10
+DRIVE_SPEED = -100
 HALF_DRIVE_SPEED = 0.5 * DRIVE_SPEED
 NO_LINE_SPEED = DRIVE_SPEED - 8
 

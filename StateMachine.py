@@ -16,21 +16,26 @@ STATE_TROW_BALL = 4
 STATE_NO_LINE = 5
 current_state = STATE_FOLLOW_LINE
 
+HAS_TURNED = False
+HAS_PUSHED = False
+HAS_BALL = False
+
 
 def State_machine():
-    global current_state
+    global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED
     values_threshold = init_threshold()
-    print(values_threshold)
-
     while True:
         while current_state == STATE_FOLLOW_LINE:
             values_threshold = update_threshold(values_threshold)
-            print(values_threshold[0], values_threshold[1])
             current_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
             time.sleep(0.3)
 
         if current_state == STATE_NO_LINE:
-            current_state = handle_no_line(values_threshold)
+            if not HAS_TURNED:
+                turn_tank()
+                HAS_TURNED = True
+            else:
+                current_state = handle_no_line(values_threshold)
 
         if current_state == STATE_TURN_ARROUND:
             turn_tank()
