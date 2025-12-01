@@ -6,10 +6,6 @@ from FetchSensor import fetch_sensor
 
 drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
 
-drive_tank.on(-10, -10)
-time.sleep(1)
-drive_tank.on(-50, -100)
-
 STATE_FOLLOW_LINE = 0
 STATE_TURN_ARROUND = 1
 STATE_GATE = 2
@@ -24,13 +20,12 @@ EDGE_L_LS = (True, False, False)
 EDGE_R_LS = (False, False, True)
 NO_LINE_LS = (False, False, False)
 
-NORMAL_INSIDE_WS = -10
-NORMAL_OUTSIDE_WS = -20
-HARD_INSIDE_WS = 0
-HARD_OUTSIDE_WS = -20
-
 DRIVE_WS = -10
-NO_LINE_WS = -3
+NORMAL_INSIDE_WS = DRIVE_WS - 5
+NORMAL_OUTSIDE_WS = DRIVE_WS
+HARD_INSIDE_WS = -DRIVE_WS - 10
+HARD_OUTSIDE_WS = DRIVE_WS
+NO_LINE_WS = DRIVE_WS - 8
 
 MARK_DEGREE = -100
 MAX_DEGREE = -360
@@ -39,15 +34,14 @@ MAX_BACKWARD = -1400
 
 def handle_no_line(values_threshold):
     drive_tank.on(SpeedPercent(NO_LINE_WS), SpeedPercent(NO_LINE_WS))
-
+    start_pos_left = drive_tank.left_motor.position
     while True:
         currentStateColor = fetch_sensor(values_threshold)
-        start_pos_left = drive_tank.left_motor.position
-
         degree = abs(drive_tank.left_motor.position - start_pos_left)
 
         if currentStateColor != NO_LINE_LS:
             drive_tank.stop()
+            degree = abs(drive_tank.left_motor.position - start_pos_left)
             if degree < MARK_DEGREE:
                 # mark start
                 print('mark')
@@ -83,7 +77,8 @@ def adjust_tank(currentStateColor, values_threshold):
         drive_tank.on(SpeedPercent(HARD_OUTSIDE_WS), SpeedPercent(HARD_INSIDE_WS))
     elif currentStateColor == NO_LINE_LS:
         print('no line')
-        handle_no_line(values_threshold)
-        return STATE_NO_LINE
+        drive_tank.on(SpeedPercent(DRIVE_WS), SpeedPercent(DRIVE_WS))
+        #handle_no_line(values_threshold)
+        #return STATE_NO_LINE
 
     return STATE_FOLLOW_LINE
