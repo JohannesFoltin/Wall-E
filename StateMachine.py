@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 import time
-from AdjustTank import adjust_tank
+from AdjustTank import adjust_tank, handle_no_line
 from FetchSensor import fetch_sensor, init_threshold, update_threshold
 from TurnTank import turn_tank
-# from BlockPush import push_block
 from ev3dev2.motor import OUTPUT_A, OUTPUT_D
 from ev3dev2.motor import MoveTank, SpeedPercent
 
@@ -14,6 +13,7 @@ STATE_TURN_ARROUND = 1
 STATE_GATE = 2
 STATE_PUSH_BLOCK = 3
 STATE_TROW_BALL = 4
+STATE_NO_LINE = 5
 current_state = STATE_FOLLOW_LINE
 
 
@@ -28,6 +28,9 @@ def State_machine():
             print(values_threshold[0], values_threshold[1])
             current_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
             time.sleep(0.1)
+
+        if current_state == STATE_NO_LINE:
+            current_state = handle_no_line(values_threshold)
 
         if current_state == STATE_TURN_ARROUND:
             turn_tank()
