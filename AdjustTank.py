@@ -20,12 +20,9 @@ EDGE_L_LS = (True, False, False)
 EDGE_R_LS = (False, False, True)
 NO_LINE_LS = (False, False, False)
 
-DRIVE_WS = -10
-NORMAL_INSIDE_WS = DRIVE_WS
-NORMAL_OUTSIDE_WS = -0.5 * DRIVE_WS
-HARD_INSIDE_WS = -0.5 + DRIVE_WS
-HARD_OUTSIDE_WS = DRIVE_WS
-NO_LINE_WS = DRIVE_WS - 8
+DRIVE_SPEED = -10
+HALF_DRIVE_SPEED = 0.5 * DRIVE_SPEED
+NO_LINE_SPEED = DRIVE_SPEED - 8
 
 MARK_DEGREE = -100
 MAX_DEGREE = -360
@@ -33,7 +30,7 @@ MAX_BACKWARD = -1400
 
 
 def handle_no_line(values_threshold):
-    drive_tank.on(SpeedPercent(NO_LINE_WS), SpeedPercent(NO_LINE_WS))
+    drive_tank.on(SpeedPercent(NO_LINE_SPEED), SpeedPercent(NO_LINE_SPEED))
     start_pos_left = drive_tank.left_motor.position
     while True:
         currentStateColor = fetch_sensor(values_threshold)
@@ -54,30 +51,30 @@ def handle_no_line(values_threshold):
             start_pos_left = drive_tank.left_motor.position
             while fetch_sensor(values_threshold) == NO_LINE_LS:
                 # drive back und / oder dreh 360° ob ne linie gefunden wird
-                drive_tank.on(SpeedPercent(-DRIVE_WS), SpeedPercent(-DRIVE_WS))
+                drive_tank.on(SpeedPercent(-DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED))
                 if abs(drive_tank.left_motor.position - start_pos_left) > MAX_BACKWARD:
                     return STATE_NO_LINE
 
 
 def adjust_tank(currentStateColor, values_threshold):
     if currentStateColor == NORMAL_LS:
-        drive_tank.on(SpeedPercent(DRIVE_WS), SpeedPercent(DRIVE_WS))
+        drive_tank.on(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED))
         print('normal')
     elif currentStateColor == LEFT_LS:
         print('left')
-        drive_tank.on(SpeedPercent(NORMAL_INSIDE_WS), SpeedPercent(NORMAL_OUTSIDE_WS))
+        drive_tank.on(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED))
     elif currentStateColor == RIGHT_LS:
         print('right')
-        drive_tank.on(SpeedPercent(NORMAL_OUTSIDE_WS), SpeedPercent(NORMAL_INSIDE_WS))
+        drive_tank.on(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED))
     elif currentStateColor == EDGE_L_LS:
         print('hard left')
-        drive_tank.on(SpeedPercent(HARD_INSIDE_WS), SpeedPercent(HARD_OUTSIDE_WS))
+        drive_tank.on(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED))
     elif currentStateColor == EDGE_R_LS:
         print('hard right')
-        drive_tank.on(SpeedPercent(HARD_OUTSIDE_WS), SpeedPercent(HARD_INSIDE_WS))
+        drive_tank.on(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED))
     elif currentStateColor == NO_LINE_LS:
         print('no line')
-        drive_tank.on(SpeedPercent(DRIVE_WS), SpeedPercent(DRIVE_WS))
+        drive_tank.on(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED))
         #handle_no_line(values_threshold)
         #return STATE_NO_LINE
 
