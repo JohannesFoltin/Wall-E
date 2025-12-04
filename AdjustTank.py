@@ -31,42 +31,10 @@ MAX_DEGREE = -360
 MAX_BACKWARD = -1400
 
 
-def handle_no_line(values_threshold, last_state):
-    drive_tank.on(SpeedPercent(NO_LINE_SPEED), SpeedPercent(NO_LINE_SPEED))
-    start_pos_left = drive_tank.left_motor.position
-
-    while True:
-        currentStateColor = fetch_sensor(values_threshold)
-        degree = abs(drive_tank.left_motor.position - start_pos_left)
-
-        if currentStateColor != NO_LINE_LS:
-            drive_tank.stop()
-            degree = abs(drive_tank.left_motor.position - start_pos_left)
-            if degree < MARK_DEGREE:
-                # mark start
-                print('mark')
-                return STATE_PUSH_BLOCK
-            else:
-                return STATE_FOLLOW_LINE
-
-        elif degree > MAX_DEGREE:
-            drive_tank.stop()
-            start_pos_left = drive_tank.left_motor.position
-
-            
-
-                
-            while fetch_sensor(values_threshold) == NO_LINE_LS:
-                # drive back und / oder dreh 360° ob ne linie gefunden wird
-                drive_tank.on(SpeedPercent(-DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED))
-                if abs(drive_tank.left_motor.position - start_pos_left) > MAX_BACKWARD:
-                    return STATE_FOLLOW_LINE
-
-
 def turn_angle_white(last_state):
-    if last_state == LEFT_LS or EDGE_L_LS:
+    if (last_state == LEFT_LS) or (last_state == EDGE_L_LS):
         drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
-    elif last_state == RIGHT_LS or EDGE_R_LS:
+    elif (last_state == RIGHT_LS) or (last_state == EDGE_R_LS):
         drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), TURN_DEGREE)
 
 

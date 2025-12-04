@@ -3,10 +3,7 @@ import time
 from AdjustTank import adjust_tank, turn_angle_white, drive_back
 from FetchSensor import fetch_sensor, init_threshold, update_threshold
 from TurnTank import turn_tank
-from ev3dev2.motor import OUTPUT_A, OUTPUT_D
-from ev3dev2.motor import MoveTank, SpeedPercent
 
-drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
 
 STATE_FOLLOW_LINE = 0
 STATE_TURN_ARROUND = 1
@@ -19,8 +16,6 @@ current_state = STATE_FOLLOW_LINE
 HAS_TURNED = False
 HAS_PUSHED = False
 HAS_BALL = False
-
-last_state = None
 
 
 def State_machine():
@@ -53,6 +48,7 @@ def State_machine():
         elif current_state == STATE_TURN_ARROUND:
             turn_tank()
             current_state = STATE_FOLLOW_LINE
+
         # elif current_state == STATE_GATE:
         #     pass
         # elif current_state == STATE_PUSH_BLOCK:
