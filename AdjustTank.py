@@ -62,14 +62,16 @@ def handle_no_line(values_threshold, last_state):
                 if abs(drive_tank.left_motor.position - start_pos_left) > MAX_BACKWARD:
                     return STATE_FOLLOW_LINE
 
-def turn_right_angle_white():
-        if last_state == LEFT_LS or EDGE_L_LS:
-            drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
-        elif last_state == RIGHT_LS or EDGE_R_LS:
-            drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), TURN_DEGREE)
 
-def trun_back():
-            drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), TURN_DEGREE)
+def turn_angle_white(last_state):
+    if last_state == LEFT_LS or EDGE_L_LS:
+        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
+    elif last_state == RIGHT_LS or EDGE_R_LS:
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), TURN_DEGREE)
+
+
+def drive_back():
+    drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), TURN_DEGREE)
 
 
 def adjust_tank(currentStateColor, values_threshold):

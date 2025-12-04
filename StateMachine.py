@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import time
-from AdjustTank import adjust_tank, handle_no_line
+from AdjustTank import adjust_tank, turn_angle_white, drive_back
 from FetchSensor import fetch_sensor, init_threshold, update_threshold
 from TurnTank import turn_tank
 from ev3dev2.motor import OUTPUT_A, OUTPUT_D
@@ -25,23 +25,30 @@ def State_machine():
     global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED
     values_threshold = init_threshold()
     while True:
-        while current_state == STATE_FOLLOW_LINE:
+        if current_state == STATE_FOLLOW_LINE:
             values_threshold = update_threshold(values_threshold)
             current_state, last_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
             time.sleep(0.1)
 
-        if current_state == STATE_NO_LINE:
+        elif current_state == STATE_NO_LINE:
             if not HAS_TURNED:
                 turn_tank()
                 HAS_TURNED = True
             else:
                 for i in range(8):
-                    current_state, last_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
+                    current_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
                     if current_state != STATE_NO_LINE:
+                        current_state = STATE_FOLLOW_LINE
                         break
-                
+                turn_angle_white(last_state)
+                for i in range(8):
+                    current_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
+                    if current_state != STATE_NO_LINE:
+                        current_state = STATE_FOLLOW_LINE
+                        break
+                    drive_back()
 
-        if current_state == STATE_TURN_ARROUND:
+        elif current_state == STATE_TURN_ARROUND:
             turn_tank()
             current_state = STATE_FOLLOW_LINE
         # elif current_state == STATE_GATE:
