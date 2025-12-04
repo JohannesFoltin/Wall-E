@@ -23,3 +23,7 @@ Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 
 Postiv ist nach rechts
 !! positiv zurück !!
+
+# Testen
+- ohne sleep
+- jede iteration weiter fahren
