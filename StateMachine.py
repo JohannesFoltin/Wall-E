@@ -35,7 +35,11 @@ def State_machine():
                 turn_tank()
                 HAS_TURNED = True
             else:
-                current_state = handle_no_line(values_threshold, last_state)
+                for i in range(8):
+                    current_state, last_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
+                    if current_state != STATE_NO_LINE:
+                        break
+                
 
         if current_state == STATE_TURN_ARROUND:
             turn_tank()
