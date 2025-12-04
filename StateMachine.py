@@ -27,15 +27,15 @@ def State_machine():
     while True:
         while current_state == STATE_FOLLOW_LINE:
             values_threshold = update_threshold(values_threshold)
-            current_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
-            time.sleep(0.3)
+            current_state, last_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
+            time.sleep(0.1)
 
         if current_state == STATE_NO_LINE:
             if not HAS_TURNED:
                 turn_tank()
                 HAS_TURNED = True
             else:
-                current_state = handle_no_line(values_threshold)
+                current_state = handle_no_line(values_threshold, last_state)
 
         if current_state == STATE_TURN_ARROUND:
             turn_tank()
