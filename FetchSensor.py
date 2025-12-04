@@ -32,7 +32,7 @@ def update_threshold(old_values):
     return (white, black)
 
 def fetch_sensor(values):
-   """Mittelwert aus Weiß und Schwarz, dann die Spannweite zwischen Weiß und Schwarz. 
+   """Mittelwert aus Wieß und Schwarz, dann die Spannweite zwischen Weiß und Schwarz. 
    Gibt den Mittelwert minus den Rohwert geteilt durch die Spanne aus
    Liefert für jeden Sensor die Abweichung vom aktuellen Wert.
 
