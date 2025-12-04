@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-import time
 from ev3dev2.motor import OUTPUT_A, OUTPUT_D
 from ev3dev2.motor import MoveTank, SpeedPercent
-from FetchSensor import fetch_sensor
 
 drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
 
