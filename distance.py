@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 import time
-from ev3dev2.sensor import INPUT_1
-from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.motor import OUTPUT_A, OUTPUT_D, OUTPUT_B
-from ev3dev2.motor import LargeMotor, SpeedPercent, MediumMotor
-from math import cos
-
+from ev3dev2.motor import SpeedPercent, MediumMotor
 
 from ev3dev2.motor import MoveTank, SpeedPercent
 
 drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
-uss_distance = UltrasonicSensor(INPUT_1)
 ball_motor = MediumMotor(OUTPUT_B)
 
 DRIVE_SPEED = -100
@@ -26,20 +21,18 @@ if 15 <= distance >= 13:
     if distance > 20:
         line follow"""
 
-def fetch_distance():
-    return uss_distance.distance_centimeters
 
-def pick_up_ball():
-    if fetch_distance() < 20:
+
+def pick_up_ball(distance):
+    if distance < 20:
         # langsam nach vorne
         drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
-    if fetch_distance() < 13:
+    if distance < 13:
         # langsam rückwärts fahren
-        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
-    if 13 <= fetch_distance() <= 15:
+        drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), TURN_DEGREE)
+    if 13 <= distance <= 15:
         # stoppen und warten
-        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
-        if fetch_distance() > 20:
+        if distance > 20:
             # Ball ist im Korb wieder gradeaus
             # Drive motor off bzw line following
     

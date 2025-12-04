@@ -5,6 +5,7 @@ from ev3dev2.sensor.lego import LightSensor, UltrasonicSensor
 ls_r = LightSensor(INPUT_1)  # rechter Sensor auf Input 2
 ls_c = LightSensor(INPUT_2)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_3)  # links Sensor auf Input 4
+uss_distance = UltrasonicSensor(INPUT_4)
 
 
 def light_ping():
@@ -67,3 +68,7 @@ def fetch_sensor(values):
         black_r = False  # white
 
     return (black_l, black_c, black_r)
+
+
+def fetch_distance():
+    return uss_distance.distance_centimeters

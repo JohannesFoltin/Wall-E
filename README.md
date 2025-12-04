@@ -9,7 +9,7 @@ Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 # Aufgaben für Zwischenprüfung:
 
 - [ ] Linie folgen
-- [ ] Wenden
+- [x] Wenden
 - [ ] Klotz wegschieben
 - [ ] Durch nen Tunnel fahren
 - [ ] Wechseln der Lichtverhältnisse
@@ -18,7 +18,6 @@ Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 
 # Ideen
 
-- [ ] Kalibrierung am Start
 - [ ] Dynamisches Lenken, abhängig von sensor unterschied 
 
 Postiv ist nach rechts
@@ -27,3 +26,7 @@ Postiv ist nach rechts
 # Testen
 - ohne sleep
 - jede iteration weiter fahren
+- no line,
+- 90° kurve
+- licht beobachten -> range ausgeben
+- 
