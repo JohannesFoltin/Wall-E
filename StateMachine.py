@@ -20,6 +20,8 @@ HAS_TURNED = False
 HAS_PUSHED = False
 HAS_BALL = False
 
+last_state = None
+
 
 def State_machine():
     global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED
@@ -35,13 +37,13 @@ def State_machine():
                 turn_tank()
                 HAS_TURNED = True
             else:
-                for i in range(8):
+                for _ in range(8):
                     current_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
                     if current_state != STATE_NO_LINE:
                         current_state = STATE_FOLLOW_LINE
                         break
                 turn_angle_white(last_state)
-                for i in range(8):
+                for _ in range(8):
                     current_state = adjust_tank(fetch_sensor(values_threshold), values_threshold)
                     if current_state != STATE_NO_LINE:
                         current_state = STATE_FOLLOW_LINE
