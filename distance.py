@@ -13,6 +13,9 @@ drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
 uss_distance = UltrasonicSensor(INPUT_1)
 ball_motor = MediumMotor(OUTPUT_B)
 
+DRIVE_SPEED = -100
+TURN_DEGREE = 15
+
 """vor Schranke (20 cm zum Ballfänger) 14cm distance stoppen [abstand zwischen sensor und ballfänger-mittelpunkt 6cm]
 if distance > 20:
     langsam fahren(aber line follow)
@@ -29,13 +32,13 @@ def fetch_distance():
 def pick_up_ball():
     if fetch_distance() < 20:
         # langsam nach vorne
-        drive_tank.on_for_degrees()
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
     if fetch_distance() < 13:
         # langsam rückwärts fahren
-        drive_motor.on(SpeedPercent(-3))
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
     if 13 <= fetch_distance() <= 15:
         # stoppen und warten
-        drive_motor.off
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
         if fetch_distance() > 20:
             # Ball ist im Korb wieder gradeaus
             # Drive motor off bzw line following
