@@ -46,7 +46,6 @@ def update_threshold(old_values):
 def fetch_sensor(values):
     light_ping_l, light_ping_c, light_ping_r = light_ping()
 
-    print(values[0], values[1])
     threshhold = (values[0] + values[1]) // 2
 
     # sensor left

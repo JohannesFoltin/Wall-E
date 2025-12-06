@@ -30,3 +30,11 @@ Postiv ist nach rechts
 - 90° kurve
 - licht beobachten -> range ausgeben
 - 
+
+init 35.6 18.400000000000002
+end 43.900000000000006 11.0
+
+threshold
+init 27
+min 27
+max 29
