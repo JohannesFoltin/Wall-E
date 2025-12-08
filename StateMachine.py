@@ -30,11 +30,11 @@ def State_machine():
 
         elif current_state == STATE_NO_LINE:
             current_state, last_state = adjust_tank(fetch_sensor(values_threshold), last_state)
-            '''if not HAS_TURNED:
+            if not HAS_TURNED:
                 turn_tank()
                 HAS_TURNED = True
             else:
-                for _ in range(30):
+                for _ in range(28):
                     current_state, last_state = adjust_tank(fetch_sensor(values_threshold), last_state)
                     print("lost")
                     if current_state != STATE_NO_LINE:
@@ -47,7 +47,7 @@ def State_machine():
                     print("go_back")
                     if current_state != STATE_NO_LINE:
                         current_state = STATE_FOLLOW_LINE
-                        break'''
+                        break
 
         elif current_state == STATE_TURN_ARROUND:
             turn_tank()
