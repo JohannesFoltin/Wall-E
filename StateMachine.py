@@ -17,15 +17,20 @@ HAS_TURNED = False
 HAS_PUSHED = False
 HAS_BALL = False
 
-
+# Globale State Machine
 def State_machine():
+    # Init der nötigen Werte
     global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED
+    # Threshold einlesen
     values_threshold = init_threshold()
-    last_state = (False, True, False)
+    # Erster State
+    LastColorState = (False, True, False)
     while True:
         if current_state == STATE_FOLLOW_LINE:
+            # Threshold updaten
             values_threshold = update_threshold(values_threshold)
-            current_state, last_state = adjust_tank(fetch_sensor(values_threshold), last_state)
+            # Fahre und kriege den neuen state
+            current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState)
 
         elif current_state == STATE_NO_LINE:
             values_threshold = update_threshold(values_threshold)
@@ -37,7 +42,7 @@ def State_machine():
                 previous_state = current_state  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for _ in range(12):
-                    current_state, last_state = adjust_tank(fetch_sensor(values_threshold), last_state)
+                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState)
                     print("lost")
                     if current_state != STATE_NO_LINE:
                         current_state = STATE_FOLLOW_LINE
@@ -47,7 +52,7 @@ def State_machine():
                     tank_stop()
                     turn_angle_white(previous_state)
                     for _ in range(16):
-                        current_state, last_state = drive_back(fetch_sensor(values_threshold), last_state)
+                        current_state, LastColorState = drive_back(fetch_sensor(values_threshold), LastColorState)
                         print("go_back")
                         if current_state != STATE_NO_LINE:
                             tank_stop()
