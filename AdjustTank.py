@@ -28,14 +28,16 @@ TURN_DEGREE = 10  # Inkrement für Korrekturen
 
 MARK_DEGREE = -100
 
+
 # Passt die Ausrichtung des Roboters an, wenn die Linie nicht gefunden wurde.
 def turn_angle_white(LastColorState):
     if (LastColorState == LEFT_LS) or (LastColorState == EDGE_L_LS):
         # Fahr mit halber Geschwindigkeit, 4 mal nach rechts
-        drive_tank.on_for_degrees(SpeedPercent(HALF_DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), 4 * TURN_DEGREE)  
+        drive_tank.on_for_degrees(SpeedPercent(HALF_DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), 4 * TURN_DEGREE)
     elif (LastColorState == RIGHT_LS) or (LastColorState == EDGE_R_LS):
         # Fahr mit halber Geschwindigkeit, 4 mal nach links
-        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(HALF_DRIVE_SPEED), 4 * TURN_DEGREE)  
+        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(HALF_DRIVE_SPEED), 4 * TURN_DEGREE)
+
 
 # Fahre rückwärts, wenn die Linie nicht gefunden wurde.
 def drive_back(currentStateColor, last_state):
@@ -49,6 +51,7 @@ def drive_back(currentStateColor, last_state):
         return STATE_NO_LINE, NO_LINE_LS
     else:
         return STATE_FOLLOW_LINE, NO_LINE_LS
+
 
 # Stoppt den Antrieb des Roboters.
 def tank_stop():
