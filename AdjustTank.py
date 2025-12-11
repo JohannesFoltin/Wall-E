@@ -20,79 +20,94 @@ EDGE_R_LS = (False, False, True)
 ALL_BLACK = (True, True, True)
 NO_LINE_LS = (False, False, False)
 
-DRIVE_SPEED = -50
-CONTINUE_SPEED = DRIVE_SPEED * 0.6
-HALF_DRIVE_SPEED = 0.5 * DRIVE_SPEED
+DRIVE_SPEED = -50  # Fahrgeschwindigkeit zum Korrigieren
+CONTINUE_SPEED = DRIVE_SPEED * 0.6  # Kontinuierliche Fahrgeschwindigkeit
+HALF_DRIVE_SPEED = 0.5 * DRIVE_SPEED  # Fahrgeschwindigkeit für leichte Korrekturen
 NO_LINE_SPEED = DRIVE_SPEED * 0.8
-TURN_DEGREE = 10
+TURN_DEGREE = 10  # Inkrement für Korrekturen
 
 MARK_DEGREE = -100
 
+# Passt die Ausrichtung des Roboters an, wenn die Linie nicht gefunden wurde.
+def turn_angle_white(LastColorState):
+    if (LastColorState == LEFT_LS) or (LastColorState == EDGE_L_LS):
+        # Fahr mit halber Geschwindigkeit, 4 mal nach rechts
+        drive_tank.on_for_degrees(SpeedPercent(HALF_DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), 4 * TURN_DEGREE)  
+    elif (LastColorState == RIGHT_LS) or (LastColorState == EDGE_R_LS):
+        # Fahr mit halber Geschwindigkeit, 4 mal nach links
+        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(HALF_DRIVE_SPEED), 4 * TURN_DEGREE)  
 
-def turn_angle_white(last_state):
-    if (last_state == LEFT_LS) or (last_state == EDGE_L_LS):
-        drive_tank.on_for_degrees(SpeedPercent(HALF_DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), 4 * TURN_DEGREE)
-    elif (last_state == RIGHT_LS) or (last_state == EDGE_R_LS):
-        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(HALF_DRIVE_SPEED), 4 * TURN_DEGREE)
-
-
+# Fahre rückwärts, wenn die Linie nicht gefunden wurde.
 def drive_back(currentStateColor, last_state):
     if currentStateColor == NO_LINE_LS:
         if last_state == NO_LINE_LS:
+            # Kontinuierlich rückwärts fahren
             drive_tank.on(SpeedPercent(-CONTINUE_SPEED), SpeedPercent(-CONTINUE_SPEED))
         else:
+            # 1 mal rückwärts fahren mit voller Geschwindigkeit
             drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), TURN_DEGREE)
         return STATE_NO_LINE, NO_LINE_LS
     else:
         return STATE_FOLLOW_LINE, NO_LINE_LS
 
-
+# Stoppt den Antrieb des Roboters.
 def tank_stop():
     drive_tank.off()
     time.sleep(0.2)
 
 
+# Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
 def adjust_tank(currentStateColor, last_state):
     save_current_state = NORMAL_LS
     if currentStateColor == NORMAL_LS:
         if last_state == NORMAL_LS:
+            # Kontinuierlich geradeaus mit normaler Geschwindigkeit
             drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
         else:
+            # 1 mal geradeaus fahren mit voller Geschwindigkeit
             drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
         save_current_state = NORMAL_LS
         print('normal')
 
     elif currentStateColor == LEFT_LS:
         print('left')
+        # leichte Korrektur nach links
         drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
         save_current_state = LEFT_LS
 
     elif currentStateColor == RIGHT_LS:
         print('right')
+        # leichte Korrektur nach rechts
         drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), TURN_DEGREE)
         save_current_state = RIGHT_LS
 
     elif currentStateColor == EDGE_L_LS:
         print('hard left')
+        # harte Korrektur nach links
         drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), 1.5 * TURN_DEGREE)
         save_current_state = EDGE_L_LS
 
     elif currentStateColor == EDGE_R_LS:
         print('hard right')
+        # harte Korrektur nach rechts
         drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), 1.5 * TURN_DEGREE)
         save_current_state = EDGE_R_LS
 
     elif currentStateColor == NO_LINE_LS:
+        # Kontinuierlich geradeaus mit normaler Geschwindigkeit
         drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
         print('no line')
         return STATE_NO_LINE, NO_LINE_LS
 
     elif currentStateColor == ALL_BLACK:
         if last_state == LEFT_LS or last_state == EDGE_L_LS:
+            # harte Korrektur nach links
             drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), 1.5 * TURN_DEGREE)
         elif last_state == RIGHT_LS or last_state == EDGE_R_LS:
+            # harte Korrektur nach rechts
             drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), 1.5 * TURN_DEGREE)
         else:
+            # geradeaus fahren für eine kurze Strecke
             drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
         save_current_state = ALL_BLACK
         print('all black')

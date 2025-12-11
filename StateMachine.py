@@ -11,13 +11,13 @@ STATE_PUSH_BLOCK = 3
 STATE_TROW_BALL = 4
 STATE_NO_LINE = 5
 current_state = STATE_FOLLOW_LINE
-last_state = None
+LastColorState = None
 
 HAS_TURNED = False
 HAS_PUSHED = False
 HAS_BALL = False
 
-# 
+
 def State_machine():
     global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED
     values_threshold = init_threshold()
@@ -30,10 +30,12 @@ def State_machine():
         elif current_state == STATE_NO_LINE:
             values_threshold = update_threshold(values_threshold)
             if not HAS_TURNED:
+                # 180° Drehung am Anfang des Parcours
                 turn_tank()
                 HAS_TURNED = True
             else:
-                previous_state = current_state
+                previous_state = current_state  # Speichert, wie die Linie verlassen wurde
+                # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for _ in range(12):
                     current_state, last_state = adjust_tank(fetch_sensor(values_threshold), last_state)
                     print("lost")
@@ -52,9 +54,9 @@ def State_machine():
                             current_state = STATE_FOLLOW_LINE
                             break
 
-        elif current_state == STATE_TURN_ARROUND:
-            turn_tank()
-            current_state = STATE_FOLLOW_LINE
+        # elif current_state == STATE_TURN_ARROUND:
+        #     turn_tank()
+        #     current_state = STATE_FOLLOW_LINE
 
         # elif current_state == STATE_GATE:
         #     pass
