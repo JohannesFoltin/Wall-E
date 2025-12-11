@@ -73,5 +73,4 @@ def State_machine():
         #     pass
 
 
-# MAYBE TODO funktion gibt state änderung als return zurück
 State_machine()

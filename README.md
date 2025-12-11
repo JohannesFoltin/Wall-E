@@ -18,7 +18,8 @@ Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 
 # Ideen
 
-- [ ] Dynamisches Lenken, abhängig von sensor unterschied 
+- [ ] turn Tank in adjust Tank
+- [ ] update threshhold in fetch sensor funktion 
 
 Postiv ist nach rechts
 !! positiv zurück !!
