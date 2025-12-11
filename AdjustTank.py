@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import time
 from ev3dev2.motor import OUTPUT_A, OUTPUT_D
 from ev3dev2.motor import MoveTank, SpeedPercent
 
@@ -19,22 +20,20 @@ EDGE_R_LS = (False, False, True)
 ALL_BLACK = (True, True, True)
 NO_LINE_LS = (False, False, False)
 
-DRIVE_SPEED = -100
-CONTINUE_SPEED = DRIVE_SPEED * 0.3
+DRIVE_SPEED = -50
+CONTINUE_SPEED = DRIVE_SPEED * 0.6
 HALF_DRIVE_SPEED = 0.5 * DRIVE_SPEED
 NO_LINE_SPEED = DRIVE_SPEED * 0.8
-TURN_DEGREE = 20
+TURN_DEGREE = 10
 
 MARK_DEGREE = -100
-MAX_DEGREE = -360
-MAX_BACKWARD = -1400
 
 
 def turn_angle_white(last_state):
     if (last_state == LEFT_LS) or (last_state == EDGE_L_LS):
-        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
+        drive_tank.on_for_degrees(SpeedPercent(HALF_DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), 4 * TURN_DEGREE)
     elif (last_state == RIGHT_LS) or (last_state == EDGE_R_LS):
-        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-HALF_DRIVE_SPEED), TURN_DEGREE)
+        drive_tank.on_for_degrees(SpeedPercent(-HALF_DRIVE_SPEED), SpeedPercent(HALF_DRIVE_SPEED), 4 * TURN_DEGREE)
 
 
 def drive_back(currentStateColor, last_state):
@@ -46,6 +45,11 @@ def drive_back(currentStateColor, last_state):
         return STATE_NO_LINE, NO_LINE_LS
     else:
         return STATE_FOLLOW_LINE, NO_LINE_LS
+
+
+def tank_stop():
+    drive_tank.off()
+    time.sleep(0.2)
 
 
 def adjust_tank(currentStateColor, last_state):
@@ -70,24 +74,26 @@ def adjust_tank(currentStateColor, last_state):
 
     elif currentStateColor == EDGE_L_LS:
         print('hard left')
-        drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
+        drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), 1.5 * TURN_DEGREE)
         save_current_state = EDGE_L_LS
 
     elif currentStateColor == EDGE_R_LS:
         print('hard right')
-        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), TURN_DEGREE)
+        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), 1.5 * TURN_DEGREE)
         save_current_state = EDGE_R_LS
 
     elif currentStateColor == NO_LINE_LS:
-        if last_state == NO_LINE_LS:
-            drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
-        else:
-            drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
+        drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
         print('no line')
         return STATE_NO_LINE, NO_LINE_LS
 
     elif currentStateColor == ALL_BLACK:
-        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
+        if last_state == LEFT_LS or last_state == EDGE_L_LS:
+            drive_tank.on_for_degrees(SpeedPercent(-DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), 1.5 * TURN_DEGREE)
+        elif last_state == RIGHT_LS or last_state == EDGE_R_LS:
+            drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(-DRIVE_SPEED), 1.5 * TURN_DEGREE)
+        else:
+            drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
         save_current_state = ALL_BLACK
         print('all black')
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import time
-from AdjustTank import adjust_tank, turn_angle_white, drive_back
+from AdjustTank import adjust_tank, turn_angle_white, drive_back, tank_stop
 from FetchSensor import fetch_sensor, init_threshold, update_threshold
 from TurnTank import turn_tank
 
@@ -18,7 +17,7 @@ HAS_TURNED = False
 HAS_PUSHED = False
 HAS_BALL = False
 
-
+# 
 def State_machine():
     global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED
     values_threshold = init_threshold()
@@ -29,25 +28,29 @@ def State_machine():
             current_state, last_state = adjust_tank(fetch_sensor(values_threshold), last_state)
 
         elif current_state == STATE_NO_LINE:
-            current_state, last_state = adjust_tank(fetch_sensor(values_threshold), last_state)
+            values_threshold = update_threshold(values_threshold)
             if not HAS_TURNED:
                 turn_tank()
                 HAS_TURNED = True
             else:
-                for _ in range(28):
+                previous_state = current_state
+                for _ in range(12):
                     current_state, last_state = adjust_tank(fetch_sensor(values_threshold), last_state)
                     print("lost")
                     if current_state != STATE_NO_LINE:
                         current_state = STATE_FOLLOW_LINE
                         print("found")
                         break
-                turn_angle_white(last_state)
-                for _ in range(30):
-                    current_state, last_state = drive_back(fetch_sensor(values_threshold), last_state)
-                    print("go_back")
-                    if current_state != STATE_NO_LINE:
-                        current_state = STATE_FOLLOW_LINE
-                        break
+                else:
+                    tank_stop()
+                    turn_angle_white(previous_state)
+                    for _ in range(16):
+                        current_state, last_state = drive_back(fetch_sensor(values_threshold), last_state)
+                        print("go_back")
+                        if current_state != STATE_NO_LINE:
+                            tank_stop()
+                            current_state = STATE_FOLLOW_LINE
+                            break
 
         elif current_state == STATE_TURN_ARROUND:
             turn_tank()
