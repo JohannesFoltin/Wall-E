@@ -17,6 +17,7 @@ HAS_TURNED = False
 HAS_PUSHED = False
 HAS_BALL = False
 
+
 # Globale State Machine
 def State_machine():
     # Init der nötigen Werte
