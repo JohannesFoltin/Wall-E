@@ -41,19 +41,20 @@ min 27
 max 29
 
 # Zwischenbreicht Arbeitsteilung
-- [ ] Konstruktion und Softwarekonzept
-    - [ ] Linienverfolgung, enge Kurven, Streckenunterbrechungen und wechselnde Lichtbedingungen
-    - [ ] Wendevorgang
-    - [ ] Schranke und Ballaufnahme
+- Konstruktion und Softwarekonzept
+    - [Michi] Grundlegende Kostruktion, als Basis der genaueren, folgenden Beschreibugen 
+    - [Johannes] Linienverfolgung, enge Kurven, Streckenunterbrechungen und wechselnde Lichtbedingungen
+    - [Kai] Wendevorgang
+    - [Michi] Schranke und Ballaufnahme
     - [Jannes] Schwerpunkt und Steigung/Gefälle
-    - [ ] Barcode und Klotz verschieben
-    - [ ] Ballabgabe und Verhalten im Ziel
-    - [ ] Allgemeines Softwarekonzept, Regelung / PID
-- [ ] Fortschritt
+    - [Kai -- Michi] Barcode und Klotz verschieben
+    - [Jannes] Ballabgabe und Verhalten im Ziel
+    - [Johannes | Kai] Allgemeines Softwarekonzept, Regelung / PID
+- [Johannes] Fortschritt
 - [Jannes | Kai] Fehleranalyse
-- [ ] Weiteres Vorgehen
-- [ ] Besonderheiten
-- [ ] Arbeitsteilung
+- [Alle -- Jannes] Weiteres Vorgehen
+- [Johannes] Besonderheiten (Wackeln, Linenverlust)
+- [Michi] Arbeitsteilung
 
 Sonstige
 - [Jannes] Fotos

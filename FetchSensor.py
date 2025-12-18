@@ -7,6 +7,7 @@ ls_c = LightSensor(INPUT_2)  # center Sensor auf Input 3 # neuer Sensor
 ls_l = LightSensor(INPUT_3)  # links Sensor auf Input 4
 uss_distance = UltrasonicSensor(INPUT_4)
 
+
 # Lese die Daten der Licht-Sensoren aus und gebe sie als Tuple zurück
 def light_ping():
     return ls_l.reflected_light_intensity, ls_c.reflected_light_intensity, ls_r.reflected_light_intensity
@@ -22,6 +23,7 @@ def init_threshold():
     black = light_ping_c
 
     return (white, black)
+
 
 # Der Threshold wird geupdated. Dabei werden die Werte überschrieben,
 # wenn der neue eingelesene Wert größer oder kleiner ist als der derzeitige
@@ -48,6 +50,7 @@ def update_threshold(old_values):
 
     # Gebe die neuen Thresholds zurück
     return (white, black)
+
 
 # Verrechne die eingehenden Sensoren Daten mit den festgelegten Thresholds.
 # Gebe eine tuple an Wahrheitswerten zurück, je nach dem ob ein Sensor auf Schwarz oder Weiß steht
@@ -76,6 +79,7 @@ def fetch_sensor(values):
         black_r = False  # white
 
     return (black_l, black_c, black_r)
+
 
 # Hole die Daten vom Ultraschall Sensor
 def fetch_distance():
