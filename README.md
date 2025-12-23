@@ -58,4 +58,13 @@ max 29
 
 Sonstige
 - [Jannes] Fotos
-- Für Flowcharts: https://app.diagrams.net
+- Für Flowcharts: https://app.diagrams.net, als SVG und .drawio exportieren
+    - Standard farben benutzen (1. Preset / pastell)
+    
+    Format:
+    - Start, End: Elipse : Grau
+    - Process: rounded Rec: Blau
+    - Entscheidung: Diamand: Orange
+    - Input: Parallelogramm: Grün
+    - Output: Parallelogramm: Rot
+    - 
