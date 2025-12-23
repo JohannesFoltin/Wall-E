@@ -58,3 +58,4 @@ max 29
 
 Sonstige
 - [Jannes] Fotos
+- Für Flowcharts: https://app.diagrams.net
