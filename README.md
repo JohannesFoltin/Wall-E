@@ -24,21 +24,9 @@ Dies ist das geniale Projekt der genialen Gruppe Kampfroboter/Wall-E in SDP
 Postiv ist nach rechts
 !! positiv zurück !!
 
-# Testen
-- ohne sleep
-- jede iteration weiter fahren
-- no line,
-- 90° kurve
-- licht beobachten -> range ausgeben
-- 
+# TODO
+- zum wenden abstanssensor auslesen
 
-init 35.6 18.400000000000002
-end 43.900000000000006 11.0
-
-threshold
-init 27
-min 27
-max 29
 
 # Zwischenbreicht Arbeitsteilung
 - Konstruktion und Softwarekonzept
@@ -58,7 +46,7 @@ max 29
 
 Sonstige
 - [Jannes] Fotos
-- Für Flowcharts: https://app.diagrams.net, als SVG und .drawio exportieren
+- Für Flowcharts: https://app.diagrams.net, als !! PDF !! und .drawio exportieren
     - Standard farben benutzen (1. Preset / pastell)
     
     Format:
