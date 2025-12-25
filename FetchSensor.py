@@ -61,24 +61,24 @@ def update_threshold(old_values):
 def fetch_sensor(values):
     light_ping_l, light_ping_c, light_ping_r = light_ping()
 
-    threshhold = (values[0] + values[1]) // 2
+    threshold = (values[0] + values[1]) // 2
 
     # sensor left
-    if light_ping_l <= threshhold:  # black
+    if light_ping_l <= threshold:  # black
         black_l = True
-    elif light_ping_l > threshhold:
+    elif light_ping_l > threshold:
         black_l = False  # white
 
     # sensor center
-    if light_ping_c <= threshhold:  # black
+    if light_ping_c <= threshold:  # black
         black_c = True
-    elif light_ping_c > threshhold:
+    elif light_ping_c > threshold:
         black_c = False  # white
 
     # sensor right
-    if light_ping_r <= threshhold:  # black
+    if light_ping_r <= threshold:  # black
         black_r = True
-    elif light_ping_r > threshhold:
+    elif light_ping_r > threshold:
         black_r = False  # white
 
     return (black_l, black_c, black_r)
