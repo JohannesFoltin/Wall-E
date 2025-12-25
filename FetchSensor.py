@@ -17,10 +17,10 @@ def light_ping():
 def init_threshold():
     light_ping_l, light_ping_c, light_ping_r = light_ping()
 
-    # Rechter und Linker Sensor sollten auf Weiß stehen. Wert wird gemittelt
-    white = (light_ping_l + light_ping_r) / 2
-    # Mittlerer Sensor steht auf Schwarz
-    black = light_ping_c
+    # Der höchste der der drei Sensoren ist der Hellste -> Weiß
+    white = max(light_ping_l, light_ping_r, light_ping_c)
+    # Der nidrigste der der drei Sensoren ist der Dunkelste -> Schwarz
+    black = min(light_ping_l, light_ping_r, light_ping_c)
 
     return (white, black)
 
@@ -31,8 +31,11 @@ def init_threshold():
 def update_threshold(old_values):
     light_ping_l, light_ping_c, light_ping_r = light_ping()
 
-    white = old_values[0]
-    black = old_values[1]
+    old_white = old_values[0]
+    old_black = old_values[1]
+
+    white = max(old_white, light_ping_l, light_ping_c, light_ping_r)
+    black = min(old_black, light_ping_l, light_ping_c, light_ping_r)
 
     # Vergleichen der Werte
     if light_ping_l > white:
