@@ -37,7 +37,7 @@ def update_threshold(old_values):
     white = max(old_white, light_ping_l, light_ping_c, light_ping_r)
     black = min(old_black, light_ping_l, light_ping_c, light_ping_r)
 
-    # Vergleichen der Werte
+    '''Vergleichen der Werte
     if light_ping_l > white:
         white = light_ping_l
     elif light_ping_l < black:
@@ -49,7 +49,7 @@ def update_threshold(old_values):
     if light_ping_r > white:
         white = light_ping_r
     elif light_ping_r < black:
-        black = light_ping_r
+        black = light_ping_r'''
 
     # Gebe die neuen Thresholds zurück
     return (white, black)
