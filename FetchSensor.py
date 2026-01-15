@@ -2,10 +2,10 @@
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 from ev3dev2.sensor.lego import LightSensor, UltrasonicSensor
 
-ls_r = LightSensor(INPUT_1)  # rechter Sensor auf Input 2
-ls_c = LightSensor(INPUT_2)  # center Sensor auf Input 3 # neuer Sensor
-ls_l = LightSensor(INPUT_3)  # links Sensor auf Input 4
-uss_distance = UltrasonicSensor(INPUT_4)
+ls_r = LightSensor(INPUT_1)  # rechter Sensor auf Input 1
+ls_c = LightSensor(INPUT_2)  # center Sensor auf Input 2
+ls_l = LightSensor(INPUT_3)  # links Sensor auf Input 3
+uss_distance = UltrasonicSensor(INPUT_4)  # Abstandssensor auf Input 4
 
 
 # Lese die Daten der Licht-Sensoren aus und gebe sie als Tuple zurück
