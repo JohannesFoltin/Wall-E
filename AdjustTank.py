@@ -65,8 +65,9 @@ def adjust_tank(currentStateColor, last_state, speed):
     if currentStateColor == NORMAL_LS:
         if last_state == NORMAL_LS:
             # Kontinuierlich geradeaus mit normaler Geschwindigkeit
-            if speed is not None:
+            if not (speed == 1000):
                 drive_tank.on(SpeedPercent(speed), SpeedPercent(speed))
+                print("Langsam speed")
             else:
                 drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
         else:

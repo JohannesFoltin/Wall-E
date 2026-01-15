@@ -21,7 +21,6 @@ def init_threshold():
     white = max(light_ping_l, light_ping_r, light_ping_c)
     # Der nidrigste der der drei Sensoren ist der Dunkelste -> Schwarz
     black = min(light_ping_l, light_ping_r, light_ping_c)
-
     return (white, black)
 
 
