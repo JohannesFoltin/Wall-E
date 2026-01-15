@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from AdjustTank import adjust_tank, turn_angle_white, drive_back, tank_stop
-from FetchSensor import fetch_sensor, init_threshold, update_threshold
+from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_distance
 from TurnTank import turn_tank
 
 
@@ -15,7 +15,7 @@ LastColorState = None
 
 HAS_TURNED = False
 HAS_PUSHED = False
-HAS_BALL = False
+HAS_BALL = 0
 
 
 # Globale State Machine
@@ -28,6 +28,14 @@ def State_machine():
     LastColorState = (False, True, False)
     while True:
         if current_state == STATE_FOLLOW_LINE:
+            distance = fetch_distance()
+            if distance <= 20 and HAS_BALL == 0:
+                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
+            if distance <= 15 and (HAS_BALL == 0) or (HAS_BALL == 1):
+                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 0)
+                HAS_BALL = 1
+            if distance > 17 and HAS_BALL == 1:
+                HAS_BALL = 2
             # Threshold updaten
             values_threshold = update_threshold(values_threshold)
             # Fahre und kriege den neuen state
