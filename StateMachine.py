@@ -11,6 +11,7 @@ STATE_TROW_BALL = 4
 STATE_NO_LINE = 5
 current_state = STATE_FOLLOW_LINE
 LastColorState = None
+tims = 0
 
 HAS_TURNED = False
 HAS_PUSHED = False
@@ -20,16 +21,17 @@ HAS_BALL = 0
 # Globale State Machine
 def State_machine():
     # Init der nötigen Werte
-    global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED
+    global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED, tims
     # Threshold einlesen
     values_threshold = init_threshold()
     # Erster State
     LastColorState = current_state
+    distance = 300
+
     while True:
         if current_state == STATE_FOLLOW_LINE:
-            distance = fetch_distance()
+            distance, tims = fetch_distance(tims, distance)
             values_threshold = update_threshold(values_threshold)
-            print(distance)
             if distance <= 100:
                 if (HAS_BALL == 1) and (distance > 22):
                     HAS_BALL = 2
