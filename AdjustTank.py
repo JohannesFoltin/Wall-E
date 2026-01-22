@@ -110,7 +110,11 @@ def adjust_tank(currentStateColor, last_state, speed):
 
     elif currentStateColor == NO_LINE_LS:
         # Kontinuierlich geradeaus mit normaler Geschwindigkeit
-        drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
+        if not (speed == 1000):
+            drive_tank.on(SpeedPercent(speed), SpeedPercent(speed))
+            print("Langsam speed")
+        else:
+            drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
         print('no line')
         return STATE_NO_LINE, NO_LINE_LS
 
