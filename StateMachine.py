@@ -25,7 +25,7 @@ def State_machine():
     # Threshold einlesen
     values_threshold = init_threshold()
     # Erster State
-    LastColorState = (False, True, False)
+    LastColorState = current_state
     while True:
         if current_state == STATE_FOLLOW_LINE:
             distance = fetch_distance()
@@ -35,7 +35,7 @@ def State_machine():
                 if (HAS_BALL == 1) and (distance > 22):
                     HAS_BALL = 2
                     continue
-                if (distance <= 10) and (not (HAS_BALL == 2)):
+                if (distance <= 10) and (not (HAS_BALL == 2)) and HAS_TURNED:
                     current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 0)
                     HAS_BALL = 1
                     print("gar nicht fahren")
@@ -46,7 +46,7 @@ def State_machine():
                     continue
             # Threshold updaten
             # Fahre und kriege den neuen state
-            current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState,1000)
+            current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
 
         elif current_state == STATE_NO_LINE:
             values_threshold = update_threshold(values_threshold)
@@ -58,7 +58,7 @@ def State_machine():
                 previous_state = current_state  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for _ in range(12):
-                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState,1000)
+                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
                     print("lost")
                     if current_state != STATE_NO_LINE:
                         current_state = STATE_FOLLOW_LINE
