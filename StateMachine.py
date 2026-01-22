@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from AdjustTank import adjust_tank, turn_angle_white, drive_back, tank_stop, turn_tank
+from AdjustTank import adjust_tank, turn_angle_white, drive_back, tank_stop, turn_tank, move_tank_value
 from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_distance
 
 
@@ -50,7 +50,14 @@ def State_machine():
             else:
                 previous_state = current_state  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
+                for i in range(9):
+                    value = move_tank_value(1,fetch_sensor(values_threshold)) # 1 Cm nach vorne
+                    if value:
+                        #BARCODE i länge
+                        print("ASd")
+                    
                 for _ in range(12):
+
                     current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
                     print("lost")
                     if current_state != STATE_NO_LINE:
