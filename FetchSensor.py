@@ -74,9 +74,8 @@ def fetch_sensor(values):
 def fetch_distance(prev_time, distance):
     distance_tmp = distance
     cur_time = (time() * 1000)
-    print(cur_time)
     if (cur_time - prev_time > 250):
-        print("Ausfuerung!")
         distance_tmp = uss_distance.distance_centimeters
         print(distance_tmp)
-    return distance_tmp, cur_time
+        return distance_tmp, cur_time
+    return distance_tmp, prev_time
