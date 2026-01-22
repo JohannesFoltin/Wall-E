@@ -59,6 +59,14 @@ def tank_stop():
     time.sleep(0.2)
 
 
+# Führt eine 180° Drehung des Roboters durch.
+def turn_tank():
+    TURN_WS = 30  # Drehgeschwindigkeit
+    TURN_DEGREE = 420  # Drehgrad für 180° Drehung
+    # Drehe den Roboter um 180 Grad
+    drive_tank.on_for_degrees(SpeedPercent(-TURN_WS), SpeedPercent(TURN_WS), TURN_DEGREE)
+
+
 # Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
 def adjust_tank(currentStateColor, last_state, speed):
     save_current_state = NORMAL_LS

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-from AdjustTank import adjust_tank, turn_angle_white, drive_back, tank_stop
+from AdjustTank import adjust_tank, turn_angle_white, drive_back, tank_stop, turn_tank
 from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_distance
-from TurnTank import turn_tank
 
 
 STATE_FOLLOW_LINE = 0
@@ -31,17 +30,17 @@ def State_machine():
             distance = fetch_distance()
             values_threshold = update_threshold(values_threshold)
             print(distance)
-            if distance <= 40:
+            if distance <= 100:
                 if (HAS_BALL == 1) and (distance > 22):
                     HAS_BALL = 2
                     continue
-                if (distance <= 10) and (not (HAS_BALL == 2)) and HAS_TURNED:
+                if (distance <= 19) and (not (HAS_BALL == 2)) and HAS_TURNED:
                     current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 0)
                     HAS_BALL = 1
                     print("gar nicht fahren")
                     continue
                 elif HAS_BALL == 0:
-                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
+                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -30)
                     print("langsamer fahren")
                     continue
             # Threshold updaten
@@ -75,12 +74,6 @@ def State_machine():
                             current_state = STATE_FOLLOW_LINE
                             break
 
-        # elif current_state == STATE_TURN_ARROUND:
-        #     turn_tank()
-        #     current_state = STATE_FOLLOW_LINE
-
-        # elif current_state == STATE_GATE:
-        #     pass
         # elif current_state == STATE_PUSH_BLOCK:
         #     push_block()
         #     # TODO drive_back to line
