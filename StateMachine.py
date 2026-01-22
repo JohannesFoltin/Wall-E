@@ -6,12 +6,13 @@ from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_di
 STATE_FOLLOW_LINE = 0
 STATE_TURN_ARROUND = 1
 STATE_GATE = 2
-STATE_PUSH_BLOCK = 3
-STATE_TROW_BALL = 4
-STATE_NO_LINE = 5
+STATE_HAS_BALL = 3
+STATE_PUSH_BLOCK = 4
+STATE_TROW_BALL = 5
+STATE_NO_LINE = 6
 current_state = STATE_FOLLOW_LINE
 LastColorState = None
-tims = 0
+prev_time = 0
 
 HAS_TURNED = False
 HAS_PUSHED = False
@@ -21,7 +22,7 @@ HAS_BALL = 0
 # Globale State Machine
 def State_machine():
     # Init der nötigen Werte
-    global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED, tims
+    global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED, prev_time
     # Threshold einlesen
     values_threshold = init_threshold()
     # Erster State
@@ -29,29 +30,30 @@ def State_machine():
     distance = 300
 
     while True:
+        distance, prev_time = fetch_distance(prev_time, distance)
+        values_threshold = update_threshold(values_threshold)
+        # Schranken händling
+        
+        if distance <= 100: 
+            current_state = STATE_GATE
+
+            if (HAS_BALL == 1) and (distance > 22):
+                HAS_BALL = 2
+            elif (distance <= 19) and (not (HAS_BALL == 2)) and HAS_TURNED:
+                tank_stop()
+                HAS_BALL = 1
+                print("gar nicht fahren")
+                continue
+            elif HAS_BALL == 0:
+                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
+                print("langsamer fahren")
+                continue
         if current_state == STATE_FOLLOW_LINE:
-            distance, tims = fetch_distance(tims, distance)
-            values_threshold = update_threshold(values_threshold)
-            if distance <= 100:
-                if (HAS_BALL == 1) and (distance > 22):
-                    HAS_BALL = 2
-                    continue
-                if (distance <= 19) and (not (HAS_BALL == 2)) and HAS_TURNED:
-                    tank_stop()
-                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 0)
-                    HAS_BALL = 1
-                    print("gar nicht fahren")
-                    continue
-                elif HAS_BALL == 0:
-                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
-                    print("langsamer fahren")
-                    continue
             # Threshold updaten
             # Fahre und kriege den neuen state
             current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
 
         elif current_state == STATE_NO_LINE:
-            values_threshold = update_threshold(values_threshold)
             if not HAS_TURNED:
                 # 180° Drehung am Anfang des Parcours
                 turn_tank()
@@ -60,10 +62,7 @@ def State_machine():
                 previous_state = current_state  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for _ in range(12):
-                    if distance <= 100 and HAS_BALL == 0:
-                        current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
-                    else:
-                        current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
+                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
                     print("lost")
                     if current_state != STATE_NO_LINE:
                         current_state = STATE_FOLLOW_LINE
@@ -79,7 +78,8 @@ def State_machine():
                             tank_stop()
                             current_state = STATE_FOLLOW_LINE
                             break
-
+        elif current_state == STATE_HAS_BALL:
+            
         # elif current_state == STATE_PUSH_BLOCK:
         #     push_block()
         #     # TODO drive_back to line
