@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-from logging import disable
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from time import time, time_ns
+from time import time
 from ev3dev2.sensor.lego import LightSensor, UltrasonicSensor
 
 ls_r = LightSensor(INPUT_1)  # rechter Sensor auf Input 1
@@ -70,11 +69,14 @@ def fetch_sensor(values):
 
     return (black_l, black_c, black_r)
 
+
 # Hole die Daten vom Ultraschall Sensor
-def fetch_distance(tims, distance):
+def fetch_distance(prev_time, distance):
     distance_tmp = distance
-    if (time_ns() - tims > 2500000000):
+    cur_time = (time() * 1000)
+    print(cur_time)
+    if (cur_time - prev_time > 250):
         print("Ausfuerung!")
-        distance_tmp = uss_distance.distance_centimeters()
+        distance_tmp = uss_distance.distance_centimeters
         print(distance_tmp)
-    return distance_tmp, tims
+    return distance_tmp, cur_time

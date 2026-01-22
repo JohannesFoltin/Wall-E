@@ -37,6 +37,7 @@ def State_machine():
                     HAS_BALL = 2
                     continue
                 if (distance <= 19) and (not (HAS_BALL == 2)) and HAS_TURNED:
+                    tank_stop()
                     current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 0)
                     HAS_BALL = 1
                     print("gar nicht fahren")
