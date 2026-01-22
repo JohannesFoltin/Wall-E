@@ -67,6 +67,11 @@ def turn_tank():
     drive_tank.on_for_degrees(SpeedPercent(-TURN_WS), SpeedPercent(TURN_WS), TURN_DEGREE)
 
 
+def scan_no_line(dir,schawrz):
+    dir + _> vorwärts festen wert
+    dir -  fahr rückwärts
+
+
 # Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
 def adjust_tank(currentStateColor, last_state, speed):
     save_current_state = NORMAL_LS

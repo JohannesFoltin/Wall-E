@@ -5,7 +5,7 @@ from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_di
 
 STATE_FOLLOW_LINE = 0
 STATE_TURN_ARROUND = 1
-STATE_GATE = 2
+STATE_WALL = 2
 STATE_HAS_BALL = 3
 STATE_PUSH_BLOCK = 4
 STATE_TROW_BALL = 5
@@ -16,7 +16,7 @@ prev_time = 0
 
 HAS_TURNED = False
 HAS_PUSHED = False
-HAS_BALL = 0
+HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 
 
 # Globale State Machine
@@ -33,21 +33,10 @@ def State_machine():
         distance, prev_time = fetch_distance(prev_time, distance)
         values_threshold = update_threshold(values_threshold)
         # Schranken händling
-        
-        if distance <= 100: 
-            current_state = STATE_GATE
 
-            if (HAS_BALL == 1) and (distance > 22):
-                HAS_BALL = 2
-            elif (distance <= 19) and (not (HAS_BALL == 2)) and HAS_TURNED:
-                tank_stop()
-                HAS_BALL = 1
-                print("gar nicht fahren")
-                continue
-            elif HAS_BALL == 0:
-                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
-                print("langsamer fahren")
-                continue
+        if distance <= 100 and HAS_BALL != 2:
+            current_state = STATE_WALL
+
         if current_state == STATE_FOLLOW_LINE:
             # Threshold updaten
             # Fahre und kriege den neuen state
@@ -78,8 +67,20 @@ def State_machine():
                             tank_stop()
                             current_state = STATE_FOLLOW_LINE
                             break
-        elif current_state == STATE_HAS_BALL:
-            
+        elif current_state == STATE_WALL:
+            # Schranke
+            if (HAS_BALL == 1) and (distance > 22):
+                HAS_BALL = 2
+                current_state = STATE_FOLLOW_LINE
+            elif (distance <= 19) and (not (HAS_BALL == 2)) and HAS_TURNED:
+                tank_stop()
+                HAS_BALL = 1
+                print("gar nicht fahren")
+            elif HAS_BALL == 0:
+                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
+                print("langsamer fahren")
+                current_state = STATE_FOLLOW_LINE
+
         # elif current_state == STATE_PUSH_BLOCK:
         #     push_block()
         #     # TODO drive_back to line
