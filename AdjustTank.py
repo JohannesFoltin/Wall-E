@@ -60,12 +60,16 @@ def tank_stop():
 
 
 # Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
-def adjust_tank(currentStateColor, last_state):
+def adjust_tank(currentStateColor, last_state, speed):
     save_current_state = NORMAL_LS
     if currentStateColor == NORMAL_LS:
         if last_state == NORMAL_LS:
             # Kontinuierlich geradeaus mit normaler Geschwindigkeit
-            drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
+            if not (speed == 1000):
+                drive_tank.on(SpeedPercent(speed), SpeedPercent(speed))
+                print("Langsam speed")
+            else:
+                drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
         else:
             # 1 mal geradeaus fahren mit voller Geschwindigkeit
             drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
