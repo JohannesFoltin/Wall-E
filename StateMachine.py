@@ -40,7 +40,7 @@ def State_machine():
                     print("gar nicht fahren")
                     continue
                 elif HAS_BALL == 0:
-                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -30)
+                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -5)
                     print("langsamer fahren")
                     continue
             # Threshold updaten
