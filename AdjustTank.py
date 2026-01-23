@@ -67,9 +67,13 @@ def turn_tank():
     drive_tank.on_for_degrees(SpeedPercent(-TURN_WS), SpeedPercent(TURN_WS), TURN_DEGREE)
 
 
-def scan_no_line(dir,schawrz):
-    dir + _> vorwärts festen wert
-    dir -  fahr rückwärts
+def scan_no_line(prev_rotaion):
+    drive_tank.on(10, 10)
+    while True:
+        current_rotation = drive_tank.rotation
+        colorstate = fetch_sensor()
+        if colorstate != No_line:
+            return current_rotation - prev_rotaion
 
 
 # Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
