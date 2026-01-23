@@ -67,7 +67,8 @@ def move_tank_value(direction, Colorstate):
     else:
         drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), -TURN_DEGREE)
     return False
-    
+
+
 # Führt eine 180° Drehung des Roboters durch.
 def turn_tank():
     TURN_WS = 30  # Drehgeschwindigkeit
@@ -76,18 +77,6 @@ def turn_tank():
     drive_tank.on_for_degrees(SpeedPercent(-TURN_WS), SpeedPercent(TURN_WS), TURN_DEGREE)
 
 
-<<<<<<< HEAD
-def scan_no_line(prev_rotaion):
-    drive_tank.on(10, 10)
-    while True:
-        current_rotation = drive_tank.rotation
-        colorstate = fetch_sensor()
-        if colorstate != No_line:
-            return current_rotation - prev_rotaion
-
-
-=======
->>>>>>> d4cec16135ca094802da1856f937b265539f4d84
 # Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
 def adjust_tank(currentStateColor, last_state, speed):
     save_current_state = NORMAL_LS
