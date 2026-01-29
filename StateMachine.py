@@ -14,11 +14,12 @@ current_state = STATE_FOLLOW_LINE
 LastColorState = None
 prev_time = 0
 barcode_count = 0
+NO_LINE_LS = (False, False, False)
 
 HAS_TURNED = False
 HAS_PUSHED = False
 HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
-HAS_BLOCK = 0 # 0: nicht geschoben, 1: zum block gedreht, 2: sthet vor block 3: block geschoben
+HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: sthet vor block 3: block geschoben und gedreht
 
 
 # Globale State Machine
@@ -108,22 +109,25 @@ def State_machine():
             elif HAS_BLOCK == 1:  # zur linie gedreht
                 if distance <= 5:
                     HAS_BLOCK = 2
-                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
+                _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
             elif HAS_BLOCK == 2:  # steht vor Block
-                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
+                _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
                 if distance > 5:  # wie weit fliegt der block weg
+                    for i in range(6):  # 3cm rückwärts
+                        _ = move_tank_value(-1, 0)  # 0.5 Cm nach vorne
+                    turn_tank(420)
                     HAS_BLOCK = 3
-            elif HAS_BLOCK == 3:  # block geschoben
-                for i in range(6):  # 3cm rückwärts
-                    _ = move_tank_value(-1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
-                turn_tank(420)
+            elif HAS_BLOCK == 3:  # block geschoben und gedreht
+                _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
+                if LastColorState == NO_LINE_LS:
+                    turn_tank(50)
+                    for i in range(4):
+                        value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
+                        if value:
+                            break
+                    current_state = STATE_FOLLOW_LINE
 
-
-            BlockPush()
-            # TODO drive_back to line
-            current_state = STATE_FOLLOW_LINE
         # elif current_state == STATE_TROW_BALL:
         #     pass
-
 
 State_machine()
