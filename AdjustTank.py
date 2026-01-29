@@ -73,7 +73,7 @@ def move_tank_value(direction, Colorstate):
 def turn_tank(turn_degree):
     TURN_WS = 30  # Drehgeschwindigkeit
     # Drehe den Roboter um 180 Grad
-    drive_tank.on_for_degrees(SpeedPercent(-TURN_WS), SpeedPercent(TURN_WS), TURN_DEGREE)
+    drive_tank.on_for_degrees(SpeedPercent(-TURN_WS), SpeedPercent(TURN_WS), turn_degree)
 
 
 # Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
