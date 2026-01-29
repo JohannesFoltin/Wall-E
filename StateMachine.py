@@ -37,10 +37,12 @@ def State_machine():
 
         # Schranken händling
         if distance <= 100 and HAS_BALL != 2:
+            print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
 
         # find barcode
         if barcode_count >= 3:
+            print("Wir fangen an mit dem Block pushen")
             current_state = STATE_PUSH_BLOCK
 
         if current_state == STATE_FOLLOW_LINE:
@@ -48,6 +50,7 @@ def State_machine():
             current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
 
         elif current_state == STATE_NO_LINE:
+            print("No Line")
             if not HAS_TURNED:
                 # 180° Drehung am Anfang des Parcours
                 turn_tank(420)
@@ -56,13 +59,16 @@ def State_machine():
                 previous_color_state = LastColorState  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for i in range(18):  # max lochgröße
+                    print(f"Lochgröße: {i}")
                     value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
                     if value:
                         if i < 4:  # Barcodegröße
+                            print(f"Lochgröße final: {i}")
                             barcode_count += 1
                             current_state = STATE_FOLLOW_LINE
                             break
                 tank_stop()
+                print("Fahr rueckwaerts")
                 turn_angle_white(previous_color_state)  # vlt nach drive_back
                 for _ in range(20):
                     current_state, LastColorState = drive_back(fetch_sensor(values_threshold), LastColorState)
@@ -73,6 +79,7 @@ def State_machine():
                         break
         elif current_state == STATE_WALL:
             # Schranke
+            print("Schranke")
             if (HAS_BALL == 1) and (distance > 22):
                 HAS_BALL = 2
                 current_state = STATE_FOLLOW_LINE
