@@ -13,6 +13,7 @@ STATE_NO_LINE = 6
 current_state = STATE_FOLLOW_LINE
 LastColorState = None
 prev_time = 0
+barcode_count = 0
 
 HAS_TURNED = False
 HAS_PUSHED = False
@@ -22,7 +23,7 @@ HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 # Globale State Machine
 def State_machine():
     # Init der nötigen Werte
-    global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED, prev_time
+    global current_state, HAS_TURNED, HAS_BALL, HAS_PUSHED, prev_time, barcode_count
     # Threshold einlesen
     values_threshold = init_threshold()
     # Erster State
@@ -37,6 +38,9 @@ def State_machine():
         if distance <= 100 and HAS_BALL != 2:
             current_state = STATE_WALL
 
+        if barcode_count >= 3:
+            current_state = STATE_PUSH_BLOCK
+
         if current_state == STATE_FOLLOW_LINE:
             # Threshold updaten
             # Fahre und kriege den neuen state
@@ -48,32 +52,24 @@ def State_machine():
                 turn_tank()
                 HAS_TURNED = True
             else:
-                previous_state = current_state  # Speichert, wie die Linie verlassen wurde
+                previous_color_state = LastColorState  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
-                for i in range(9):
-                    value = move_tank_value(1,fetch_sensor(values_threshold)) # 1 Cm nach vorne
+                for i in range(18):  # max lochgröße
+                    value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
                     if value:
-                        #BARCODE i länge
-                        print("ASd")
-                    
-                for _ in range(12):
-
-                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
-                    print("lost")
-                    if current_state != STATE_NO_LINE:
-                        current_state = STATE_FOLLOW_LINE
-                        print("found")
-                        break
-                else:
-                    tank_stop()
-                    turn_angle_white(previous_state)
-                    for _ in range(16):
-                        current_state, LastColorState = drive_back(fetch_sensor(values_threshold), LastColorState)
-                        print("go_back")
-                        if current_state != STATE_NO_LINE:
-                            tank_stop()
+                        if i < 4:  # Barcodegröße
+                            barcode_count += 1
                             current_state = STATE_FOLLOW_LINE
                             break
+                tank_stop()
+                turn_angle_white(previous_color_state)  # vlt nach drive_back
+                for _ in range(20):
+                    current_state, LastColorState = drive_back(fetch_sensor(values_threshold), LastColorState)
+                    print("go_back")
+                    if current_state != STATE_NO_LINE:
+                        tank_stop()
+                        current_state = STATE_FOLLOW_LINE
+                        break
         elif current_state == STATE_WALL:
             # Schranke
             if (HAS_BALL == 1) and (distance > 22):
@@ -88,10 +84,10 @@ def State_machine():
                 print("langsamer fahren")
                 current_state = STATE_FOLLOW_LINE
 
-        # elif current_state == STATE_PUSH_BLOCK:
-        #     push_block()
-        #     # TODO drive_back to line
-        #     current_state = STATE_FOLLOW_LINE
+        elif current_state == STATE_PUSH_BLOCK:
+            BlockPush()
+            # TODO drive_back to line
+            current_state = STATE_FOLLOW_LINE
         # elif current_state == STATE_TROW_BALL:
         #     pass
 
