@@ -34,10 +34,11 @@ def State_machine():
 
     while True:
         distance, prev_time = fetch_distance(prev_time, distance)
+        print(distance)
         values_threshold = update_threshold(values_threshold)
 
         # Schranken händling
-        if distance <= 100 and HAS_BALL != 2:
+        if distance <= 50 and HAS_BALL != 2:
             print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
 
@@ -60,11 +61,13 @@ def State_machine():
                 previous_color_state = LastColorState  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for i in range(18):  # max lochgröße
-                    print(f"Lochgröße: {i}")
+                    print("Lochgröße: ")
+                    print(i)
                     value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
                     if value:
                         if i < 4:  # Barcodegröße
-                            print(f"Lochgröße final: {i}")
+                            print("Lochgröße final: ")
+                            print(i)
                             barcode_count += 1
                             current_state = STATE_FOLLOW_LINE
                             break
