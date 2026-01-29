@@ -60,13 +60,15 @@ def tank_stop():
     time.sleep(0.2)
 
 
+# 0.5 cm nach vorne
 def move_tank_value(direction, Colorstate):
-    if Colorstate == NORMAL_LS:
+    if Colorstate != NO_LINE_LS:
         return True
     if direction > 0:
-        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
+        # 6.99 ist 0.5 cm
+        drive_tank.on_for_degrees(SpeedPercent(-25), SpeedPercent(-25), 6.99)
     else:
-        drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), -TURN_DEGREE)
+        drive_tank.on_for_degrees(SpeedPercent(-25), SpeedPercent(-25), - 2 * 6.99)
     return False
 
 
@@ -120,13 +122,6 @@ def adjust_tank(currentStateColor, last_state, speed):
         save_current_state = EDGE_R_LS
 
     elif currentStateColor == NO_LINE_LS:
-        # Kontinuierlich geradeaus mit normaler Geschwindigkeit
-        if not (speed == 1000):
-            drive_tank.on(SpeedPercent(speed), SpeedPercent(speed))
-            print("Langsam speed")
-        else:
-            drive_tank.on(SpeedPercent(CONTINUE_SPEED), SpeedPercent(CONTINUE_SPEED))
-        print('no line')
         return STATE_NO_LINE, NO_LINE_LS
 
     elif currentStateColor == ALL_BLACK:
