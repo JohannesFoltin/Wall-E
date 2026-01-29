@@ -95,7 +95,7 @@ def State_machine():
 
         elif current_state == STATE_PUSH_BLOCK:
             while True:
-                print('Fick Johannes!')
+                print('Fick Kai!')
                 break
 
             if HAS_BLOCK == 0:  # noch nicht geschoben
