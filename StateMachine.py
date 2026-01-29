@@ -93,7 +93,7 @@ def State_machine():
                 current_state = STATE_FOLLOW_LINE
 
         elif current_state == STATE_PUSH_BLOCK:
-            while True:
+            for i in range(300):
                 print('Fick Kai!')
                 break
 
