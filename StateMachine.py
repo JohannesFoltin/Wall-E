@@ -37,6 +37,7 @@ def State_machine():
         print(distance)
         values_threshold = update_threshold(values_threshold)
         print(current_state)
+
         # Schranken händling
         if distance <= 50 and HAS_BALL != 2:
             print("Wir fangen an mit der Schranke")
@@ -52,7 +53,7 @@ def State_machine():
             current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
 
         elif current_state == STATE_NO_LINE:
-            print("No Line")
+            print("State_No Line")
             if not HAS_TURNED:
                 # 180° Drehung am Anfang des Parcours
                 turn_tank(420)
@@ -61,12 +62,12 @@ def State_machine():
                 previous_color_state = LastColorState  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for i in range(18):  # max lochgröße
-                    print("Lochgröße: ")
+                    print("Lochgröße: ", sep='')
                     print(i)
                     value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
                     if value:
                         if i < 4:  # Barcodegröße
-                            print("Lochgröße final: ")
+                            print("Lochgröße final: ", sep='')
                             print(i)
                             barcode_count += 1
                             current_state = STATE_FOLLOW_LINE
