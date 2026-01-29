@@ -140,5 +140,4 @@ def adjust_tank(currentStateColor, last_state, speed):
             drive_tank.on_for_degrees(SpeedPercent(DRIVE_SPEED), SpeedPercent(DRIVE_SPEED), TURN_DEGREE)
         save_current_state = ALL_BLACK
         print('all black')
-    print('Fick Johannes')
     return STATE_FOLLOW_LINE, save_current_state
