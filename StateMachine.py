@@ -94,10 +94,6 @@ def State_machine():
                 current_state = STATE_FOLLOW_LINE
 
         elif current_state == STATE_PUSH_BLOCK:
-            for i in range(300):
-                print('Fick Kai!')
-                break
-
             if HAS_BLOCK == 0:  # noch nicht geschoben
                 # 20 cm vorwärts
                 for i in range(18):
