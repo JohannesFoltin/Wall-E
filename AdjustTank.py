@@ -76,8 +76,6 @@ def turn_tank(turn_degree):
     drive_tank.on_for_degrees(SpeedPercent(-TURN_WS), SpeedPercent(TURN_WS), TURN_DEGREE)
 
 
-
-
 # Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
 def adjust_tank(currentStateColor, last_state, speed):
     save_current_state = NORMAL_LS
