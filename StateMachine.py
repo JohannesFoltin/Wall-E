@@ -10,6 +10,7 @@ STATE_HAS_BALL = 3
 STATE_PUSH_BLOCK = 4
 STATE_TROW_BALL = 5
 STATE_NO_LINE = 6
+
 current_state = STATE_FOLLOW_LINE
 LastColorState = None
 prev_time = 0
@@ -17,7 +18,6 @@ barcode_count = 0
 NO_LINE_LS = (False, False, False)
 
 HAS_TURNED = False
-HAS_PUSHED = False
 HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: sthet vor block 3: block geschoben und gedreht
 
@@ -25,7 +25,7 @@ HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: sthet vor block 3:
 # Globale State Machine
 def State_machine():
     # Init der nötigen Werte
-    global current_state, HAS_TURNED, HAS_BALL, HAS_BLOCK, HAS_PUSHED, prev_time, barcode_count
+    global current_state, HAS_TURNED, HAS_BALL, HAS_BLOCK, prev_time, barcode_count
     # Threshold einlesen
     values_threshold = init_threshold()
     # Erster State
@@ -62,12 +62,12 @@ def State_machine():
                 previous_color_state = LastColorState  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for i in range(18):  # max lochgröße
-                    print("Lochgröße: ", sep='')
+                    print("Lochgröße: ")
                     print(i)
                     value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
                     if value:
                         if i < 4:  # Barcodegröße
-                            print("Lochgröße final: ", sep='')
+                            print("Lochgröße final: ")
                             print(i)
                             barcode_count += 1
                             current_state = STATE_FOLLOW_LINE
