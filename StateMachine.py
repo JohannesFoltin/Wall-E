@@ -36,7 +36,7 @@ def State_machine():
         distance, prev_time = fetch_distance(prev_time, distance)
         print(distance)
         values_threshold = update_threshold(values_threshold)
-
+        print(current_state)
         # Schranken händling
         if distance <= 50 and HAS_BALL != 2:
             print("Wir fangen an mit der Schranke")
