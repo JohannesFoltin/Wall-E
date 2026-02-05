@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 import time
-from ev3dev2.motor import OUTPUT_A, OUTPUT_D
-from ev3dev2.motor import MoveTank, SpeedPercent
+from ev3dev2.motor import OUTPUT_A, OUTPUT_D, OUTPUT_C
+from ev3dev2.motor import MoveTank, SpeedPercent, MediumMotor
 
 drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
+ball_motor = MediumMotor(OUTPUT_C)
 
 STATE_FOLLOW_LINE = 0
 STATE_TURN_ARROUND = 1
-STATE_WALL = 2
-STATE_HAS_BALL = 3
-STATE_PUSH_BLOCK = 4
-STATE_TROW_BALL = 5
-STATE_NO_LINE = 6
+STATE_GATE = 2
+STATE_PUSH_BLOCK = 3
+STATE_TROW_BALL = 4
+STATE_NO_LINE = 5
 
 NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
 LEFT_LS = (True, True, False)
@@ -24,10 +24,7 @@ NO_LINE_LS = (False, False, False)
 DRIVE_SPEED = -50  # Fahrgeschwindigkeit zum Korrigieren
 CONTINUE_SPEED = DRIVE_SPEED * 0.6  # Kontinuierliche Fahrgeschwindigkeit
 HALF_DRIVE_SPEED = 0.5 * DRIVE_SPEED  # Fahrgeschwindigkeit für leichte Korrekturen
-NO_LINE_SPEED = DRIVE_SPEED * 0.8
 TURN_DEGREE = 10  # Inkrement für Korrekturen
-
-MARK_DEGREE = -100
 
 
 # Passt die Ausrichtung des Roboters an, wenn die Linie nicht gefunden wurde.
@@ -75,7 +72,13 @@ def turn_tank(turn):
     TURN_WS = 30  # Drehgeschwindigkeit
     # Drehe den Roboter um 180 Grad
     drive_tank.on_for_degrees(SpeedPercent(-TURN_WS), SpeedPercent(TURN_WS), turn)
-    print('geturned')
+
+
+def deploy_ball():
+    ball_motor.on_for_degrees(SpeedPercent(5), -90)  # - geht nach vorne
+    time.sleep(1)
+    ball_motor.on_for_degrees(SpeedPercent(-5), -90)
+    ball_motor.off
 
 
 # Passt die Bewegung des Roboters basierend auf den Sensordaten / State der Linie an.
