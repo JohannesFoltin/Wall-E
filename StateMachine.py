@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from AdjustTank import adjust_tank, turn_angle_white, drive_back, tank_stop, turn_tank, move_tank_value, deploy_ball
+from AdjustTank import adjust_tank, turn_angle_white, tank_stop, turn_tank, move_tank_value, deploy_ball, ALL_BLACK, NO_LINE_LS
 from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_distance
 
 
@@ -15,8 +15,6 @@ current_state = STATE_FOLLOW_LINE
 LastColorState = None
 prev_time = 0
 barcode_count = 0
-NO_LINE_LS = (False, False, False)
-ALL_BLACK = (True, True, True)
 
 
 HAS_TURNED = True
@@ -150,5 +148,5 @@ def State_machine():
             deploy_ball()
             exit()
 
-
-State_machine()
+if __name__ == "__main__":
+    State_machine()
