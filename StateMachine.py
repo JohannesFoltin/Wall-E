@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from time import sleep
 from AdjustTank import adjust_tank, turn_angle_white, tank_stop, turn_tank, move_tank_value, deploy_ball, ALL_BLACK, NO_LINE_LS
 from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_distance
 
@@ -43,15 +44,18 @@ def State_machine():
         print("HAS_BALL:")
         print(HAS_BALL)
         print()
+        print("Barcode")
+        print(barcode_count)
+
         # find barcode
-        if barcode_count >= 3:
+        if barcode_count >= 3 and HAS_BLOCK != 3 and LastColorState != NO_LINE_LS:
             print("Wir fangen an mit dem Block pushen")
             current_state = STATE_PUSH_BLOCK
         
-        print(current_state)
-
-        if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 10:  # change 10
+        if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 25 and HAS_BLOCK == 3:  # change 10
             current_state = STATE_TROW_BALL
+        
+        print(current_state)
 
         if current_state == STATE_FOLLOW_LINE:
             # Fahre und kriege den neuen state
@@ -63,6 +67,7 @@ def State_machine():
                 # 180° Drehung am Anfang des Parcours
                 turn_tank(420)
                 HAS_TURNED = True
+                current_state = STATE_FOLLOW_LINE
             else:
                 previous_color_state = LastColorState  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
@@ -72,7 +77,7 @@ def State_machine():
                     print(i)
                     value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
                     if value:
-                        if i < 4:  # Barcodegröße
+                        if 1< i < 4:  # Barcodegröße
                             print("Lochgroesse final: ")
                             print(i)
                             barcode_count += 1
@@ -82,7 +87,7 @@ def State_machine():
                     tank_stop()
                     print("Fahr rueckwaerts")
                     turn_angle_white(previous_color_state)  # vlt nach drive_back
-                    for _ in range(22):
+                    for _ in range(24):
                         tmp = move_tank_value(-1, fetch_sensor(values_threshold))
                         print("go_back")
                         if tmp:
@@ -137,11 +142,10 @@ def State_machine():
 
         elif current_state == STATE_TROW_BALL:
             _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
-            if distance < 4 or distance > 200:
-                while True:
-                    for _ in range(4):
-                        value = move_tank_value(1, fetch_sensor(values_threshold))
-                    break
+            while distance > 5:
+                _,value = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
+                distance, prev_time = fetch_distance(prev_time, distance)
+
             deploy_ball()
             exit()
 

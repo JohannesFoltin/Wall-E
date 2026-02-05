@@ -79,8 +79,6 @@ def turn_tank(turn):
 
 
 def deploy_ball():
-    ball_motor.on_for_degrees(SpeedPercent(5), -90)  # - geht nach vorne
-    time.sleep(1)
     ball_motor.on_for_degrees(SpeedPercent(-5), -90)
     ball_motor.off
 
