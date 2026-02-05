@@ -11,24 +11,21 @@ STATE_PUSH_BLOCK = 4
 STATE_TROW_BALL = 5
 STATE_NO_LINE = 6
 
-current_state = STATE_FOLLOW_LINE
-LastColorState = None
-prev_time = 0
-barcode_count = 0
-
-
 HAS_TURNED = True
 HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
-HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: sthet vor block 3: block geschoben und gedreht
+HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: steht vor block 3: block geschoben und gedreht
 
 
 # Globale State Machine
 def State_machine():
     # Init der nötigen Werte
     global current_state, HAS_TURNED, HAS_BALL, HAS_BLOCK, prev_time, barcode_count
+    prev_time = 0
+    barcode_count = 0
     # Threshold einlesen
     values_threshold = init_threshold()
     # Erster State
+    current_state = STATE_FOLLOW_LINE
     LastColorState = current_state
     distance = 300
 
@@ -122,7 +119,7 @@ def State_machine():
                     HAS_BLOCK = 2
                 _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
             elif HAS_BLOCK == 2:  # steht vor Block
-                _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, -10)
+                _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000) # 100
                 if distance > 5:  # wie weit fliegt der block weg
                     for _ in range(6):  # 3cm rückwärts
                         _ = move_tank_value(-1, 0)  # 0.5 Cm nach vorne
@@ -147,6 +144,7 @@ def State_machine():
                     break
             deploy_ball()
             exit()
+
 
 if __name__ == "__main__":
     State_machine()
