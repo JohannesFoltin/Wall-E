@@ -11,7 +11,7 @@ STATE_PUSH_BLOCK = 4
 STATE_TROW_BALL = 5
 STATE_NO_LINE = 6
 
-HAS_TURNED = True
+HAS_TURNED = False
 HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: steht vor block 3: block geschoben und gedreht
 

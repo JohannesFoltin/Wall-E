@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 import time
-from ev3dev2.motor import OUTPUT_A, OUTPUT_D, OUTPUT_C
+from ev3dev2.motor import OUTPUT_A, OUTPUT_D, OUTPUT_B
 from ev3dev2.motor import MoveTank, SpeedPercent, MediumMotor
-from StateMachine import STATE_FOLLOW_LINE, STATE_NO_LINE
+#from StateMachine import STATE_FOLLOW_LINE, STATE_NO_LINE
 
 drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
-ball_motor = MediumMotor(OUTPUT_C)
+ball_motor = MediumMotor(OUTPUT_B)
+
+STATE_FOLLOW_LINE = 0
+STATE_TURN_ARROUND = 1
+STATE_WALL = 2
+STATE_HAS_BALL = 3
+STATE_PUSH_BLOCK = 4
+STATE_TROW_BALL = 5
+STATE_NO_LINE = 6
 
 NORMAL_LS = (False, True, False)  # LS = LIGHT STATE
 LEFT_LS = (True, True, False)
