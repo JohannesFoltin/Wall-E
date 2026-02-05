@@ -19,7 +19,7 @@ NO_LINE_LS = (False, False, False)
 ALL_BLACK = (True, True, True)
 
 
-HAS_TURNED = False
+HAS_TURNED = True
 HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: sthet vor block 3: block geschoben und gedreht
 
@@ -36,19 +36,24 @@ def State_machine():
 
     while True:
         distance, prev_time = fetch_distance(prev_time, distance)
+        print("Distance:")
         print(distance)
+        print()
         values_threshold = update_threshold(values_threshold)
-        print(current_state)
 
         # Schranken händling
-        if distance <= 50 and HAS_BALL != 2:
+        if distance <= 50 and HAS_BALL != 2 and HAS_TURNED:
             print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
-
+        print("HAS_BALL:")
+        print(HAS_BALL)
+        print()
         # find barcode
         if barcode_count >= 3:
             print("Wir fangen an mit dem Block pushen")
             current_state = STATE_PUSH_BLOCK
+        
+        print(current_state)
 
         if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 10:  # change 10
             current_state = STATE_TROW_BALL
@@ -66,34 +71,37 @@ def State_machine():
             else:
                 previous_color_state = LastColorState  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
+                tmpende = False
                 for i in range(18):  # max lochgröße
-                    print("Lochgröße: ")
+                    print("Lochgroesse: ")
                     print(i)
                     value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
                     if value:
                         if i < 4:  # Barcodegröße
-                            print("Lochgröße final: ")
+                            print("Lochgroesse final: ")
                             print(i)
                             barcode_count += 1
                             current_state = STATE_FOLLOW_LINE
+                            tmpende = True
+                if not tmpende:
+                    tank_stop()
+                    print("Fahr rueckwaerts")
+                    turn_angle_white(previous_color_state)  # vlt nach drive_back
+                    for _ in range(22):
+                        tmp = move_tank_value(-1, fetch_sensor(values_threshold))
+                        print("go_back")
+                        if tmp:
+                            tank_stop()
+                            current_state = STATE_FOLLOW_LINE
                             break
-                tank_stop()
-                print("Fahr rueckwaerts")
-                turn_angle_white(previous_color_state)  # vlt nach drive_back
-                for _ in range(20):
-                    current_state, LastColorState = drive_back(fetch_sensor(values_threshold), LastColorState)
-                    print("go_back")
-                    if current_state != STATE_NO_LINE:
-                        tank_stop()
-                        current_state = STATE_FOLLOW_LINE
-                        break
+                    current_state = STATE_FOLLOW_LINE
         elif current_state == STATE_WALL:
             # Schranke
             print("Schranke")
             if (HAS_BALL == 1) and (distance > 32):
                 HAS_BALL = 2
                 current_state = STATE_FOLLOW_LINE
-            elif (distance <= 19) and (not (HAS_BALL == 2)) and HAS_TURNED:
+            elif (distance <= 19) and (not (HAS_BALL == 2)):
                 tank_stop()
                 HAS_BALL = 1
                 print("gar nicht fahren")
@@ -109,7 +117,7 @@ def State_machine():
                     values_threshold = update_threshold(values_threshold)
                     _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
                 # 90° drehung
-                turn_tank(105)
+                turn_tank(180)
                 HAS_BLOCK = 1
             elif HAS_BLOCK == 1:  # zur linie gedreht
                 if distance <= 5:
