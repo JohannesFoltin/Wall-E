@@ -52,8 +52,6 @@ def State_machine():
             print("Wir fangen an mit dem Block pushen")
             current_state = STATE_PUSH_BLOCK
 
-        print(current_state)
-
         if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 10:  # change 10
             current_state = STATE_TROW_BALL
         
