@@ -10,8 +10,8 @@ STATE_HAS_BALL = 3
 STATE_TROW_BALL = 5
 STATE_NO_LINE = 6
 
-HAS_TURNED = True
-HAS_BALL = 2  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
+HAS_TURNED = False
+HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 
 
 # Globale State Machine
@@ -29,11 +29,6 @@ def State_machine():
 
     while True:
         distance, prev_time = fetch_distance(prev_time, distance)
-
-        print("Distance:")
-        print(distance)
-        print()
-
         values_threshold = update_threshold(values_threshold)
 
         # Schranken händling
@@ -43,9 +38,15 @@ def State_machine():
 
         if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 20:  # change 10
             current_state = STATE_TROW_BALL
-
+       
+        print()
+        print("Distance:")
+        print(distance)
+        print("HAS-BAll:")
+        print(HAS_BALL)
         print("state:")
         print(current_state)
+        print()
 
         if current_state == STATE_FOLLOW_LINE:
             # Fahre und kriege den neuen state
