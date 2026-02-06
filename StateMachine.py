@@ -27,7 +27,7 @@ def State_machine():
     values_threshold = init_threshold()
     # Erster State
     current_state = STATE_FOLLOW_LINE
-    LastColorState = current_state
+    LastColorState = current_state #???
     distance = 300
 
     while True:
@@ -40,7 +40,7 @@ def State_machine():
         values_threshold = update_threshold(values_threshold)
 
         # Schranken händling
-        if distance <= 50 and HAS_BALL != 2 and HAS_TURNED and current_state != NO_LINE_LS:
+        if distance <= 50 and HAS_BALL != 2 and HAS_TURNED and LastColorState != NO_LINE_LS:
             print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
         
