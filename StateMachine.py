@@ -12,8 +12,8 @@ STATE_PUSH_BLOCK = 4
 STATE_TROW_BALL = 5
 STATE_NO_LINE = 6
 
-HAS_TURNED = True
-HAS_BALL = 2  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
+HAS_TURNED = False
+HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: steht vor block 3: block geschoben und gedreht
 
 
@@ -40,7 +40,7 @@ def State_machine():
         values_threshold = update_threshold(values_threshold)
 
         # Schranken händling
-        if distance <= 50 and HAS_BALL != 2 and HAS_TURNED:
+        if distance <= 50 and HAS_BALL != 2 and HAS_TURNED and current_state != NO_LINE_LS:
             print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
         
@@ -50,9 +50,12 @@ def State_machine():
         print("Barcode:")
         print(barcode_count)
         # find barcode
-        if barcode_count >= 3 and HAS_BLOCK != 3 and LastColorState != NO_LINE_LS:
-            print("Wir fangen an mit dem Block pushen")
-            current_state = STATE_PUSH_BLOCK
+        if barcode_count >= 3 and LastColorState != NO_LINE_LS:
+            if HAS_BALL != 2 or HAS_BLOCK == 3:
+                barcode_count = 0
+            else:
+                print("Wir fangen an mit dem Block pushen")
+                current_state = STATE_PUSH_BLOCK
 
         if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 10:  # change 10
             current_state = STATE_TROW_BALL
