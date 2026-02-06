@@ -26,7 +26,7 @@ NO_LINE_LS = (False, False, False)
 DRIVE_SPEED = -50  # Fahrgeschwindigkeit zum Korrigieren
 CONTINUE_SPEED = DRIVE_SPEED * 0.6  # Kontinuierliche Fahrgeschwindigkeit
 HALF_DRIVE_SPEED = 0.5 * DRIVE_SPEED  # Fahrgeschwindigkeit für leichte Korrekturen
-TURN_DEGREE = 10  # Inkrement für Korrekturen
+TURN_DEGREE = 10 + 5 # Inkrement für Korrekturen
 
 
 # Passt die Ausrichtung des Roboters an, wenn die Linie nicht gefunden wurde.
