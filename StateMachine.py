@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from AdjustTankNoBar import adjust_tank, turn_angle_white, tank_stop, turn_tank, move_tank_value, deploy_ball, ALL_BLACK, NO_LINE_LS,NORMAL_LS
+from AdjustTank import adjust_tank, turn_angle_white, tank_stop, turn_tank, move_tank_value, deploy_ball, ALL_BLACK, NO_LINE_LS,NORMAL_LS
 from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_distance
 
 
