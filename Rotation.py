@@ -2,7 +2,6 @@
 import time
 from ev3dev2.motor import OUTPUT_A, OUTPUT_D
 from ev3dev2.motor import MoveTank, SpeedPercent
-
 drive_tank = MoveTank(OUTPUT_A, OUTPUT_D)
 
 DRIVE_SPEED = -25  # Fahrgeschwindigkeit zum Korrigieren
