@@ -32,29 +32,35 @@ def State_machine():
 
     while True:
         distance, prev_time = fetch_distance(prev_time, distance)
+        
         print("Distance:")
         print(distance)
         print()
+        
         values_threshold = update_threshold(values_threshold)
 
         # Schranken händling
-        if distance <= 50 and HAS_BALL != 2 and HAS_TURNED:
+        if distance <= 50 and HAS_BALL != 2 and HAS_TURNED and current_state != NO_LINE_LS:
             print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
+        
         print("HAS_BALL:")
         print(HAS_BALL)
         print()
-        print("Barcode")
+        print("Barcode:")
         print(barcode_count)
-
         # find barcode
-        if barcode_count >= 3 and HAS_BLOCK != 3 and LastColorState != NO_LINE_LS:
-            print("Wir fangen an mit dem Block pushen")
-            current_state = STATE_PUSH_BLOCK
+        if barcode_count >= 3 and LastColorState != NO_LINE_LS:
+            if HAS_BALL != 2 or HAS_BLOCK == 3:
+                barcode_count = 0
+            else:
+                print("Wir fangen an mit dem Block pushen")
+                current_state = STATE_PUSH_BLOCK
 
         if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 10:  # change 10
             current_state = STATE_TROW_BALL
         
+        print("state:")
         print(current_state)
 
         if current_state == STATE_FOLLOW_LINE:
@@ -115,16 +121,16 @@ def State_machine():
                 # 20 cm vorwärts
                 for _ in range(18):
                     values_threshold = update_threshold(values_threshold)
-                    _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
+                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
                 # 90° drehung
                 turn_tank(180)
                 HAS_BLOCK = 1
             elif HAS_BLOCK == 1:  # zur linie gedreht
                 if distance <= 5:
                     HAS_BLOCK = 2
-                _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
+                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
             elif HAS_BLOCK == 2:  # steht vor Block
-                _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000) # 100
+                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000) # 100
                 if distance > 5:  # wie weit fliegt der block weg
                     for _ in range(6):  # 3cm rückwärts
                         _ = move_tank_value(-1, 0)  # 0.5 Cm nach vorne
