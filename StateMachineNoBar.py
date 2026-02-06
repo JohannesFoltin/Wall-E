@@ -10,8 +10,8 @@ STATE_HAS_BALL = 3
 STATE_TROW_BALL = 5
 STATE_NO_LINE = 6
 
-HAS_TURNED = False
-HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
+HAS_TURNED = True
+HAS_BALL = 2  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 
 
 # Globale State Machine
@@ -41,7 +41,7 @@ def State_machine():
             print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
 
-        if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 10:  # change 10
+        if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 20:  # change 10
             current_state = STATE_TROW_BALL
 
         print("state:")
@@ -58,6 +58,7 @@ def State_machine():
                 turn_tank(420)
                 HAS_TURNED = True
             else:
+                barcode_count += 1
                 prevColorState = LastColorState  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
                 for _ in range(16):
