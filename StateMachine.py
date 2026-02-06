@@ -77,7 +77,7 @@ def State_machine():
                     print(i)
                     value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
                     if value:
-                        if 1< i < 4:  # Barcodegröße
+                        if 1 < i < 4:  # Barcodegröße
                             print("Lochgroesse final: ")
                             print(i)
                             barcode_count += 1
