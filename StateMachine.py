@@ -53,8 +53,8 @@ def State_machine():
         if barcode_count >= 3 and HAS_BLOCK != 3 and LastColorState != NO_LINE_LS:
             print("Wir fangen an mit dem Block pushen")
             current_state = STATE_PUSH_BLOCK
-        
-        if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 25 and HAS_BLOCK == 3:  # change 10
+
+        if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 10:  # change 10
             current_state = STATE_TROW_BALL
         
         print("state:")
