@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from re import L
 from AdjustTank import adjust_tank, turn_angle_white, tank_stop, turn_tank, move_tank_value, deploy_ball, ALL_BLACK, NO_LINE_LS,NORMAL_LS
 from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_distance
 
@@ -46,6 +47,8 @@ def State_machine():
         print(HAS_BALL)
         print("state:")
         print(current_state)
+        print("last color state")
+        print(LastColorState)
         print()
 
         if current_state == STATE_FOLLOW_LINE:
