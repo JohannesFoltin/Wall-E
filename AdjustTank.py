@@ -65,7 +65,7 @@ def move_tank_value(direction, Colorstate):
         return True
     if direction > 0:
         # 6.99 ist 0.5 cm
-        drive_tank.on_for_degrees(SpeedPercent(-25), SpeedPercent(-25), 6.99)
+        drive_tank.on_for_degrees(SpeedPercent(-25), SpeedPercent(-25), 6.99)  # vorwärts
     else:
         drive_tank.on_for_degrees(SpeedPercent(-25), SpeedPercent(-25), - 2 * 6.99)
     return False

@@ -7,7 +7,6 @@ STATE_FOLLOW_LINE = 0
 STATE_TURN_ARROUND = 1
 STATE_WALL = 2
 STATE_HAS_BALL = 3
-STATE_PUSH_BLOCK = 4
 STATE_TROW_BALL = 5
 STATE_NO_LINE = 6
 
@@ -19,7 +18,7 @@ HAS_BLOCK = 0  # 0: nicht geschoben, 1: zum block gedreht, 2: steht vor block 3:
 # Globale State Machine
 def State_machine():
     # Init der nötigen Werte
-    global current_state, HAS_TURNED, HAS_BALL, HAS_BLOCK, prev_time, barcode_count
+    global current_state, HAS_TURNED, HAS_BALL, prev_time, barcode_count
     prev_time = 0
     barcode_count = 0
     # Threshold einlesen
@@ -43,19 +42,6 @@ def State_machine():
             print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
 
-        print("HAS_BALL:")
-        print(HAS_BALL)
-        print()
-        print("Barcode:")
-        print(barcode_count)
-        # find barcode
-        if barcode_count >= 3 and LastColorState != NO_LINE_LS:
-            if HAS_BALL != 2 or HAS_BLOCK == 3:
-                barcode_count = 0
-            else:
-                print("Wir fangen an mit dem Block pushen")
-                current_state = STATE_PUSH_BLOCK
-
         if HAS_BALL == 2 and LastColorState == ALL_BLACK and distance <= 10:  # change 10
             current_state = STATE_TROW_BALL
 
@@ -67,39 +53,32 @@ def State_machine():
             current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
 
         elif current_state == STATE_NO_LINE:
-            print("State_No Line")
+            values_threshold = update_threshold(values_threshold)
             if not HAS_TURNED:
                 # 180° Drehung am Anfang des Parcours
                 turn_tank(420)
                 HAS_TURNED = True
-                current_state = STATE_FOLLOW_LINE
             else:
-                previous_color_state = LastColorState  # Speichert, wie die Linie verlassen wurde
+                previous_state = current_state  # Speichert, wie die Linie verlassen wurde
                 # Fahre weiter und suche die Linie, wenn nicht gefunden, zurückfahren und erneut suchen
-                tmpende = False
-                for i in range(18):  # max lochgröße
-                    print("Lochgroesse: ")
-                    print(i)
-                    value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
+                for _ in range(16):
+                    value = move_tank_value(-1, fetch_sensor(values_threshold))
+                    print("lost")
                     if value:
-                        if 1 < i < 4:  # Barcodegröße
-                            print("Lochgroesse final: ")
-                            print(i)
-                            barcode_count += 1
-                            current_state = STATE_FOLLOW_LINE
-                            tmpende = True
-                if not tmpende:
+                        current_state = STATE_FOLLOW_LINE
+                        print("found")
+                        break
+                else:
                     tank_stop()
-                    print("Fahr rueckwaerts")
-                    turn_angle_white(previous_color_state)  # vlt nach drive_back
-                    for _ in range(24):
-                        tmp = move_tank_value(-1, fetch_sensor(values_threshold))
+                    turn_angle_white(previous_state)
+                    for _ in range(20):
+                        value = move_tank_value(-1, fetch_sensor(values_threshold))
                         print("go_back")
-                        if tmp:
+                        if value:
                             tank_stop()
                             current_state = STATE_FOLLOW_LINE
                             break
-                    current_state = STATE_FOLLOW_LINE
+
         elif current_state == STATE_WALL:
             # Schranke
             print("Schranke")
@@ -115,42 +94,11 @@ def State_machine():
                 print("langsamer fahren")
                 current_state = STATE_FOLLOW_LINE
 
-        elif current_state == STATE_PUSH_BLOCK:
-            if HAS_BLOCK == 0:  # noch nicht geschoben
-                # 20 cm vorwärts
-                for _ in range(18):
-                    values_threshold = update_threshold(values_threshold)
-                    current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
-                # 90° drehung
-                turn_tank(180)
-                HAS_BLOCK = 1
-            elif HAS_BLOCK == 1:  # zur linie gedreht
-                if distance <= 5:
-                    HAS_BLOCK = 2
-                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
-            elif HAS_BLOCK == 2:  # steht vor Block
-                current_state, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)  # 100
-                if distance > 5:  # wie weit fliegt der block weg
-                    for _ in range(6):  # 3cm rückwärts
-                        _ = move_tank_value(-1, 0)  # 0.5 Cm nach vorne
-                    turn_tank(420)
-                    HAS_BLOCK = 3
-            elif HAS_BLOCK == 3:  # block geschoben und gedreht
-                _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
-                if LastColorState == NO_LINE_LS:
-                    turn_tank(50)
-                    for _ in range(4):
-                        value = move_tank_value(1, fetch_sensor(values_threshold))  # 0.5 Cm nach vorne
-                        if value:
-                            break
-                    current_state = STATE_FOLLOW_LINE
-
         elif current_state == STATE_TROW_BALL:
             _, LastColorState = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
             while distance > 5:
                 _, value = adjust_tank(fetch_sensor(values_threshold), LastColorState, 1000)
                 distance, prev_time = fetch_distance(prev_time, distance)
-
             deploy_ball()
             exit()
 
