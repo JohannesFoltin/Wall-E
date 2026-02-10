@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from re import L
 from AdjustTank import adjust_tank, turn_angle_white, tank_stop, turn_tank, move_tank_value, deploy_ball, ALL_BLACK, NO_LINE_LS,NORMAL_LS
 from FetchSensor import fetch_sensor, init_threshold, update_threshold, fetch_distance
+from time import sleep
 
 
 STATE_FOLLOW_LINE = 0
@@ -33,7 +33,7 @@ def State_machine():
         values_threshold = update_threshold(values_threshold)
 
         # Schranken händling
-        if distance <= 50 and HAS_BALL != 2 and HAS_TURNED and LastColorState != NO_LINE_LS:
+        if distance <= 40 and HAS_BALL != 2 and HAS_TURNED and LastColorState != NO_LINE_LS:
             print("Wir fangen an mit der Schranke")
             current_state = STATE_WALL
 
@@ -60,6 +60,7 @@ def State_machine():
             if not HAS_TURNED:
                 # 180° Drehung am Anfang des Parcours
                 turn_tank(420)
+                sleep(1)
                 HAS_TURNED = True
             else:
                 barcode_count += 1
