@@ -15,7 +15,7 @@ HAS_TURNED = False
 HAS_BALL = 0  # 0: nicht gemacht, 1: steht vor Schranke, 2: gemacht
 
 
-# Globale State Machine
+# Globale State Machine Funtkion
 def State_machine():
     # Init der nötigen Werte
     global current_state, HAS_TURNED, HAS_BALL, prev_time, barcode_count
